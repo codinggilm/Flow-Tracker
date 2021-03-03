@@ -1,0 +1,30 @@
+// @import'config';
+// @import'utilities';
+ 
+// Reset *****************************
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+// General Styles ******************
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.4;
+
+}
+ 
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    width: 100%;
+}

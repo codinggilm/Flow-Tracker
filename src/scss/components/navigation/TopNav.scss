@@ -1,0 +1,68 @@
+.container-top-nav {
+    background:#fff;
+    border: 1px solid #ccc;
+    padding: 2rem;
+    position: absolute;
+    top: 0;
+    left: 15%;
+    width: 85%;
+
+    .top-nav-main{
+        display: flex;
+        align-items: center;
+        text-align: center;
+
+        .user-details {
+            width: 300px;
+
+            p {
+                font-size: 1.5rem;
+            }
+        }
+
+        .top-nav-content {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            width: 100%;
+
+            .fa-dice-d6 {
+                margin-left: 20px;
+            }
+
+            .notification {
+                display: flex;
+                align-items: center;
+                margin-left: 30px;
+                font-size: 15px;
+
+                .fa-bell {
+                    margin-left: 10px;
+                }
+            }
+
+            .user-menu {
+                margin-left: 30px;
+                font-size: 15px;
+
+                #dropdown-basic {
+                    display: flex;
+                    align-items: center;
+                    border: none;
+                    background: none;
+                    font-size: 15px;
+                     
+                    .fa-user {
+                        margin-left: 10px;
+                    }
+                }
+
+                .drop-menu {
+                    display: flex;
+                    flex-direction: column;
+                    background: #fff;
+                }
+            }
+        }
+    }
+}
