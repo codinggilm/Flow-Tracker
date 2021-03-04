@@ -1,0 +1,80 @@
+@import'../config';
+// @use'../config';
+ 
+.roles-main {
+    padding: 2rem;
+
+    .roles-title { 
+        padding: 1rem;
+        margin-bottom: 1rem;
+        
+        p {
+            font-size: 2rem;
+            margin-bottom: 2rem !important;
+        }
+    }
+
+    .roles-manage-container {
+        display: flex;
+        flex-direction: row;
+
+        .roles-column {
+            width: 25%;
+
+            .selection-title {
+                font-weight: 600;
+            }
+    
+            .selection {
+                display: flex;
+                flex-direction: column;
+                font-family: $main-font;
+            }
+    
+            select{
+                margin-top: 1rem;
+                margin-bottom: 2rem;
+                &:focus {
+                    outline: none;
+                }
+            }
+    
+            option {
+                font-family: $main-font;
+                padding: 0.1rem 0.5rem;
+            }
+    
+            .role-selection {
+
+                select {
+                    width: 100%;
+                    margin-top: 1rem;
+                
+                    option {
+                        font-family: $main-font;
+                        padding: 0.1rem 2rem;
+                    }
+                }
+
+                button {
+                    background: $btn-primary;
+                    font-family: $main-font;
+                    color: #fff;
+                    padding: 0.5rem 2rem;
+                    border: $btn-primary;
+                    border-radius: 5%;
+                    width: 100%;
+                }
+            }
+    
+
+        }
+
+        .list-column {
+            width: 75%;
+        }
+
+
+    }
+
+}

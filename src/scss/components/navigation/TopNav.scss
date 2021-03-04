@@ -1,16 +1,26 @@
+@import'../../config';
+
 .container-top-nav {
     background:#fff;
     border: 1px solid #ccc;
-    padding: 2rem;
+    padding: 1rem;
     position: absolute;
     top: 0;
     left: 15%;
     width: 85%;
-
+    height: 80px;
+    display: flex;
+    z-index: 1;
+    // justify-content: space-between;
+    // align-items: center;
+    // text-align: center;
+ 
     .top-nav-main{
         display: flex;
+        justify-content: center;
         align-items: center;
         text-align: center;
+        width: 100%;
 
         .user-details {
             width: 300px;
@@ -26,8 +36,27 @@
             align-items: center;
             width: 100%;
 
+            .mr-sm-2 {
+                border-top: none;
+                border-left: none;
+                border-right: none;
+
+                &:focus {
+                    outline: none;
+                }
+            }
+
+            .fa-search {
+                font-size: 110%;
+                // border-radius: 50%;
+                // border: 0.5px solid #ccc;
+                // padding: 0.5em;
+                // background: #fff;
+            }
+
             .fa-dice-d6 {
-                margin-left: 20px;
+                margin-left: 30px;
+                font-size: 130%;
             }
 
             .notification {
@@ -38,12 +67,29 @@
 
                 .fa-bell {
                     margin-left: 10px;
+                    font-size: 130%;
+                }
+
+                .bello{
+                    margin-top: -20px;
+                    margin-left: -8px;
+                    font-size:60%;
+                    padding:.8em;
+                    border-radius:50%;
+                    line-height:.8em;
+                    color: white;
+                    background:rgba(255,0,0,.85);
+                    text-align:center;
+                    min-width: 1em;
+                    font-weight:bold;
                 }
             }
 
-            .user-menu {
+            .user-menu { 
                 margin-left: 30px;
                 font-size: 15px;
+                color: $main-font-color;
+                  
 
                 #dropdown-basic {
                     display: flex;
@@ -51,16 +97,49 @@
                     border: none;
                     background: none;
                     font-size: 15px;
+                    color: $main-font-color;
+                    z-index: 1;
+
+                    &:hover{
+                        cursor: pointer;
+                    }
+
+                    &:focus {
+                        outline: none;
+                    }
                      
                     .fa-user {
                         margin-left: 10px;
+                        margin-bottom: 2px;
+                        font-size: 130%;
+                        color: $main-font-color;
                     }
                 }
 
                 .drop-menu {
                     display: flex;
                     flex-direction: column;
+                    // justify-content: flex-start;
+                    text-align: start;
                     background: #fff;
+                    border: 1px solid #ccc;
+                    border-radius: 5%;
+                    width: 150px;
+                    margin-top: 10px;
+
+                    a {
+                        padding: 15px;
+
+                        &:hover {
+                            background: rgb(165, 76, 248);
+                            color: #fff;
+                        }
+                    }
+
+                    .logout {
+                        border-top: 1px solid #ccc;
+                    }
+
                 }
             }
         }

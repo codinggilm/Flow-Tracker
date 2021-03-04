@@ -1,7 +1,52 @@
+@import'../../config';
+
 .container-side-nav {
+
+    a {
+        color: $main-font-color;
+    }
     background:#fff;
     border: 1px solid #ccc;    
     padding: 1rem;
     width: 15%;
-    height: 100vh;
-} 
+    // height: 100%;
+    border-bottom: none; 
+
+    .welcome-user {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        height: 120px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .side-nav-menu {
+        margin-top: 20px;
+
+
+        .side-container {
+            display: flex;
+            padding: 1.5rem 1rem;
+            
+            &:hover {
+                background: $btn-primary;
+                color: #fff;
+                border-radius: 5%;
+            }
+
+            .icon {
+                width: 20px;
+            }
+
+            p {
+                margin-left: 15px;
+            }
+
+            i {
+                font-size: 110%;
+            }
+        }
+    }
+
+}  

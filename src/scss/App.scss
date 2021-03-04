@@ -1,4 +1,4 @@
-// @import'config';
+@import'config';
 // @import'utilities';
  
 // Reset *****************************
@@ -8,17 +8,27 @@
     box-sizing: border-box;
 }
 
+// Main content window
+
+.main-content {
+    position: absolute;
+    top: 80px;
+    left: 15%;
+    width: 85%;
+    background: $main-background;
+}
+
 // General Styles ******************
 
 body {
     font-family: 'Open Sans', sans-serif;
+    color: $main-font-color;
     line-height: 1.4;
 
 }
  
 a {
     text-decoration: none;
-    color: #000;
 }
 
 ul {

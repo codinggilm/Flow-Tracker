@@ -1,0 +1,33 @@
+@import'../config';
+
+.dashboard-main {
+    // height: 100vh;
+    // width: 100%;
+    padding: 3rem 6rem;
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        text-align: center;
+
+        .chart-card {
+            // Tab style
+            // padding: 0rem 1rem;
+            // position: relative;
+            background: $chart-background;
+            margin: 1rem 1rem;
+
+
+            p {
+                // Tab style
+                // margin: 0.5rem 0.5rem 0;
+                // position: absolute;
+                // bottom: 0;
+                width: 100%;
+                background: #fff;
+                padding: 0.5rem 0rem;
+                margin-top: 1.5rem;
+            }
+        }
+    }
+}
