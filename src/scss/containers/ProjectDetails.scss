@@ -1,0 +1,14 @@
+.project-details-container {
+
+    padding: 5rem 2rem 3rem;
+
+    .project-details-grid {
+        display: grid;
+        grid-template-columns: 2fr 3fr;
+    }
+
+    .list-card {
+        background: #fff;
+        padding: 2rem 1rem;
+    }
+}

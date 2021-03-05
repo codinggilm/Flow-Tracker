@@ -1,0 +1,16 @@
+@import'../config';
+
+button {
+    background: $btn-primary;
+    font-family: $main-font;
+    color: #fff;
+    padding: 1rem 2rem;
+    border: $btn-primary;
+    border-radius: 5%;
+    width: 100%;
+    cursor: pointer;
+
+    &:hover {
+        background: $btn-hover-primary;
+    }
+}

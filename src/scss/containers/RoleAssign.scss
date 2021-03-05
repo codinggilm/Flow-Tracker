@@ -1,16 +1,15 @@
 @import'../config';
-// @use'../config';
  
 .roles-main {
     padding: 2rem;
 
     .roles-title { 
-        padding: 1rem;
+        padding: 1rem 0rem;
         margin-bottom: 1rem;
         
         p {
-            font-size: 2rem;
-            margin-bottom: 2rem !important;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
         }
     }
 
@@ -23,12 +22,18 @@
 
             .selection-title {
                 font-weight: 600;
+                font-size: 1.3rem;
             }
     
             .selection {
                 display: flex;
                 flex-direction: column;
                 font-family: $main-font;
+            }
+
+            .user-selection {
+                border-bottom: 1px solid #ccc;
+                margin-bottom: 6rem;
             }
     
             select{
@@ -56,17 +61,10 @@
                     }
                 }
 
-                button {
-                    background: $btn-primary;
-                    font-family: $main-font;
-                    color: #fff;
-                    padding: 0.5rem 2rem;
-                    border: $btn-primary;
-                    border-radius: 5%;
+                .btn-role {
                     width: 100%;
                 }
             }
-    
 
         }
 

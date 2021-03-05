@@ -1,8 +1,9 @@
 import React from 'react';
-import PersonnelList from '../../components/lists/PersonnelList';
+import UsersList from '../../components/lists/UsersList';
+import Button from '../../components/layout/button/Button';
 import '../../scss/containers/RoleAssign.scss';
-
-
+ 
+ 
 const RoleAssign = () => {
 	return (
 		<div>
@@ -12,11 +13,11 @@ const RoleAssign = () => {
                 </div>
                 <div className="roles-manage-container">
                     <div className="roles-column">
-                        <label className="selection">
+                        <label className="selection user-selection">
                             <p className="selection-title">Select 1 or more Users</p>
                             <select multiple>
                                 <option>Joshua Mastertson</option>
-                                <option>Deviant Man</option>
+                                <option>Rebecca Abell</option>
                                 <option>Bobby Davis</option>
                                 <option>Jorgen Malakith</option>
                                 <option>Alexandre Plard</option>
@@ -36,12 +37,14 @@ const RoleAssign = () => {
                                     <option>Submitter</option>
                                 </select>
                             </label>
-                            <button>SUBMIT</button>
+                            <div className="btn-role">
+                                <Button text="SUBMIT"/>
+                            </div>
                         </div>
                     </div>
 
                     <div className="list-column">
-                        <PersonnelList />
+                        <UsersList />
                     </div>
                 </div>
 			</main>
@@ -50,20 +53,3 @@ const RoleAssign = () => {
 }
 
 export default RoleAssign;
-
-
-
-
-/* <p>Select 1 or more Users</p> */
-/* <Form.Group controlId="exampleForm.ControlSelect2">
-<Form.Label>Select 1 or more Users</Form.Label>
-<Form.Control as="select" multiple>
-    <option>Joshua Mastertson</option>
-    <option>Deviant Man</option>
-    <option>Bobby Davis</option>
-    <option>Jorgen Malakith</option>
-    <option>Alexandre Plard</option>
-    <option>Guillaume Croizon</option>
-    <option>Brian Thomas</option>
-</Form.Control>
-</Form.Group> */

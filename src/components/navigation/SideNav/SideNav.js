@@ -31,12 +31,14 @@ const SideNav = () => {
 						</div>
 						<p>Manage Project Users</p>
 					</div>
-					<div className="projects-home side-container">
-						<div className="icon">
-							<i className="fas fa-project-diagram"></i>
+					<a href="/projects">
+						<div className="projects-home side-container">
+							<div className="icon">
+								<i className="fas fa-project-diagram"></i>
+							</div>
+							<p>My Projects</p>
 						</div>
-						<p>My Projects</p>
-					</div>
+					</a>
 					<div className="tickets-home side-container">
 						<div className="icon">
 							<i className="fas fa-th-list"></i>

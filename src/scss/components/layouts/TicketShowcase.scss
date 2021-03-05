@@ -1,0 +1,66 @@
+@import'../../config';
+
+
+.ticket-showcase-main {
+    background: #fff;
+    // margin: 0rem 0rem 4rem 0rem;
+
+    .list-container {
+
+        .banner-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+
+            .list-banner {
+                background: $bnr-primary;
+                position: relative;
+                margin-top: -1.5rem;
+                color: #fff;
+                padding: 1rem;
+                width: 97%;
+                box-shadow: 8px 8px 7px -3px rgba(0,0,0,0.25);
+    
+                .list-title {
+                    font-size: 1.5rem;
+                    margin-bottom: 0.5rem;
+                }
+
+                .project-nav-links {
+                    display: flex;
+
+                    a {
+                        color: #fff;
+                        text-decoration: underline;
+                    }
+
+                    p {
+                        margin: 0rem 0.5rem;
+                    }
+                }
+            }
+        }
+
+        .details-container {
+
+            .details-row {
+                display: flex;
+                padding: 1.5rem 1rem;
+                border-bottom: 1px solid #ccc;
+
+                .details-row-leftside {
+                    width: 40%;
+                }
+
+                .details-row-rightside {
+                    width: 60%;
+                }
+
+                .row-title {
+                    font-weight: bold;
+                    padding-bottom: 0.5rem;
+                }
+            }
+        }
+    }
+}

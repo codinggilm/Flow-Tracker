@@ -5,13 +5,25 @@ $main-background: rgb(233, 233, 233);
 $chart-background: rgb(197, 197, 197);
 
 
-
 // Font colors
 $main-font-color: rgb(73, 73, 73);
+
 
 // Fonts styles
 $main-font: 'Open Sans', sans-serif; 
 
 
 // Buttons
-$btn-primary: rgb(0, 163, 204)
+$btn-primary: rgb(0, 163, 204);
+$btn-hover-primary: rgb(52, 167, 195);
+
+// Pagination
+$pgn-background: linear-gradient(0deg, rgba(199,199,199,1) 0%, rgba(250,250,250,1) 100%);
+
+
+// Banners
+$bnr-primary: linear-gradient(90deg, rgba(233,168,0,1) 30%, rgba(235,124,6,1) 77%);;
+
+
+// Shadows
+$card-shadow: 4px 4px 8px 0px rgba(0,0,0,0.09);
