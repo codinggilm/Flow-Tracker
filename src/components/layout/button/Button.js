@@ -3,9 +3,9 @@ import '../../../scss/button/Button.scss';
 
 
 const Button = (props) => {
-	return (
+	return ( 
 		<div>
-			<button>{props.text}</button>
+			<button className="btn-main">{props.text}</button>
 		</div>
 	)
 }

@@ -1,12 +1,27 @@
 @import'../config';
-
+ 
 .ticket-details-main {
     padding: 4rem 2rem;
 
+    .line {
+        margin: 1rem 0rem 1.5rem;
+        background: #ccc;
+        border: 0.1px solid #ccc;
+    }
+
     .ticket-details-grid {
         display: grid;
+        gap: 1rem;
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
-        gap: 1.5rem;
+        // grid-template-rows: repeat(2, 1fr);
+        // gap: 1.5rem;
+
+        .details-section, .ticket-history-section {
+            border-right: 1px solid #ccc;
+            padding-right: 1rem;
+            margin-bottom: 1rem;
+        }
+
+   
     }
 }

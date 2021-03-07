@@ -1,0 +1,63 @@
+@import'../../config';
+
+.add-attachment-main {
+    padding: 2rem 1rem 3rem;
+    background: $main-background;
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+
+    .att-titles {
+        color: rgb(170, 170, 170);
+        margin-bottom: 0.5rem;
+    }
+
+    .add-att-grid {
+        display: grid;
+        grid-template-columns: 1fr 2fr 0.5fr;
+        margin-top: 1.5rem;
+
+        .att-upload {
+
+            .btn-upload {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0.3rem 0.1rem;
+                background: rgb(143, 143, 143);
+                border-radius: 5px;
+                color: #fff;
+                width: 150px;
+                cursor: pointer;
+
+                &:hover {
+                    color: rgb(143, 143, 143);
+                    background: #fff;
+                }
+
+                i {
+                    margin-right: 0.2rem;
+                }
+            }
+        }
+
+        .att-description {
+
+            padding: 0rem 1rem;
+            
+            input {
+                width: 100%;
+                height: 2rem;
+            }
+        }
+
+        .button-container {
+            margin-top: 1rem;
+        }
+    }
+
+    
+
+}

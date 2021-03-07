@@ -1,0 +1,76 @@
+.auth-main {
+    background: rgb(32, 29, 22);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+
+    .auth-container {
+        background: #fff;
+        border: 1px solid rgb(68, 68, 68);
+        border-radius: 10px;
+        padding: 3rem;
+        height: 500px;
+        width: 500px;
+
+        header {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-details {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+            
+            i {
+                margin: 0.8rem 1rem;
+            }
+
+            input {
+                border: none;
+            }
+
+            .input {
+                border: 1px solid #ccc;
+            }
+
+            .password-input {
+                border-top: none;
+            }
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem 0rem;
+            border: none;
+            cursor: pointer;
+            background: rgb(41, 112, 226);
+            color: #fff;
+            margin-bottom: 3rem;
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        .login-links {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            p {
+                color: rgb(151, 151, 151);
+                margin: 0.5rem;
+            }
+
+            a {
+                text-decoration: underline;
+            }
+        }
+    }
+}

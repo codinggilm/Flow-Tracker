@@ -9,7 +9,7 @@ const Projects = () => {
 		<div>  
             <main className="projects-container">
                 <header className="project-create">
-                    <Button text="CREATE NEW PROJECT"/>
+                    <a href="/createproject"><Button text="CREATE NEW PROJECT"/></a>
                 </header>
                 
                 <div className="projects-list-container">

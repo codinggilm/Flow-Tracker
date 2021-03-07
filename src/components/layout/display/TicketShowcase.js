@@ -2,7 +2,7 @@ import React from 'react';
 // import TableList from './TableList';
 import '../../../scss/components/layouts/TicketShowcase.scss';
 
- 
+  
 const TicketShowcase = () => {
 	return (
 		<div> 
@@ -12,9 +12,9 @@ const TicketShowcase = () => {
 						<div className="list-banner">
 							<p className="list-title">Details for Ticket #12</p>
 							<div className="project-nav-links">
-                                <a href="/">Back to List</a>
+                                <a href="/tickets">Back to List</a>
                                 <p>|</p>
-                                <a href="/">Edit</a>
+                                <a href="/editticket">Edit Ticket</a>
                             </div>
 						</div>
 					</header>

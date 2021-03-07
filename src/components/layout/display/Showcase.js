@@ -12,9 +12,9 @@ const Showcase = () => {
 						<div className="list-banner">
 							<p className="list-title">Details for Project #1</p>
 							<div className="project-nav-links">
-                                <a href="/">Back to List</a>
+                                <a href="/projects">Back to List</a>
                                 <p>|</p>
-                                <a href="/">Edit</a>
+                                <a href="/editproject">Edit</a>
                             </div>
 						</div>
 					</header>

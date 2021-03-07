@@ -1,13 +1,13 @@
 import React from 'react';
-import UsersList from '../../components/lists/UsersList';
+import ProjectsList from '../../components/lists/ProjectsList';
 import Button from '../../components/layout/button/Button';
-import '../../scss/containers/RoleAssign.scss';
+import '../../scss/containers/ProjectAssign.scss';
  
  
-const RoleAssign = () => {
+const ProjectAssign = () => {
 	return (
 		<div>
-			<main className="roles-main">
+			<main className="projects-main">
                 <div className="roles-title">
                     <p>Manage User Roles</p>
                 </div> 
@@ -28,13 +28,13 @@ const RoleAssign = () => {
 
                         <div className="selection role-selection">
                             <label>
-                                <p className="selection-title">Select the Role to assign</p>
+                                <p className="selection-title">Select the Project to assign</p>
                                 <select>
                                     <option>--Select Role/None--</option>
-                                    <option>Admin</option>
-                                    <option>Project Manager</option>
-                                    <option>Developer</option>
-                                    <option>Submitter</option>
+                                    <option>Project Name</option>
+                                    <option>Project Name</option>
+                                    <option>Project Name</option>
+                                    <option>Project Name</option>
                                 </select>
                             </label>
                             <div className="btn-role">
@@ -44,7 +44,7 @@ const RoleAssign = () => {
                     </div>
 
                     <div className="list-column">
-                        <UsersList />
+                        <ProjectsList />
                     </div>
                 </div>
 			</main>
@@ -52,4 +52,4 @@ const RoleAssign = () => {
 	)
 }
 
-export default RoleAssign;
+export default ProjectAssign;

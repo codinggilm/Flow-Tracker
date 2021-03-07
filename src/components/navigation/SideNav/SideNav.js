@@ -9,7 +9,7 @@ const SideNav = () => {
 					<p>WELCOME, Admin Master</p>
 				</div>
 				<div className="side-nav-menu">
-					<a href="/">	
+					<a href="/home">	
 						<div className="dash-home side-container" href="/">
 							<div className="icon">
 								<i className="fas fa-dice-d6"></i>
@@ -25,12 +25,14 @@ const SideNav = () => {
 							<p>Manage Role Assigment</p>
 						</div>
 					</a>
-					<div className="manage-project side-container">
-						<div className="icon">
-							<i className="fas fa-users"></i>
+					<a href="/projectassign">
+						<div className="manage-project side-container">
+							<div className="icon">
+								<i className="fas fa-users"></i>
+							</div>
+							<p>Manage Project Users</p>
 						</div>
-						<p>Manage Project Users</p>
-					</div>
+					</a>
 					<a href="/projects">
 						<div className="projects-home side-container">
 							<div className="icon">
@@ -39,13 +41,14 @@ const SideNav = () => {
 							<p>My Projects</p>
 						</div>
 					</a>
+					<a href="/tickets">
 					<div className="tickets-home side-container">
 						<div className="icon">
 							<i className="fas fa-th-list"></i>
 						</div>
-						{/* <i className="fas fa-clipboard-list"></i> */}
 						<p>My Tickets</p>
 					</div>
+					</a>
 					<div className="user-home side-container">
 						<div className="icon">
 							<i className="fas fa-user"></i>

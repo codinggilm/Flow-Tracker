@@ -3,7 +3,7 @@ import TicketCommentsList from '../../lists/TicketCommentsList';
 import AddComment from './AddComment';
 import '../../../scss/components/layouts/TicketComments.scss';
 
- 
+  
 const TicketComments = () => {
 	return (
 		<div> 

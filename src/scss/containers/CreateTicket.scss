@@ -1,0 +1,127 @@
+@import'../config';
+// @import "~bootstrap/scss/bootstrap";
+
+.create-ticket-container {
+    padding: 5rem 3rem;
+    height: 91.5vh;
+    
+    .edit-ticket-main {
+        background: #fff;
+        box-shadow: $card-shadow;
+        width: 60%;
+
+    
+        .list-container {
+    
+            .banner-container {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 1.5rem;
+    
+                .list-banner {
+                    background: $bnr-primary;
+                    position: relative;
+                    margin-top: -1.5rem;
+                    color: #fff;
+                    padding: 1rem;
+                    width: 97%;
+                    box-shadow: 8px 8px 7px -3px rgba(0,0,0,0.25);
+        
+                    .list-title {
+                        font-size: 1.5rem;
+                        margin-bottom: 0.5rem;
+                    }
+    
+                    .project-nav-links {
+                        display: flex;
+    
+                        a {
+                            color: #fff;
+                            text-decoration: underline;
+                        }
+    
+                        p {
+                            margin: 0rem 0.5rem;
+                        }
+                    }
+                }
+            }
+    
+            .details-container {
+
+                padding: 0rem 2rem;
+    
+                .details-row {
+                    display: flex;
+                    padding: 1.5rem 1rem;
+    
+                    .details-row-leftside {
+                        width: 40%;
+                    }
+    
+                    .details-row-rightside {
+                        width: 60%;
+                    }
+    
+                    .row-title {
+                        color: rgb(151, 151, 151);
+                        padding-bottom: 0.5rem;
+                    }
+
+                    .row-input {
+                        width: 75%;
+                        border: none;
+                        border-bottom: 1px solid #ccc;
+                    }
+
+                    .selection {
+                        
+
+                        select {
+                            padding: 0.2rem 0rem;
+                            width: 75%;
+                            font-size: 1.3rem;
+                            border-radius: 5%;
+                            border: 1px solid rgb(5, 173, 202);
+                            color: $main-font-color;
+
+                            &:focus {
+                                outline: none !important;
+                                border: 1px solid rgb(5, 173, 202);
+                            }
+
+                            option {
+                                color: $main-font-color;
+                                
+                            }
+                        } 
+                    }
+                }
+
+                .comment-row {
+                    padding: 1.5rem 1rem;
+                    
+                    p {
+                        color: rgb(151, 151, 151);
+                        padding-bottom: 0.5rem;
+                    }
+
+                    input {
+                        width: 85%;
+                        border: none;
+                        border-bottom: 1px solid #ccc;
+                    }
+                }
+
+                .nav-links {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    border-top: 1px solid #ccc;
+                    padding: 2rem 1rem 3rem;
+                }
+            }
+        }
+    }
+
+}

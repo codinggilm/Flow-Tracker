@@ -38,3 +38,13 @@ ul {
 img {
     width: 100%;
 }
+
+input {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+    color: $main-font-color;
+    
+    &:focus {
+        outline: none;
+    }
+}

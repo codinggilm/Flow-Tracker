@@ -1,5 +1,4 @@
 import React from 'react';
-// import TableList from './TableList';
 import '../../scss/components/lists/ProjectsList.scss';
 
 
@@ -39,7 +38,7 @@ const ProjectsList = () => {
 									<p>Demo Project 1</p>
 									<p>Demo Project 1</p>
 									<div className="project-action-buttons">
-                                        <a href="/">Manage Users</a>
+                                        <a href="/projectassign">Manage Users</a>
                                         <a href="/projectdetails">Project details</a>
                                     </div>
 								</div>
@@ -47,7 +46,7 @@ const ProjectsList = () => {
 									<p>Demo Project 2</p>
 									<p>Testing PM self assign on create</p>
 									<div className="project-action-buttons">
-                                        <a href="/">Manage Users</a>
+                                        <a href="/projectassign">Manage Users</a>
                                         <a href="/projectdetails">Project details</a>
                                     </div>
 								</div>
@@ -55,7 +54,7 @@ const ProjectsList = () => {
 									<p>Positive Touch</p>
 									<p>Working on Cloud migration</p>
 									<div className="project-action-buttons">
-                                        <a href="/">Manage Users</a>
+                                        <a href="/projectassign">Manage Users</a>
                                         <a href="/projectdetails">Project details</a>
                                     </div>
 								</div>
@@ -63,7 +62,7 @@ const ProjectsList = () => {
 									<p>Portfolio</p>
 									<p>My Portfolio</p>
 									<div className="project-action-buttons">
-                                        <a href="/">Manage Users</a>
+                                        <a href="/projectassign">Manage Users</a>
                                         <a href="/projectdetails">Project details</a>
                                     </div>
 								</div>
@@ -71,7 +70,7 @@ const ProjectsList = () => {
 									<p>Auction Web Store</p>
 									<p>An auction web app</p>
 									<div className="project-action-buttons">
-                                        <a href="/">Manage Users</a>
+                                        <a href="/projectassign">Manage Users</a>
                                         <a href="/projectdetails">Project details</a>
                                     </div>
 								</div>
