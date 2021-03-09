@@ -1,4 +1,6 @@
 import React from 'react';
+// import TopNav from '../../components/navigation/TopNav/TopNav';
+// import SideNav from '../../components/navigation/SideNav/SideNav';
 // import ChartCard from '../../components/layout/ChartCard';
 import PriorityChart from '../../components/layout/charts/PriorityChart';
 import StatusChart from '../../components/layout/charts/StatusChart';

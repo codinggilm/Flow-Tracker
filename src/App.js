@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import './scss/App.scss';
 // import Login from './containers/Login/Login';
 import Auth from './containers/Auth/Auth';
+// import MainApp from './MainApp';
 import TopNav from './components/navigation/TopNav/TopNav';
 import SideNav from './components/navigation/SideNav/SideNav';
 import Dashboard from './containers/Dashboard/Dashboard';
@@ -20,23 +21,30 @@ import EditTicket from './containers/Tickets/EditTicket';
 class App extends Component {
 
 	state = {
-		signedIn: false
+		route: 'signin'
+	}
+
+	onSignIn = (route) => {
+		this.setState({route: route})
 	}
 
 
 	render() {
 		return (
 			<div>
-				{ 
-					this.state.signedIn === false ? <Route path="/" exact component={Auth} /> 
-				:
+				{/* { 
+					this.state.route === 'signin' ? 
+					
+					<Route path="/" exact render={() => <Auth onSignIn={this.onSignIn}/>} />
+				: */}
 					<main>
 						<TopNav />
 						<SideNav />
 						<div className="main-content">
-							{/* <Route path="/" exact component={Auth} /> */}
-							<Route path="/home" component={Dashboard} />
-							{/* <Route path="/" exact component={Login} /> */}
+							<Route path="/login" component={Auth} />
+							<Route path="/" exact component={Dashboard} />
+							{/* <Route path="/" exact render={() => <Dashboard />} /> */}
+							{/* <Route path="/" exact render={() => <Dashboard />} /> */}
 							<Route path="/roleassign" component={RoleAssign} />
 							<Route path="/projectassign" component={ProjectAssign} />
 							<Route path="/projects" component={Projects} />
@@ -49,10 +57,13 @@ class App extends Component {
 							<Route path="/editticket" component={EditTicket} />
 						</div>
 					</main>
-				}
+				{/* } */}
 			</div>
 		)
 	} 
 }
 
 export default App;
+
+
+/* <Route path="/" render={() => <Auth onSignIn={this.onSignIn}/>} />  */
