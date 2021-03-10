@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { fetchProjects } from '../../redux/actions';
 import '../../scss/components/lists/ProjectsList.scss';
 
@@ -8,22 +9,42 @@ class ProjectsList extends Component {
 
 	componentDidMount() {
 		this.props.fetchProjects();
+		
 	}
 
 	renderProjects() {
 		return this.props.projects.map(project => {
+			// console.log(project)
 			return (
 				<div className="tableList-row" key={project.id}>
 					<p>{project.title}</p>
 					<p>{project.description}</p>
 					<div className="project-action-buttons">
-						<a href="/projectassign">Manage Users</a>
-						<a href="/projectdetails">Project details</a>
+						<Link to="/projectassign">Manage Users</Link>
+						<Link to="/projectdetails">Project details</Link>
 					</div>
 				</div>
 			)
 		})
 	}
+
+	//// State is an object
+	// renderProjects() {
+	// 	let projects = this.props.projects;
+	// 	for (const property of project) {
+	// 		return (
+	// 			<div className="tableList-row" key={property[id]}>
+	// 				<p>{property[title]}</p>
+	// 				<p>{property[description]}</p>
+	// 				<div className="project-action-buttons">
+	// 					<Link to="/projectassign">Manage Users</Link>
+	// 					<Link to="/projectdetails">Project details</Link>
+	// 				</div>
+	// 			</div>
+	// 		)
+	// 	}
+	// }
+
 
 	render() {
 		return (
@@ -121,4 +142,4 @@ const mapStateToProps = (state) => {
 	return { projects: state.projects }
 }
 
-export default connect(mapStateToProps, {fetchProjects: fetchProjects})(ProjectsList); 
+export default connect(mapStateToProps, { fetchProjects })(ProjectsList); 

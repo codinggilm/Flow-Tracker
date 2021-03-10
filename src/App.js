@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
+// import { BrowserRouter } from 'react-router-dom';
 import './scss/App.scss';
 // import Login from './containers/Login/Login';
 import Auth from './containers/Auth/Auth';
@@ -42,7 +43,7 @@ class App extends Component {
 						<SideNav />
 						<div className="main-content">
 							<Route path="/login" component={Auth} />
-							<Route path="/" exact component={Dashboard} />
+							<Route path="/" exact component={Dashboard} /> 
 							{/* <Route path="/" exact render={() => <Dashboard />} /> */}
 							{/* <Route path="/" exact render={() => <Dashboard />} /> */}
 							<Route path="/roleassign" component={RoleAssign} />

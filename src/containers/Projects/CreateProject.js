@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { addProject } from '../../redux/actions';
 // import DropdownButton from 'react-bootstrap/DropdownButton';
 // import Dropdown from 'react-bootstrap/Dropdown';
@@ -8,7 +9,7 @@ import '../../scss/containers/CreateProject.scss';
 
    
 class CreateProject extends Component {
-
+ 
     state = {
         title: '',
         description: ''
@@ -23,10 +24,12 @@ class CreateProject extends Component {
     }
 
 
-    createProject = () => {
-        console.log(`title:${this.state.title}`)
-        console.log(`description:${this.state.description}`)
-        this.props.addProject();
+    createProject = (event) => {
+        event.preventDefault();
+        this.props.addProject({
+            title: this.state.title,
+            description: this.state.description
+        });
     }
 
 
@@ -79,7 +82,7 @@ class CreateProject extends Component {
                                 </div>
                                 
                                 <div className="nav-links">
-                                    <a href="/projects">Back to List</a>
+                                    <Link to="/projects">Back to List</Link>
                                     <div className="btn-container">
                                         <Button 
                                             text="CREATE PROJECT"
@@ -97,10 +100,15 @@ class CreateProject extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-	return { project: state.project }
-}
+// const mapStateToProps = (state) => {
+// 	return { project: state.project }
+// }
 
-export default connect(mapStateToProps, 
-    {addProject: addProject})
-(CreateProject); 
+// export default connect(mapStateToProps, 
+//     {addProject: addProject})
+// (CreateProject); 
+
+export default connect(null, { addProject })(CreateProject);
+    // {addProject: addProject})
+    // {addProject})
+    // (CreateProject);
