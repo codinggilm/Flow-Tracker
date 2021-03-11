@@ -11,13 +11,13 @@ export const fetchProjects = () => {
  
 export const fetchProject = (id) => {
     return async dispatch => {
-        const response = await flowAPI.get(`/projects/${id}`);
+        const response = await flowAPI.post('/projects', {id: id});
         dispatch({ type: 'FETCH_PROJECT', payload: response.data})
     }
 }
 
-export const storeProjectId = (id) => {
-    return { type:'STORE_PROJECT_ID', payload: id }
+export const saveProjectId = (id) => {
+    return { type:'SAVE_PROJECT_ID', payload: id }
 }
 
 export const addProject = (project) => {

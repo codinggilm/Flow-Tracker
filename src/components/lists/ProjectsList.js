@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchProjects } from '../../redux/actions';
+import { fetchProjects, saveProjectId } from '../../redux/actions';
 import '../../scss/components/lists/ProjectsList.scss';
 
 
@@ -9,19 +9,25 @@ class ProjectsList extends Component {
 
 	componentDidMount() {
 		this.props.fetchProjects();
+		console.log(this.props.projects)
 		
 	}
 
+
 	renderProjects() {
 		return this.props.projects.map(project => {
-			// console.log(project)
 			return (
 				<div className="tableList-row" key={project.id}>
 					<p>{project.title}</p>
 					<p>{project.description}</p>
 					<div className="project-action-buttons">
 						<Link to="/projectassign">Manage Users</Link>
-						<Link to="/projectdetails">Project details</Link>
+						<Link 
+							to="/projectdetails" 
+							onClick={()=>this.props.saveProjectId(project.id)}
+						>
+						Project details
+						</Link>
 					</div>
 				</div>
 			)
@@ -137,9 +143,17 @@ class ProjectsList extends Component {
 		)
 	}
 }
-
-const mapStateToProps = (state) => {
-	return { projects: state.projects }
+   
+const mapStateToProps = state => {
+	return { projects: state.projects.projects }
 }
 
-export default connect(mapStateToProps, { fetchProjects })(ProjectsList); 
+const mapDispatchToProps = {fetchProjects, saveProjectId} 
+
+// const mapDispatchToProps = dispatch => {
+// 	return {
+// 		saveProjectId: (id) => dispatch({ type: 'STORE_PROJECT_ID', payload: id })
+// 	}
+// } 
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectsList); 

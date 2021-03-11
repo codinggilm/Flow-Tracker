@@ -1,23 +1,32 @@
 // import { FETCH_PROJECTS, ADD_PROJECT } from '../actions/actionTypes';
 
-export default (state=[], action) => {
+const initialState = {
+    projects: [],
+    project: {},
+    projectId: ''
+};
+
+export default (state=initialState, action) => {
     switch (action.type) {
         case 'FETCH_PROJECTS':
-            return action.payload;
-        
+            return {...state,
+                projects: action.payload
+            };
         case 'FETCH_PROJECT':
-            return action.payload;
-
+            return {...state,
+                project: action.payload
+            };
         case 'ADD_PROJECT':
             return action.payload;
 
-        case 'STORE_PROJECT_ID':
-            return action.payload;
+        case 'SAVE_PROJECT_ID':
+            return {...state, 
+                projectId: action.payload};
 
         case 'EDIT_PROJECT':
             return action.payload;
             
-        case 'EDIT_PROJECT':
+        case 'DELETE_PROJECT':
             return action.payload;
 
         default:
