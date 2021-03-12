@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import { fetchProjects, saveProjectId } from '../../redux/actions';
 import '../../scss/components/lists/ProjectsList.scss';
 
-
+ 
 class ProjectsList extends Component {
 
 	componentDidMount() {
 		this.props.fetchProjects();
-		console.log(this.props.projects)
+		// console.log(this.props.projects)
 		
 	}
 
@@ -28,6 +28,7 @@ class ProjectsList extends Component {
 						>
 						Project details
 						</Link>
+						{/* <Link to="/projectassign">DELETE PROJECT</Link> */}
 					</div>
 				</div>
 			)

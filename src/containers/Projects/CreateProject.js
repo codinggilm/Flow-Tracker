@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addProject } from '../../redux/actions';
+import { createProject } from '../../redux/actions';
 // import DropdownButton from 'react-bootstrap/DropdownButton';
 // import Dropdown from 'react-bootstrap/Dropdown';
 import Button from '../../components/layout/button/Button';
@@ -24,9 +24,9 @@ class CreateProject extends Component {
     }
 
 
-    createProject = (event) => {
+    onCreateProject = (event) => {
         event.preventDefault();
-        this.props.addProject({
+        this.props.createProject({
             title: this.state.title,
             description: this.state.description
         });
@@ -86,7 +86,7 @@ class CreateProject extends Component {
                                     <div className="btn-container">
                                         <Button 
                                             text="CREATE PROJECT"
-                                            onClick={this.createProject}  
+                                            onClick={this.onCreateProject}  
                                         />
                                     </div>
                                 </div>
@@ -104,11 +104,9 @@ class CreateProject extends Component {
 // 	return { project: state.project }
 // }
 
-// export default connect(mapStateToProps, 
-//     {addProject: addProject})
-// (CreateProject); 
+const mapDispatchToProps = { createProject }
 
-export default connect(null, { addProject })(CreateProject);
+export default connect(null, mapDispatchToProps)(CreateProject);
     // {addProject: addProject})
     // {addProject})
     // (CreateProject);

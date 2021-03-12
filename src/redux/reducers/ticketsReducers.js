@@ -1,34 +1,34 @@
 const initialState = {
-    projects: [],
-    project: {},
-    projectId: ''
+    tickets: [],
+    ticket: {},
+    ticketId: ''
 };
 
 export default (state=initialState, action) => {
     switch (action.type) {
-        case 'FETCH_PROJECTS':
+        case 'FETCH_TICKETS':
             return {...state,
-                projects: action.payload
+                tickets: action.payload
             };
-
-        case 'FETCH_PROJECT':
+            
+        case 'FETCH_TICKET':
             // console.log('reducer: ok received the data. State was updated')
             return {...state,
-                project: action.payload
+                ticket: action.payload
             };
 
-        case 'CREATE_PROJECT':
+        case 'CREATE_TICKET':
             return action.payload;
 
-        case 'SAVE_PROJECT_ID':
+        case 'SAVE_TICKET_ID':
             return {...state, 
-                projectId: action.payload};
+                ticketId: action.payload};
 
-        case 'EDIT_PROJECT':
+        case 'EDIT_TICKET':
             // console.log(action.payload)
             return action.payload;
             
-        case 'DELETE_PROJECT':
+        case 'DELETE_TICKET':
             return action.payload;
 
         default:

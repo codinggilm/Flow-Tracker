@@ -15,6 +15,7 @@ class Showcase extends Component {
     
     render() {
         const project = this.props.project;
+        // console.log(project.title)
         return (
             <div> 
                 <main className="showcase-main">
@@ -32,10 +33,12 @@ class Showcase extends Component {
                         <div className="showcase-titles">
                             <div className="project-name">
                                 <p className="title">Project Name</p>
+                                {/* <p className="detail">projecttitle</p> */}
                                 <p className="detail">{project.title}</p>
                             </div>
                             <div className="project-description">
                                 <p className="title">Project Description</p>
+                                {/* <p className="detail">projectdescription</p> */}
                                 <p className="detail">{project.description}</p>
                             </div>
                         </div>
@@ -49,7 +52,7 @@ class Showcase extends Component {
 const mapStateToProps = state => {
     return {
         projectId: state.projects.projectId,
-        project: state.projects.project
+        project: state.projects.project[0]
     }
 }
 

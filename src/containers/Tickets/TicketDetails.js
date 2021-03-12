@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; 
 import TicketShowcase from '../../components/layout/display/TicketShowcase';
 import TicketComments from '../../components/layout/display/TicketComments';
 import TicketAttachments from '../../components/layout/display/TicketAttachments';
