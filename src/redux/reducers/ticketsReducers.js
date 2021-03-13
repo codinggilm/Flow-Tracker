@@ -10,9 +10,9 @@ export default (state=initialState, action) => {
             return {...state,
                 tickets: action.payload
             };
-            
+
         case 'FETCH_TICKET':
-            // console.log('reducer: ok received the data. State was updated')
+            // console.log(action.payload)
             return {...state,
                 ticket: action.payload
             };
@@ -22,17 +22,15 @@ export default (state=initialState, action) => {
 
         case 'SAVE_TICKET_ID':
             return {...state, 
-                ticketId: action.payload};
+                ticketId: action.payload
+            };
 
         case 'EDIT_TICKET':
-            // console.log(action.payload)
             return action.payload;
             
         case 'DELETE_TICKET':
             return action.payload;
 
-        default:
-            return state;
-
+        default: return state;
     }
 }

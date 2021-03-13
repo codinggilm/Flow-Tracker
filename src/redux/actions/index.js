@@ -24,6 +24,7 @@ export const saveProjectId = (id) => {
 }
 
 export const createProject = (project) => {
+    // console.log(project)
     // return async dispatch => {
     //     flowAPI.post('/projects', project);
     // }
@@ -58,7 +59,7 @@ export const deleteProject = (id) => {
 
 
 
-//  ***************************** PROJECT ACTIONS ****************************  //
+//  ***************************** TICKET ACTIONS ****************************  //
 
 
 export const fetchTickets = () => {
@@ -71,10 +72,14 @@ export const fetchTickets = () => {
 
 export const fetchTicket = (id) => {
     return async dispatch => {
-        const response = await flowAPI.get('/tickets', {id: id});
+        const response = await flowAPI.post('/tickets', {id: id});
         dispatch({ type: 'FETCH_TICKET', payload: response.data})
-        // console.log(response.data)
+        console.log(response.data)
     }
+}
+
+export const saveTicketId = (id) => {
+    return { type:'SAVE_TICKET_ID', payload: id }
 }
 
 

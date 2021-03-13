@@ -12,7 +12,6 @@ export default (state=initialState, action) => {
             };
 
         case 'FETCH_PROJECT':
-            // console.log('reducer: ok received the data. State was updated')
             return {...state,
                 project: action.payload
             };
@@ -22,7 +21,8 @@ export default (state=initialState, action) => {
 
         case 'SAVE_PROJECT_ID':
             return {...state, 
-                projectId: action.payload};
+                projectId: action.payload
+            };
 
         case 'EDIT_PROJECT':
             // console.log(action.payload)

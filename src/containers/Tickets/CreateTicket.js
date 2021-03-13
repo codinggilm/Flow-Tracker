@@ -14,11 +14,11 @@ class CreateTicket extends Component {
         title: '',
         description: '',
         comment: '',
-        project: ' ',
-        projectId: '',
-        developer: '',
-        priority: '',
-        type: '',
+        project: this.props.projects[0].title,
+        projectId: this.props.projects[0].id,
+        developer: 'Joshua Mastertson',
+        priority: 'none',
+        type: 'Bugs/Errors',
         status: 'open',
         submitter: 'admin'
     }
@@ -27,26 +27,34 @@ class CreateTicket extends Component {
         this.props.fetchProjects();
     }
 
+    
     onChange = (event) => {
         this.setState({ [event.target.name]: event.target.value })
-        // console.log(event.target.value)
+    }
+
+    saveProjectId = (name) => {
+        const projects = this.props.projects;
+        let id;
+        for (let i=0; i < projects.length; i++) {
+            if (projects[i].title === name) {
+                id = projects[i].id;
+            }
+            this.setState({ projectId: id })
+        }
     }
 
     onProjectSelection = (event) => {
+        this.saveProjectId(event.target.value);
         this.setState({ 
-            project: event.target.value,
-            projectId: event.target.projectId
+            project: event.target.value
         })
-        // console.log(event.target.value)
-        console.log(event.target.value)
-        // console.log(event.target.name)
     }
 
 
     renderProjectSelection = () => {
         return this.props.projects.map(project => {
             return (
-                <option key={project.id}><p>{project.title}</p></option>
+                <option key={project.id}>{project.title}</option>
             )
         })
     }
@@ -63,8 +71,9 @@ class CreateTicket extends Component {
             developer: this.state.developer,
             priority: this.state.priority,
             type: this.state.type,
-            status: this.state.status
-        });
+            status: this.state.status,
+            submitter: this.state.submitter
+        })
     }
 
 

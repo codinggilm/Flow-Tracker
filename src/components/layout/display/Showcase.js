@@ -1,28 +1,35 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchProject } from '../../../redux/actions';
+import { fetchProject, fetchTicket } from '../../../redux/actions';
 
 import '../../../scss/components/layouts/Showcase.scss';
 
- 
+  
 class Showcase extends Component {
 
     componentDidMount() {
-        this.props.fetchProject(this.props.projectId)
-        console.log(this.props.project)
+        this.props.fetchProject(this.props.projectId);
+
     }
+
     
     render() {
         const project = this.props.project;
-        // console.log(project.title)
+        console.log(this.props.project)
+
         return (
-            <div> 
+            <div>
+            {
+                !project ? <div>FETCHING PROJECT DETAILS...</div> 
+
+                :
+
                 <main className="showcase-main">
                     <div className="list-container">
                         <header className="banner-container">
                             <div className="list-banner">
-                                <p className="list-title">Details for Project #1</p>
+                                <p className="list-title">Details for {project.title}</p>
                                 <div className="project-nav-links">
                                     <Link to="/projects">Back to List</Link>
                                     <p>|</p>
@@ -44,6 +51,7 @@ class Showcase extends Component {
                         </div>
                     </div>
                 </main>
+            }
             </div>
         )
     }
