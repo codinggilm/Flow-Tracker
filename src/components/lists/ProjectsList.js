@@ -9,7 +9,7 @@ class ProjectsList extends Component {
 
 	componentDidMount() {
 		this.props.fetchProjects();
-		console.log(this.props.projects)
+		// console.log(this.props.projects)
 		
 	}
 
@@ -34,23 +34,6 @@ class ProjectsList extends Component {
 			)
 		})
 	}
-
-	//// State is an object
-	// renderProjects() {
-	// 	let projects = this.props.projects;
-	// 	for (const property of project) {
-	// 		return (
-	// 			<div className="tableList-row" key={property[id]}>
-	// 				<p>{property[title]}</p>
-	// 				<p>{property[description]}</p>
-	// 				<div className="project-action-buttons">
-	// 					<Link to="/projectassign">Manage Users</Link>
-	// 					<Link to="/projectdetails">Project details</Link>
-	// 				</div>
-	// 			</div>
-	// 		)
-	// 	}
-	// }
 
 
 	render() {

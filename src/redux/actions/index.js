@@ -29,14 +29,14 @@ export const createProject = (project) => {
     //     flowAPI.post('/projects', project);
     // }
     return async dispatch => { 
-        const response = await flowAPI.post('/projects', project);
+        const response = await flowAPI.post('/projects/create', project);
         dispatch({ type: 'CREATE_PROJECT', payload: response.data})
 
     }
 }
 
 export const editProject = (id, data) => {
-    console.log(id, data);
+    // console.log(id, data);
     return async dispatch => {
         const response = await flowAPI.put('/projects', {id: id, data: data});
         dispatch({ type: 'EDIT_PROJECT', payload: response.data});
@@ -45,7 +45,7 @@ export const editProject = (id, data) => {
 
 
 export const deleteProject = (id) => {
-    console.log(id)
+    // console.log(id)
     return async dispatch => {
         const response = await flowAPI.post('/projects/delete', {id: id});
         dispatch({ type: 'DELETE_PROJECT', payload: response.data});
@@ -83,14 +83,13 @@ export const saveTicketId = (id) => {
 }
 
 
-
 export const createTicket = (ticket) => {
     console.log(ticket)
     // return async dispatch => {
     //     flowAPI.post('/projects', project);
     // }
     return async dispatch => { 
-        const response = await flowAPI.post('/tickets', ticket);
+        const response = await flowAPI.post('/tickets/create', ticket);
         dispatch({ type: 'CREATE_TICKET', payload: response.data})
 
     }

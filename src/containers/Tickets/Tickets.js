@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchTickets } from '../../redux/actions';
+import { fetchTickets, saveTicketId, fetchProjects } from '../../redux/actions';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/Tickets.scss';
 
@@ -10,7 +10,8 @@ class Tickets extends Component {
 
     componentDidMount() {
         this.props.fetchTickets();
-    }
+        this.props.fetchProjects();
+    } 
 
     renderTickets() {
         return this.props.tickets.map(ticket => {
@@ -25,7 +26,11 @@ class Tickets extends Component {
                     <p>{ticket.createdAt}</p>
                     <div className="ticket-action-buttons">
                         <Link to="/editticket">Edit/Assign</Link>
-                        <Link to="/ticketdetails">Details</Link>
+                        <Link 
+                            to="/ticketdetails" 
+                            onClick={()=>this.props.saveTicketId(ticket.id)}
+                        >Details
+                        </Link>
                     </div>
                 </div>
             )
@@ -99,6 +104,6 @@ const mapStateToProps = state => {
     return { tickets: state.tickets.tickets }
 }
 
-const mapDispatchToProps = { fetchTickets }
+const mapDispatchToProps = { fetchTickets, saveTicketId, fetchProjects }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tickets); 

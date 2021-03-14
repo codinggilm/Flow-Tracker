@@ -9,13 +9,12 @@ import '../../scss/containers/CreateTicket.scss';
  
    
 class CreateTicket extends Component {
-    
     state = {
         title: '',
         description: '',
         comment: '',
-        project: this.props.projects[0].title,
-        projectId: this.props.projects[0].id,
+        project: '',
+        projectId: '',
         developer: 'Joshua Mastertson',
         priority: 'none',
         type: 'Bugs/Errors',
@@ -25,6 +24,10 @@ class CreateTicket extends Component {
 
     componentDidMount() {
         this.props.fetchProjects();
+        // this.setState({
+        //     project: this.props.projects[0].title,
+        //     projectId: this.props.projects[0].id
+        // })
     }
 
     
@@ -78,8 +81,16 @@ class CreateTicket extends Component {
 
 
     render() {
+        const projects = this.props.projects; 
+
         return (
             <div> 
+            {
+                !projects ? <div>FETCHING PROJECTS...</div> 
+
+                :
+
+
                 <main className="create-ticket-container">
                     <div className="edit-ticket-main">
                         <div className="list-container">
@@ -172,6 +183,7 @@ class CreateTicket extends Component {
                         </div>
                     </div>
                 </main>
+            }
             </div>
         )
     }
@@ -181,6 +193,6 @@ const mapStateToProps = state => {
 	return { projects: state.projects.projects }
 }
 
-const mapDispatchToProps = {  createTicket, fetchProjects }
+const mapDispatchToProps = {  fetchProjects, createTicket }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateTicket); 
