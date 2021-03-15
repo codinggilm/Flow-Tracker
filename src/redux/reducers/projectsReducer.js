@@ -9,7 +9,7 @@ export default (state=initialState, action) => {
         case 'FETCH_PROJECTS':
             return {...state,
                 projects: action.payload
-            };
+            }; 
 
         case 'FETCH_PROJECT':
             return {...state,
@@ -25,7 +25,6 @@ export default (state=initialState, action) => {
             };
 
         case 'EDIT_PROJECT':
-            // console.log(action.payload)
             return action.payload;
             
         case 'DELETE_PROJECT':

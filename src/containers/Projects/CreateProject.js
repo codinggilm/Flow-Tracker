@@ -8,7 +8,7 @@ import Button from '../../components/layout/button/Button';
 import '../../scss/containers/CreateProject.scss';
 
    
-class CreateProject extends Component {
+class CreateProject extends Component { 
  
     state = {
         title: '',

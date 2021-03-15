@@ -9,7 +9,7 @@ class ProjectsList extends Component {
 
 	componentDidMount() {
 		this.props.fetchProjects();
-		// console.log(this.props.projects)
+		console.log(this.props.projects)
 		
 	}
 

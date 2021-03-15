@@ -94,3 +94,11 @@ export const createTicket = (ticket) => {
 
     }
 }
+
+export const editTicket = (id, data) => {
+    console.log(id, data);
+    return async dispatch => {
+        const response = await flowAPI.put('/tickets', {id: id, data: data});
+        dispatch({ type: 'EDIT_TICKET', payload: response.data});
+    }
+}

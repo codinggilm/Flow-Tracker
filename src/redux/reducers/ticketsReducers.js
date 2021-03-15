@@ -1,7 +1,7 @@
 const initialState = {
     tickets: [],
     ticket: {},
-    ticketId: ''
+    ticketId: '' 
 };
 
 export default (state=initialState, action) => {

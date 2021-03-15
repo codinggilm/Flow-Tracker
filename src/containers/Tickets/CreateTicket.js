@@ -20,14 +20,14 @@ class CreateTicket extends Component {
         type: 'Bugs/Errors',
         status: 'open',
         submitter: 'admin'
-    }
+    } 
 
     componentDidMount() {
         this.props.fetchProjects();
-        // this.setState({
-        //     project: this.props.projects[0].title,
-        //     projectId: this.props.projects[0].id
-        // })
+        this.setState({
+            project: this.props.projects[0].title,
+            projectId: this.props.projects[0].id
+        })
     }
 
     
@@ -193,6 +193,6 @@ const mapStateToProps = state => {
 	return { projects: state.projects.projects }
 }
 
-const mapDispatchToProps = {  fetchProjects, createTicket }
+const mapDispatchToProps = {  fetchProjects, createTicket, fetchProjects }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateTicket); 

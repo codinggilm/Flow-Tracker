@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchTickets, saveTicketId, fetchProjects } from '../../redux/actions';
+import { fetchTickets, saveTicketId, fetchProjects, saveProjectId } from '../../redux/actions';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/Tickets.scss';
-
+ 
   
 class Tickets extends Component {
 
@@ -13,12 +13,17 @@ class Tickets extends Component {
         this.props.fetchProjects();
     } 
 
+    saveTicketDetails = (ticketId, projectId) => {
+        this.props.saveTicketId(ticketId);
+        this.props.saveProjectId(projectId);
+    }
+
     renderTickets() {
         return this.props.tickets.map(ticket => {
             return (
                 <div className="tableList-row" key={ticket.id}>
                     <p>{ticket.title}</p>
-                    <p>{ticket.description}</p>
+                    <p>{ticket.project}</p>
                     <p>{ticket.developer}</p>
                     <p>{ticket.priority}</p>
                     <p>{ticket.status}</p>
@@ -28,7 +33,7 @@ class Tickets extends Component {
                         <Link to="/editticket">Edit/Assign</Link>
                         <Link 
                             to="/ticketdetails" 
-                            onClick={()=>this.props.saveTicketId(ticket.id)}
+                            onClick={()=>this.saveTicketDetails(ticket.id, ticket.projectId)}
                         >Details
                         </Link>
                     </div>
@@ -101,9 +106,11 @@ class Tickets extends Component {
 }
 
 const mapStateToProps = state => {
-    return { tickets: state.tickets.tickets }
+    return { 
+        tickets: state.tickets.tickets 
+    }
 }
 
-const mapDispatchToProps = { fetchTickets, saveTicketId, fetchProjects }
+const mapDispatchToProps = { fetchTickets, saveTicketId, fetchProjects, saveProjectId }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tickets); 
