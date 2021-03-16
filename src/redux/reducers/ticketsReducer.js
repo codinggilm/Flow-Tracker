@@ -4,7 +4,7 @@ const initialState = {
     ticketId: '' 
 };
 
-export default (state=initialState, action) => {
+const ticketsReducer = (state=initialState, action) => {
     switch (action.type) {
         case 'FETCH_TICKETS':
             return {...state,
@@ -18,7 +18,9 @@ export default (state=initialState, action) => {
             };
 
         case 'CREATE_TICKET':
-            return action.payload;
+            return {
+                ...state 
+            };
 
         case 'SAVE_TICKET_ID':
             return {...state, 
@@ -26,11 +28,17 @@ export default (state=initialState, action) => {
             };
 
         case 'EDIT_TICKET':
-            return action.payload;
+            return  {
+                ...state 
+            };
             
         case 'DELETE_TICKET':
-            return action.payload;
+            return  {
+                ...state 
+            };
 
         default: return state;
     }
 }
+
+export default ticketsReducer;

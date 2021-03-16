@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchProjects, saveProjectId } from '../../redux/actions';
 import '../../scss/components/lists/ProjectsList.scss';
-
+ 
  
 class ProjectsList extends Component {
 

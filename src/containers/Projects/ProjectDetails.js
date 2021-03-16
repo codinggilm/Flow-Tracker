@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
-// import { fetchProject, fetchTicket } from '../../redux/actions';
+import { connect } from 'react-redux';
+import { fetchUsers } from '../../redux/actions';
 import Showcase from '../../components/layout/display/Showcase';
 import ProjectUsersList from '../../components/lists/ProjectUsersList';
 import ProjectTicketsList from '../../components/lists/ProjectTicketsList';
@@ -8,6 +8,10 @@ import '../../scss/containers/ProjectDetails.scss';
  
  
 class ProjectDetails extends Component {
+
+    componentDidMount = () => {
+        this.props.fetchUsers();
+    }
 
     render() {
         return (
@@ -31,6 +35,6 @@ class ProjectDetails extends Component {
 }
 
 
+const mapDispatchToProps = { fetchUsers }
 
-
-export default ProjectDetails;
+export default connect(null, mapDispatchToProps)(ProjectDetails);

@@ -1,40 +1,47 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchProjects, editTicket } from '../../redux/actions';
-// import DropdownButton from 'react-bootstrap/DropdownButton';
-// import Dropdown from 'react-bootstrap/Dropdown';
+import { fetchProjects, fetchProject, fetchTicket, editTicket, deleteTicket } from '../../redux/actions';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/EditTicket.scss';
  
     
 class EditTicket extends Component {
-
+ 
     state = {
         title: '',
         description: '',
         project: '',
         projectId: '',
         developer: '',
-        priority: 'none',
-        type: 'Bugs/Errors',
-        status: 'open',
+        priority: '',
+        type: '',
+        status: '',
         submitter: 'admin'
     }
 
     componentDidMount() {
         this.props.fetchProjects();
-        // this.setState({
-        //     project: this.props.projects[0].title,
-        //     projectId: this.props.projects[0].id
-        // })
+        this.props.fetchTicket(this.props.ticketId)
+        this.props.fetchProject(this.props.projectId);
+
+        this.setState({
+            title: this.props.ticket[0].title,
+            description: this.props.ticket[0].description,
+            project: this.props.project[0].title,
+            projectId: this.props.project[0].projectId,
+            developer: this.props.ticket[0].developer,
+            priority: this.props.ticket[0].priority,
+            type: this.props.ticket[0].type,
+            status: this.props.ticket[0].status
+        })
     }
 
     onChange = (event) => {
         this.setState({ [event.target.name]: event.target.value })
     }
 
-    saveProjectId = (name) => {
+    saveProjectIdToLocalState = (name) => {
         const projects = this.props.projects;
         let id;
         for (let i=0; i < projects.length; i++) {
@@ -46,7 +53,7 @@ class EditTicket extends Component {
     }
 
     onProjectSelection = (event) => {
-        this.saveProjectId(event.target.value);
+        this.saveProjectIdToLocalState(event.target.value);
         this.setState({ 
             project: event.target.value
         })
@@ -76,8 +83,12 @@ class EditTicket extends Component {
             submitter: this.state.submitter
         })
     }
+    onDeleteTicket = () => {
+        this.props.deleteTicket(this.props.ticketId)
+    }
     
     render() {
+        const ticket = this.props.ticket[0];
         return (
             <div> 
                 <main className="edit-ticket-container">
@@ -105,22 +116,16 @@ class EditTicket extends Component {
                                         <p className="row-title">Project</p>
                                         <div className="selection">
                                             <select name="project" onChange={this.onProjectSelection}>
-                                            {this.renderProjectSelection()}
-                                                {/* <option >Joshua Mastertson</option>
-                                                <option>Rebecca Abell</option>
-                                                <option>Bobby Davis</option>
-                                                <option>Jorgen Malakith</option>
-                                                <option>Alexandre Plard</option>
-                                                <option>Guillaume Croizon</option>
-                                                <option>Brian Thomas</option> */}
+                                                <option>{ticket.project}</option>
+                                                {this.renderProjectSelection()}
                                             </select>
                                         </div>
                                     </div>
                                     <div className="details-row-rightside">
-                                        <p className="row-title">Assigned Developer</p>
+                                        <p className="row-title">Assigned New Developer</p>
                                         <div className="selection">
                                             <select name="developer" onChange={this.onChange}>
-                                                <option>Joshua Mastertson</option>
+                                                <option>{ticket.developer}</option>
                                                 <option>Rebecca Abell</option>
                                                 <option>Bobby Davis</option>
                                                 <option>Jorgen Malakith</option>
@@ -136,6 +141,7 @@ class EditTicket extends Component {
                                         <p className="row-title">Ticket Priority</p>
                                         <div className="selection">
                                             <select name="priority" onChange={this.onChange}>
+                                                <option>{ticket.priority}</option>
                                                 <option>None</option>
                                                 <option>Low</option>
                                                 <option>Medium</option>
@@ -147,9 +153,10 @@ class EditTicket extends Component {
                                         <p className="row-title">Ticket Status</p>
                                         <div className="selection">
                                             <select name="status" onChange={this.onChange}>
+                                                <option>{ticket.status}</option>
                                                 <option>In Progress</option>
                                                 <option>Open</option>
-                                                <option>Close</option>
+                                                <option>Closed</option>
                                             </select>
                                         </div>
                                     </div>
@@ -159,6 +166,7 @@ class EditTicket extends Component {
                                         <p className="row-title">Ticket type</p>
                                         <div className="selection">
                                             <select name="type" onChange={this.onChange}>
+                                                <option>{ticket.type}</option>
                                                 <option>Bugs/Errors</option>
                                                 <option>Feature Requests</option>
                                                 <option>Other Comments</option>
@@ -170,6 +178,11 @@ class EditTicket extends Component {
                                 </div>
                                 <div className="nav-links">
                                     <Link to="/tickets">Back to List</Link>
+                                    <button 
+                                        className="btn-del-ticket"
+                                        onClick={this.onDeleteTicket}
+                                    >DELETE TICKET
+                                    </button>
                                     <div className="btn-container">
                                         <Button text="UPDATE TICKET" onClick={this.onEditTicket}/>
                                     </div>
@@ -187,10 +200,13 @@ class EditTicket extends Component {
 const mapStateToProps = state => {
     return { 
         projects: state.projects.projects,
-        ticketId: state.tickets.ticketId
+        project: state.projects.project,
+        projectId: state.projects.projectId,
+        ticketId: state.tickets.ticketId,
+        ticket: state.tickets.ticket
     }
 }
 
-const mapDispatchToProps = { fetchProjects, editTicket }
+const mapDispatchToProps = { fetchProjects, fetchProject, fetchTicket, editTicket, deleteTicket }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditTicket); 

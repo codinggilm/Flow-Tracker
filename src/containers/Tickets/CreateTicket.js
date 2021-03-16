@@ -18,7 +18,7 @@ class CreateTicket extends Component {
         developer: 'Joshua Mastertson',
         priority: 'none',
         type: 'Bugs/Errors',
-        status: 'open',
+        status: 'Open',
         submitter: 'admin'
     } 
 
@@ -193,6 +193,6 @@ const mapStateToProps = state => {
 	return { projects: state.projects.projects }
 }
 
-const mapDispatchToProps = {  fetchProjects, createTicket, fetchProjects }
+const mapDispatchToProps = {  fetchProjects, createTicket }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateTicket); 

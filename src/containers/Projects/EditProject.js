@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { editProject, deleteProject } from '../../redux/actions'
+import { fetchProject, editProject, deleteProject } from '../../redux/actions'
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/EditProject.scss';
-// import DropdownButton from 'react-bootstrap/DropdownButton';
-// import Dropdown from 'react-bootstrap/Dropdown';
+
 
  
 class EditProject extends Component {
@@ -13,6 +12,14 @@ class EditProject extends Component {
     state = {
         title: '',
         description: ''
+    }
+
+    componentDidMount = () => {
+        this.props.fetchProject(this.props.projectId);
+        this.setState({
+            title: this.props.project.title,
+            description: this.props.project.description
+        })
     }
 
     onTitleChange = (event) => {
@@ -33,7 +40,7 @@ class EditProject extends Component {
     }
 
     onDeleteProject = () => {
-        console.log(this.props.projectId)
+        // console.log(this.props.projectId)
         this.props.deleteProject(this.props.projectId)
     }
 
@@ -129,10 +136,11 @@ class EditProject extends Component {
 
 const mapStateToProps = state => {
     return {
+        project: state.projects.project,
         projectId: state.projects.projectId
     }
 }
 
-const mapDispatchToProps = { editProject, deleteProject }
+const mapDispatchToProps = { fetchProject, editProject, deleteProject }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditProject); 

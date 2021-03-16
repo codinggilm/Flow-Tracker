@@ -30,6 +30,8 @@ class ProjectTicketsList extends Component {
 						</p>
 					</div>
 				)
+			} else {
+				return null;
 			}
 		})
 	}

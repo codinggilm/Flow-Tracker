@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import projectsReducer from './projectsReducer';
-import ticketsReducer from './ticketsReducers';
+import ticketsReducer from './ticketsReducer';
+import usersReducer from './usersReducer';
 
 export default combineReducers({
     projects: projectsReducer,
-    tickets: ticketsReducer
+    tickets: ticketsReducer,
+    users: usersReducer
 }); 

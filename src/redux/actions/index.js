@@ -45,16 +45,10 @@ export const editProject = (id, data) => {
 
 
 export const deleteProject = (id) => {
-    // console.log(id)
     return async dispatch => {
         const response = await flowAPI.post('/projects/delete', {id: id});
         dispatch({ type: 'DELETE_PROJECT', payload: response.data});
     }
-        // dispatch({ type: 'DELETE_PROJECT', payload: id})
-    // return async dispatch => {
-    //     await flowAPI.delete('/projects', {id: id});
-    //     dispatch({ type: 'DELETE_PROJECT', payload: id})
-    // }
 }
 
 
@@ -100,5 +94,34 @@ export const editTicket = (id, data) => {
     return async dispatch => {
         const response = await flowAPI.put('/tickets', {id: id, data: data});
         dispatch({ type: 'EDIT_TICKET', payload: response.data});
+    }
+}
+
+export const deleteTicket = (id) => {
+    return async dispatch => {
+        const response = await flowAPI.post('/tickets/delete', {id: id});
+        dispatch({ type: 'DELETE_TICKET', payload: response.data});
+    }
+}
+
+
+//  ***************************** USERS ACTIONS ****************************  //
+
+
+export const fetchUsers = () => {
+    return async dispatch => {
+        const response = await flowAPI.get('/users');
+        dispatch({ type: 'FETCH_USERS', payload: response.data})
+        // console.log(response.data)
+    }
+}
+
+
+export const editUser = (data) => {
+    // console.log(data);
+    return async dispatch => {
+        console.log(data);
+        const response = await flowAPI.put('/users', data);
+        dispatch({ type: 'EDIT_USER', payload: response.data});
     }
 }

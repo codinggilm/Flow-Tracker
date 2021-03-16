@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchProject, fetchTicket } from '../../../redux/actions';
+import { fetchProject } from '../../../redux/actions';
 
 import '../../../scss/components/layouts/Showcase.scss';
 

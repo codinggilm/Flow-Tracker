@@ -4,7 +4,7 @@ const initialState = {
     projectId: ''
 };
 
-export default (state=initialState, action) => {
+const projectsReducer = (state=initialState, action) => {
     switch (action.type) {
         case 'FETCH_PROJECTS':
             return {...state,
@@ -25,13 +25,18 @@ export default (state=initialState, action) => {
             };
 
         case 'EDIT_PROJECT':
-            return action.payload;
+            return {
+                ...state
+            };
             
         case 'DELETE_PROJECT':
-            return action.payload;
-
+            return {
+                ...state
+            };
         default:
             return state;
 
     }
 }
+
+export default projectsReducer;
