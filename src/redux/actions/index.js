@@ -12,7 +12,6 @@ export const fetchProjects = () => {
 }
  
 export const fetchProject = (id) => {
-    // console.log('action: request received, fetching project')
     return async dispatch => {
         const response = await flowAPI.post('/projects', {id: id});
         dispatch({ type: 'FETCH_PROJECT', payload: response.data})
@@ -36,11 +35,19 @@ export const createProject = (project) => {
 }
 
 export const editProject = (id, data) => {
-    // console.log(id, data);
-    return async dispatch => {
-        const response = await flowAPI.put('/projects', {id: id, data: data});
-        dispatch({ type: 'EDIT_PROJECT', payload: response.data});
+    console.log(data)
+    if(data.userToRemove === null) {
+        return async dispatch => {
+            const response = await flowAPI.put('/projects', {id: id, data: data});
+            dispatch({ type: 'EDIT_PROJECT', payload: response.data});
+        }
+    } else {
+        return async dispatch => {
+            const response = await flowAPI.put('/projects/editAndRemoveUser', {id: id, data: data});
+            dispatch({ type: 'EDIT_PROJECT', payload: response.data});
+        }
     }
+    // console.log(id, data);
 }
 
 

@@ -1,24 +1,35 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { fetchUsers } from '../../redux/actions';
 import Button from '../../components/layout/button/Button';
 import ProjectsList from '../../components/lists/ProjectsList'
 import '../../scss/containers/Projects.scss';
  
 
-const Projects = () => {
-	return (
-		<div>  
-            <main className="projects-container">
-                <header className="project-create">
-                    <Link to="/createproject"><Button text="CREATE NEW PROJECT"/></Link>
-                </header>
-                
-                <div className="projects-list-container">
-                    <ProjectsList />
-                </div>
-            </main>
-		</div>
-	)
+class Projects extends Component {
+
+    componentDidMount = () => {
+        this.props.fetchUsers()
+    }
+
+    render() {
+        return (
+            <div>  
+                <main className="projects-container">
+                    <header className="project-create">
+                        <Link to="/createproject"><Button text="CREATE NEW PROJECT"/></Link>
+                    </header>
+                    
+                    <div className="projects-list-container">
+                        <ProjectsList />
+                    </div>
+                </main>
+            </div>
+        )
+    }
 }
 
-export default Projects;
+const mapDispatchToProps = { fetchUsers }
+
+export default connect(null, mapDispatchToProps)(Projects);

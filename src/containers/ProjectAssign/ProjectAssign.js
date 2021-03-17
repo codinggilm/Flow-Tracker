@@ -11,7 +11,7 @@ class ProjectAssign extends Component {
     state = {
         username: '',
         project: '',
-        projectId: ''
+        projectId: null
 
     }
 

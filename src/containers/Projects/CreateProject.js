@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { createProject } from '../../redux/actions';
+import { createProject, fetchUsers } from '../../redux/actions';
 // import DropdownButton from 'react-bootstrap/DropdownButton';
 // import Dropdown from 'react-bootstrap/Dropdown';
 import Button from '../../components/layout/button/Button';
@@ -12,24 +12,41 @@ class CreateProject extends Component {
  
     state = {
         title: '',
-        description: ''
+        description: '',
+        username: ''
     }
 
-    onTitleChange = (event) => {
-        this.setState({title: event.target.value})
+    // componentDidMount = () => {
+    //     this.props.fetchUsers()
+    // }
+
+    renderUsersList = () => {
+        return this.props.users.map(user => {
+           return <option key={user.id}>{user.username}</option>
+        })
     }
 
-    onDescriptionChange = (event) => {
-        this.setState({description: event.target.value})
+    // onTitleChange = (event) => {
+    //     this.setState({title: event.target.value})
+    // }
+
+    // onDescriptionChange = (event) => {
+    //     this.setState({description: event.target.value})
+    // }
+
+    onChange = (event) => {
+        this.setState({ [event.target.name]: event.target.value })
     }
 
 
     onCreateProject = (event) => {
-        event.preventDefault();
-        this.props.createProject({
-            title: this.state.title,
-            description: this.state.description
-        });
+        console.log(this.state)
+        // event.preventDefault();
+        // this.props.createProject({
+        //     title: this.state.title,
+        //     description: this.state.description,
+        //     username: this.state.username
+        // });
     }
 
 
@@ -50,32 +67,40 @@ class CreateProject extends Component {
                                 <div className="details-row">
                                     <div className="details-row-leftside">
                                         <p className="row-title">Project Name</p>
-                                        <input type="text" className="row-input" onChange={this.onTitleChange}/>
+                                        <input type="text" className="row-input" name="title" onChange={this.onChange}/>
                                     </div>
                                     <div className="details-row-rightside">
                                         <p className="row-title">Project Description</p>
-                                        <input type="text" className="row-input" onChange={this.onDescriptionChange}/>
+                                        <input type="text" className="row-input" name="description" onChange={this.onChange}/>
                                     </div>
                                 </div>
                                 <div className="details-row">
                                     <div className="details-row-leftside">
                                         <p className="row-title">Available Personnel</p>
                                         <div className="selection">
-                                            <select>
-                                                <option >Joshua Mastertson</option>
+                                            {/* <select name="developer" onChange={this.onChange}> */}
+                                            <select name="developer" onChange={this.onChange}>
+                                            {this.renderUsersList()}
+                                                {/* <option >Joshua Mastertson</option>
                                                 <option>Rebecca Abell</option>
                                                 <option>Bobby Davis</option>
                                                 <option>Jorgen Malakith</option>
                                                 <option>Alexandre Plard</option>
                                                 <option>Guillaume Croizon</option>
-                                                <option>Brian Thomas</option>
+                                                <option>Brian Thomas</option> */}
                                             </select>
                                         </div>
                                     </div>
                                     <div className="details-row-rightside">
                                         <p className="row-title">Action</p>
                                         <div className="btn-actions">
-                                            <button className="btn-add-user">ADD USER TO PROJECT</button>
+                                            <button 
+                                                className="btn-add-user"
+                                                name="username" 
+                                                onChange={this.onChange}
+                                            >
+                                            ADD USER TO PROJECT
+                                            </button>
                                             {/* <button className="btn-del-user">REMOVE USER</button> */}
                                         </div>
                                     </div>
@@ -100,13 +125,13 @@ class CreateProject extends Component {
     }
 }
 
-// const mapStateToProps = (state) => {
-// 	return { project: state.project }
-// }
+const mapStateToProps = (state) => {
+	return { 
+        // project: state.project,
+        users: state.users.users 
+    }
+}
 
-const mapDispatchToProps = { createProject }
+const mapDispatchToProps = { createProject, fetchUsers }
 
-export default connect(null, mapDispatchToProps)(CreateProject);
-    // {addProject: addProject})
-    // {addProject})
-    // (CreateProject);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateProject);

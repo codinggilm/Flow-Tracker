@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchProjects, saveProjectId } from '../../redux/actions';
+import { fetchProjects, fetchProject, saveProjectId } from '../../redux/actions';
 import '../../scss/components/lists/ProjectsList.scss';
  
  
@@ -24,7 +24,10 @@ class ProjectsList extends Component {
 						<Link to="/projectassign">Manage Users</Link>
 						<Link 
 							to="/projectdetails" 
-							onClick={()=>this.props.saveProjectId(project.id)}
+							onClick={()=> {
+								this.props.saveProjectId(project.id);
+								this.props.fetchProject(project.id)
+							}}
 						>
 						Project details
 						</Link>
@@ -132,7 +135,7 @@ const mapStateToProps = state => {
 	return { projects: state.projects.projects }
 }
 
-const mapDispatchToProps = {fetchProjects, saveProjectId} 
+const mapDispatchToProps = {fetchProjects, fetchProject, saveProjectId} 
 
 // const mapDispatchToProps = dispatch => {
 // 	return {

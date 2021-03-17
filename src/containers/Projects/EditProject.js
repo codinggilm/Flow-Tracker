@@ -10,37 +10,42 @@ import '../../scss/containers/EditProject.scss';
 class EditProject extends Component {
 
     state = {
-        title: '',
-        description: ''
+        title: this.props.project.title,
+        description: this.props.project.description,
+        user: '',
+        userToRemove: null
     }
 
     componentDidMount = () => {
-        this.props.fetchProject(this.props.projectId);
-        this.setState({
-            title: this.props.project.title,
-            description: this.props.project.description
+        this.props.fetchProject(this.props.projectId); 
+    }
+
+    onChange = (event) => {
+        this.setState({ [event.target.name]: event.target.value })
+    }
+
+    renderAssignedUsers = () => {
+        const users = this.props.users.filter(user => user.projectId === this.props.projectId);
+        return users.map(user => {
+            return <option key={user.id}>{user.username}</option>
         })
     }
 
-    onTitleChange = (event) => {
-        this.setState({title: event.target.value})
-    }
-
-    onDescriptionChange = (event) => {
-        this.setState({description: event.target.value})
+    removeUser = () => {
+        this.setState({userToRemove: this.state.user})
     }
 
     onEditProject = () => {
         this.props.editProject(
             this.props.projectId, {
                 title: this.state.title,
-                description: this.state.description
+                description: this.state.description,
+                userToRemove: this.state.userToRemove
             }
         )
     }
 
     onDeleteProject = () => {
-        // console.log(this.props.projectId)
         this.props.deleteProject(this.props.projectId)
     }
 
@@ -60,25 +65,32 @@ class EditProject extends Component {
                                 <div className="details-row">
                                     <div className="details-row-leftside">
                                         <p className="row-title">Project Name</p>
-                                        <input type="text" className="row-input" onChange={this.onTitleChange}/>
+                                        <input 
+                                            type="text" 
+                                            className="row-input" 
+                                            name="title" 
+                                            defaultValue={this.props.project.title}
+                                            onChange={this.onChange}
+                                        />
                                     </div>
                                     <div className="details-row-rightside">
                                         <p className="row-title">Description</p>
-                                        <input type="text" className="row-input" onChange={this.onDescriptionChange}/>
+                                        <input 
+                                            type="text" 
+                                            className="row-input" 
+                                            name="description"
+                                            defaultValue={this.props.project.description} 
+                                            onChange={this.onChange}
+                                        />
                                     </div>
                                 </div>
                                 <div className="details-row">
                                     <div className="details-row-leftside">
                                         <p className="row-title">Assigned Personnel</p>
                                         <div className="selection">
-                                            <select>
-                                                <option >Joshua Mastertson</option>
-                                                <option>Rebecca Abell</option>
-                                                <option>Bobby Davis</option>
-                                                <option>Jorgen Malakith</option>
-                                                <option>Alexandre Plard</option>
-                                                <option>Guillaume Croizon</option>
-                                                <option>Brian Thomas</option>
+                                            <select name="user" onChange={this.onChange}>
+                                                <option> Select User </option>
+                                                {this.renderAssignedUsers()}
                                             </select>
                                         </div>
                                     </div>
@@ -86,7 +98,10 @@ class EditProject extends Component {
                                         <p className="row-title">Actions</p>
                                         <div className="btn-actions">
                                             {/* <button className="btn-add-user">ADD</button> */}
-                                            <button className="btn-del-user">REMOVE USER</button>
+                                            <button 
+                                                className="btn-del-user"
+                                                onClick={()=>this.removeUser()}>REMOVE USER
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -114,8 +129,7 @@ class EditProject extends Component {
                                     <Link to="/projects">Back to List</Link>
                                     <button 
                                         className="btn-del-project"
-                                        onClick={this.onDeleteProject}
-                                    >DELETE PROJECT
+                                        onClick={this.onDeleteProject}>DELETE PROJECT
                                     </button>
                                     <div className="btn-container">
                                         <Button 
@@ -124,7 +138,6 @@ class EditProject extends Component {
                                         />
                                     </div>
                                 </div>
-    
                             </div>
                         </div>
                     </div>
@@ -136,8 +149,9 @@ class EditProject extends Component {
 
 const mapStateToProps = state => {
     return {
-        project: state.projects.project,
-        projectId: state.projects.projectId
+        project: state.projects.project[0],
+        projectId: state.projects.projectId,
+        users: state.users.users
     }
 }
 

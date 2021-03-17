@@ -17,7 +17,9 @@ const projectsReducer = (state=initialState, action) => {
             };
 
         case 'CREATE_PROJECT':
-            return action.payload;
+            return {
+                ...state
+            };
 
         case 'SAVE_PROJECT_ID':
             return {...state, 
