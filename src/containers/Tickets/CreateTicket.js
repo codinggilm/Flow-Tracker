@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { createTicket, fetchProjects } from '../../redux/actions';
+import { createTicket } from '../../redux/actions';
+// import { createTicket, fetchProjects } from '../../redux/actions';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/CreateTicket.scss';
 
-   
+    
 class CreateTicket extends Component {
     state = {
         title: '',
@@ -13,7 +14,7 @@ class CreateTicket extends Component {
         comment: '',
         project: this.props.projects[0].title,
         projectId: this.props.projects[0].id,
-        developer: 'Joshua Mastertson',
+        developer: '',
         priority: 'none',
         type: 'Bugs/Errors',
         status: 'Open',
@@ -21,11 +22,8 @@ class CreateTicket extends Component {
     }  
 
     componentDidMount() {
-        this.props.fetchProjects();
-        // this.setState({
-        //     project: this.props.projects[0].title,
-        //     projectId: this.props.projects[0].id
-        // })
+        let developers = this.props.users.filter(user => user.role === 'Developer');
+        this.setState({developer: developers[0].username})
     }
 
     
@@ -60,6 +58,14 @@ class CreateTicket extends Component {
         })
     }
 
+    renderDeveloperSelection = () => {
+        let developers = this.props.users.filter(user => user.role === 'Developer');
+        return developers.map(dev => {
+            return (
+                <option key={dev.id}>{dev.username}</option>
+            )
+        })
+    }
 
     onCreateTicket = (event) => {
         event.preventDefault();
@@ -79,7 +85,7 @@ class CreateTicket extends Component {
 
 
     render() {
-        const projects = this.props.projects; 
+        const projects = this.props.projects;
         return (
             <div> 
                 {
@@ -125,13 +131,8 @@ class CreateTicket extends Component {
                                             <p className="row-title">Assign a Developer</p>
                                             <div className="selection">
                                                 <select name="developer" onChange={this.onChange}>
-                                                    <option>Joshua Mastertson</option>
-                                                    <option>Rebecca Abell</option>
-                                                    <option>Bobby Davis</option>
-                                                    <option>Jorgen Malakith</option>
-                                                    <option>Alexandre Plard</option>
-                                                    <option>Guillaume Croizon</option>
-                                                    <option>Brian Thomas</option>
+                                                    <option>{this.state.developer}</option>
+                                                    {this.renderDeveloperSelection()}
                                                 </select>
                                             </div>
                                         </div>
@@ -179,9 +180,12 @@ class CreateTicket extends Component {
 } 
 
 const mapStateToProps = state => {
-    return { projects: state.projects.projects }
+    return { 
+        projects: state.projects.projects,
+        users: state.users.users 
+    }
 }
 
-const mapDispatchToProps = {  fetchProjects, createTicket }
+const mapDispatchToProps = {  createTicket }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateTicket); 

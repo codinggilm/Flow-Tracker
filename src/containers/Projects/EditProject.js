@@ -5,7 +5,7 @@ import { fetchProject, editProject, deleteProject } from '../../redux/actions'
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/EditProject.scss';
 
-
+ 
  
 class EditProject extends Component {
 
@@ -43,7 +43,7 @@ class EditProject extends Component {
                 userToRemove: this.state.userToRemove
             }
         )
-    }
+    } 
 
     onDeleteProject = () => {
         this.props.deleteProject(this.props.projectId)

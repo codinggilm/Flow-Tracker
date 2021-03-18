@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchTicket } from '../../../redux/actions';
+import { fetchTicket, fetchProject } from '../../../redux/actions';
 import '../../../scss/components/layouts/TicketShowcase.scss';
-
+ 
   
 class TicketShowcase extends Component {
 
     componentDidMount() {
-        this.props.fetchTicket(this.props.ticketId)
+        this.props.fetchTicket(this.props.ticketId);
+        this.props.fetchProject(this.props.projectId)
+        // console.log(this.props.ticket.projectId)
     }
     
     render() {
         const ticket = this.props.ticket;
-
         return (
             <div> 
                 {
@@ -96,10 +97,11 @@ class TicketShowcase extends Component {
 const mapStateToProps = state => {
     return {
         ticketId: state.tickets.ticketId,
-        ticket: state.tickets.ticket[0]
+        ticket: state.tickets.ticket[0],
+        projectId: state.projects.projectId
     }
 }
 
-const mapDispatchToProps = { fetchTicket };
+const mapDispatchToProps = { fetchTicket, fetchProject };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketShowcase); 

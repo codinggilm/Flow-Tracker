@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchTickets, saveTicketId, fetchProjects, saveProjectId } from '../../redux/actions';
+import { fetchTickets, fetchTicket, fetchProjects, fetchUsers, saveTicketId, saveProjectId } from '../../redux/actions';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/Tickets.scss';
  
@@ -11,6 +11,7 @@ class Tickets extends Component {
     componentDidMount() {
         this.props.fetchTickets();
         this.props.fetchProjects();
+        this.props.fetchUsers();
     } 
 
     saveTicketDetails = (ticketId, projectId) => {
@@ -30,7 +31,14 @@ class Tickets extends Component {
                     <p>{ticket.type}</p>
                     <p>{ticket.createdAt}</p>
                     <div className="ticket-action-buttons">
-                        <Link to="/editticket">Edit/Assign</Link>
+                        <Link 
+                            to="/editticket"
+                            onClick={ ()=> {
+                                this.saveTicketDetails(ticket.id, ticket.projectId);
+                                this.props.fetchTicket(ticket.id);
+                                }
+                            }
+                        >Edit/Assign</Link>
                         <Link 
                             to="/ticketdetails" 
                             onClick={()=>this.saveTicketDetails(ticket.id, ticket.projectId)}
@@ -111,6 +119,6 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = { fetchTickets, saveTicketId, fetchProjects, saveProjectId }
+const mapDispatchToProps = { fetchTickets, fetchUsers, fetchProjects, fetchTicket, saveTicketId, saveProjectId }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tickets); 
