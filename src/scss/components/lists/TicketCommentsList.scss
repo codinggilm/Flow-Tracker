@@ -8,7 +8,7 @@
     box-shadow: $card-shadow;
     // margin-top: 5rem;
 
-
+ 
     .list-container {
 
         .banner-container {
@@ -67,7 +67,7 @@
 
             .tableList-titles {
                 display: grid;
-                grid-template-columns: 1fr 2fr 1fr;
+                grid-template-columns: 1fr 2fr 1fr 0.5fr;
                 color: #000;
                 font-weight: bold;
                 font-size: 1.2rem;
@@ -83,9 +83,27 @@
         
                 .tableList-row {
                     display: grid;
-                    grid-template-columns: 1fr 2fr 1fr;
+                    grid-template-columns: 1fr 2fr 1fr 0.5fr;
                     padding: 1rem 0.5rem;
                     border-bottom: 1px solid #ccc;
+
+                    .small-del-btn {
+                        background: $small-del-btn;
+                        font-family: $main-font;
+                        color: #fff;
+                        border: none;
+                        // border-radius: 10px;
+                        width: 100%;
+                        cursor: pointer;
+                    
+                        &:hover {
+                            background: $small-del-btn-hover;
+                        }
+                    
+                        &:focus {
+                            outline: none;
+                        }
+                    }
 
                     p {
                         padding-top: 0.7rem;

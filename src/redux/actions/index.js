@@ -22,10 +22,18 @@ export const saveProjectId = (id) => {
 }
 
 export const createProject = (project) => {
-    return async dispatch => { 
-        const response = await flowAPI.post('/projects/create', project);
-        dispatch({ type: 'CREATE_PROJECT', payload: response.data})
-
+    if (project.userAdded) {
+        return async dispatch => { 
+            // const response = await flowAPI.post('/projects/createWithUser', project);
+            // dispatch({ type: 'CREATE_PROJECT', payload: response.data})
+            console.log(project.userAdded)
+        }
+    } else {
+        return async dispatch => { 
+            const response = await flowAPI.post('/projects/create', project);
+            dispatch({ type: 'CREATE_PROJECT', payload: response.data})
+    
+        }
     }
 }
 
@@ -77,12 +85,22 @@ export const saveTicketId = (id) => {
 
 
 export const createTicket = (ticket) => {
-    console.log(ticket);
-    return async dispatch => { 
-        const response = await flowAPI.post('/tickets/create', ticket);
-        dispatch({ type: 'CREATE_TICKET', payload: response.data})
-
+    if (ticket.comment === '') {
+        return async dispatch => { 
+            const response = await flowAPI.post('/tickets/create', ticket);
+            dispatch({ type: 'CREATE_TICKET', payload: response.data})
+            console.log(response.data)
+    
+        }
+    } else {
+        return async dispatch => { 
+            const response = await flowAPI.post('/tickets/createWithComment', ticket);
+            dispatch({ type: 'CREATE_TICKET', payload: response.data})
+            console.log(response.data)
+    
+        }
     }
+    
 }
 
 export const editTicket = (id, data) => {
@@ -112,13 +130,31 @@ export const fetchUsers = () => {
     }
 }
 
+export const fetchProjectUsers = (id) => {
+    console.log('boom')
+    return async dispatch => {
+        const response = await flowAPI.get('/users/project-users', {id: id});
+        dispatch({ type: 'FETCH_PROJECT_USERS', payload: response.data})
+        // console.log(response.data)
+    }
+}
 
-export const editUser = (data) => {
+
+export const editUserRole = (data) => {
     // console.log(data);
     return async dispatch => {
         console.log(data);
         const response = await flowAPI.put('/users', data);
-        dispatch({ type: 'EDIT_USER', payload: response.data});
+        dispatch({ type: 'EDIT_USER_ROLE', payload: response.data});
+    }
+}
+
+export const assignProject = (data) => {
+    // console.log(data);
+    return async dispatch => {
+        console.log(data);
+        const response = await flowAPI.post('/users/assign-project', data);
+        dispatch({ type: 'ASSIGN_PROJECT', payload: response.data});
     }
 }
 
@@ -127,11 +163,36 @@ export const editUser = (data) => {
 
 //  ***************************** COMMENTS ACTIONS ****************************  //
 
+export const fetchAllComments = () => {
+    return async dispatch => {
+        const response = await flowAPI.get('/comments');
+        dispatch({ type: 'FETCH_ALL_COMMENTS', payload: response.data})
+    }
+}
+
+export const fetchComments = (ticketId) => {
+    return async dispatch => {
+        const response = await flowAPI.post('/comments', {id: ticketId});
+        dispatch({ type: 'FETCH_COMMENTS', payload: response.data})
+        console.log(response.data)
+    }
+}
+
 
 export const createComment = (comment) => {
     return async dispatch => { 
         const response = await flowAPI.post('/comments/create', comment);
         dispatch({ type: 'CREATE_COMMENT', payload: response.data})
+        console.log(response.data)
 
+    }
+}
+
+export const deleteComment = (data) => {
+    return async dispatch => {
+        console.log(data)
+        const response = await flowAPI.post('/comments/delete', {id: data.id, ticketId: data.ticketId});
+        dispatch({ type: 'DELETE_COMMENT', payload: response.data});
+        console.log(response.data)
     }
 }

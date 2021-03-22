@@ -26,27 +26,23 @@ class CreateProject extends Component {
         })
     }
 
-    // onTitleChange = (event) => {
-    //     this.setState({title: event.target.value})
-    // }
-
-    // onDescriptionChange = (event) => {
-    //     this.setState({description: event.target.value})
-    // }
 
     onChange = (event) => {
         this.setState({ [event.target.name]: event.target.value })
     }
 
+    addUser = () => {
+        this.setState({ userAdded: this.state.username })
+    }
 
-    onCreateProject = (event) => {
+
+    onCreateProject = () => {
         console.log(this.state)
-        // event.preventDefault();
-        // this.props.createProject({
-        //     title: this.state.title,
-        //     description: this.state.description,
-        //     username: this.state.username
-        // });
+        this.props.createProject({
+            title: this.state.title,
+            description: this.state.description,
+            userAdded: this.state.userAdded
+        });
     }
 
 
@@ -79,15 +75,8 @@ class CreateProject extends Component {
                                         <p className="row-title">Available Personnel</p>
                                         <div className="selection">
                                             {/* <select name="developer" onChange={this.onChange}> */}
-                                            <select name="developer" onChange={this.onChange}>
-                                            {this.renderUsersList()}
-                                                {/* <option >Joshua Mastertson</option>
-                                                <option>Rebecca Abell</option>
-                                                <option>Bobby Davis</option>
-                                                <option>Jorgen Malakith</option>
-                                                <option>Alexandre Plard</option>
-                                                <option>Guillaume Croizon</option>
-                                                <option>Brian Thomas</option> */}
+                                            <select name="username" onChange={this.onChange}>
+                                                {this.renderUsersList()}
                                             </select>
                                         </div>
                                     </div>
@@ -96,8 +85,9 @@ class CreateProject extends Component {
                                         <div className="btn-actions">
                                             <button 
                                                 className="btn-add-user"
-                                                name="username" 
-                                                onChange={this.onChange}
+                                                // name="username" 
+                                                onClick={this.addUser}
+                                                // onChange={this.onChange}
                                             >
                                             ADD USER TO PROJECT
                                             </button>

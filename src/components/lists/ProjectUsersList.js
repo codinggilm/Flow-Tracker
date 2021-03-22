@@ -1,36 +1,24 @@
 import React, { Component } from 'react';
-import { fetchUsers, fetchProject } from '../../redux/actions';
+import { fetchUsers, fetchProject, fetchProjectUsers } from '../../redux/actions';
 import { connect } from 'react-redux';
 import '../../scss/components/lists/ProjectUsersList.scss';
 
 
 class ProjectUsersList extends Component {
 
-	// state = {
-	// 	projectHasBeenFetched: false
-	// }
+
 
 	componentDidMount = () => {
 		// this.props.fetchProject(this.props.projectId)
 		this.props.fetchUsers();
+		this.props.fetchProjectUsers(this.props.projectId)
 	}
 
-	// updateState = () => {
-	// 	this.props.project && this.setState({
-	// 		projectHasBeenFetched: true
-	// 	})
-	// }
+	
 
 
 	renderProjectUsers = () => {
-		// let users = this.props.users;
-		// users.filter(user => user.projectId === this.props.project.id);
-		// console.log(users);
-
-		// const project = this.props.project;
 		return this.props.users.map(user => {
-			// if (user.projectId === project.id) {
-			// if (user.projectId === this.props.project.id) {
 			if (user.projectId === this.props.projectId) {
 				return (
 					<div className="tableList-row" key={user.id}>
@@ -87,26 +75,6 @@ class ProjectUsersList extends Component {
 									</header>
 									<div className="tableList-details-container">
 										{this.renderProjectUsers()}
-										{/* <div className="tableList-row">
-											<p>Bobby Davis</p>
-											<p>bdavis@core-techs.net</p>
-											<p>N/a</p>
-										</div>
-										<div className="tableList-row">
-											<p>Bobby Davis</p>
-											<p>bdavis@core-techs.net</p>
-											<p>Admin</p>
-										</div>
-										<div className="tableList-row">
-											<p>Bobby Davis</p>
-											<p>bdavis@core-techs.net</p>
-											<p>Developer</p>
-										</div>
-										<div className="tableList-row last-row">
-											<p>Bobby Davis</p>
-											<p>bdavis@core-techs.net</p>
-											<p>Project Manager</p>
-										</div> */}
 									</div>
 									<div className="tableList-footer">
 										<p>Showing 1 to 10 of 13 entries</p>
@@ -131,11 +99,11 @@ class ProjectUsersList extends Component {
 const mapStateToProps = state => {
     return { 
         users: state.users.users,
-        // project: state.projects.project[0],
+        projectUsers: state.users.projectUsers,
 		projectId: state.projects.projectId
     }
 }
 
-const mapDispatchToProps = { fetchUsers, fetchProject }
+const mapDispatchToProps = { fetchUsers, fetchProject, fetchProjectUsers }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectUsersList); 

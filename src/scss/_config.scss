@@ -18,9 +18,13 @@ $btn-primary: rgb(0, 163, 204);
 $btn-hover-primary: rgb(52, 167, 195);
 
 $btn-add-user: rgb(2, 182, 41);
-$btn-del-user: rgb(136, 7, 7);
 $btn-add-hover: rgba(2, 182, 41, 0.582);
+
+$btn-del-user: rgb(136, 7, 7);
 $btn-del-hover: rgba(136, 7, 7, 0.568);
+
+$small-del-btn: rgb(136, 7, 7);
+$small-del-btn-hover: rgba(136, 7, 7, 0.568);
 
 // Pagination
 $pgn-background: linear-gradient(0deg, rgba(199,199,199,1) 0%, rgba(250,250,250,1) 100%);

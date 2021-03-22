@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchTickets, fetchTicket, fetchProjects, fetchUsers, saveTicketId, saveProjectId } from '../../redux/actions';
+import { 
+    fetchTickets, 
+    fetchTicket, 
+    fetchProjects, 
+    fetchUsers, 
+    saveTicketId, 
+    saveProjectId, 
+    fetchComments
+} from '../../redux/actions';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/Tickets.scss';
  
@@ -41,7 +49,12 @@ class Tickets extends Component {
                         >Edit/Assign</Link>
                         <Link 
                             to="/ticketdetails" 
-                            onClick={()=>this.saveTicketDetails(ticket.id, ticket.projectId)}
+                            onClick={ ()=> {
+                                this.saveTicketDetails(ticket.id, ticket.projectId);
+                                this.props.fetchComments(ticket.id);
+                                console.log(ticket.id)
+                                }
+                            }
                         >Details
                         </Link>
                     </div>
@@ -119,6 +132,14 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = { fetchTickets, fetchUsers, fetchProjects, fetchTicket, saveTicketId, saveProjectId }
+const mapDispatchToProps = { 
+    fetchTickets, 
+    fetchUsers, 
+    fetchProjects, 
+    fetchTicket, 
+    saveTicketId, 
+    saveProjectId,
+    fetchComments 
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tickets); 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchUsers, editUser } from '../../redux/actions';
+import { fetchUsers, assignProject } from '../../redux/actions';
 import ProjectsList from '../../components/lists/ProjectsList';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/ProjectAssign.scss';
@@ -10,8 +10,9 @@ class ProjectAssign extends Component {
 
     state = {
         username: '',
+        userId: '',
         project: '',
-        projectId: null
+        projectId: ''
 
     }
 
@@ -19,14 +20,38 @@ class ProjectAssign extends Component {
         this.props.fetchUsers();
     }
 
-    onChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value })
+    // onChange = (event) => {
+    //     this.setState({ [event.target.name]: event.target.value })
+    // }
+
+    saveUsernameToLocalState = (id) => {
+        let users = this.props.users;
+        let user;
+        for(let i=0; i<users.length; i++) {
+            if (users[i].id == id) {
+                user = users[i].username
+            }
+            this.setState({username: user})
+        }
+    }
+
+    setUsernameAndId = (event) => {
+        this.saveUsernameToLocalState(event.target.value)
+        this.setState({ 
+            userId: parseInt(event.target.value)
+        })
     }
 
     renderUsers = () => {
         return this.props.users.map(user => {
-            return <option key={user.id}>{user.username}</option>
-            
+            return (
+            <option 
+                key={user.id} 
+                value={user.id}
+                name={user.username}
+            >
+            {user.username}
+            </option>)
         })
     }
 
@@ -56,12 +81,12 @@ class ProjectAssign extends Component {
     }
 
     onAssignProject = () => {
-        console.log(this.state)
-        this.props.editUser({
+        // console.log(this.state)
+        this.props.assignProject({
             username: this.state.username,
+            userId: this.state.userId,
             project: this.state.project,
             projectId: this.state.projectId,
-
         })
     }
 
@@ -76,7 +101,8 @@ class ProjectAssign extends Component {
                         <div className="roles-column">
                             <label className="selection user-selection">
                                 <p className="selection-title">Select 1 or more Users</p>
-                                <select multiple name="username" onChange={this.onChange}>
+                                {/* <select multiple name="username" onChange={this.onChange}> */}
+                                <select multiple onChange={this.setUsernameAndId}>
                                     {this.renderUsers()}
                                     {/* <option>Joshua Mastertson</option>
                                     <option>Rebecca Abell</option>
@@ -123,6 +149,6 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = { fetchUsers, editUser }
+const mapDispatchToProps = { fetchUsers, assignProject }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectAssign);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchUsers, editUser } from '../../redux/actions';
+import { fetchUsers, editUserRole } from '../../redux/actions';
 import UsersList from '../../components/lists/UsersList';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/RoleAssign.scss';
@@ -30,7 +30,7 @@ class RoleAssign extends Component {
     }
 
     onChangingUserRole = () => {
-        this.props.editUser({
+        this.props.editUserRole({
             username: this.state.username,
             role: this.state.role
         })
@@ -92,6 +92,6 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = { fetchUsers, editUser }
+const mapDispatchToProps = { fetchUsers, editUserRole }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RoleAssign);

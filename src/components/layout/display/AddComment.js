@@ -10,10 +10,7 @@ class AddComment extends Component {
     state = {
         user:'Jon Smith',
         role: 'Developer',
-        content: '',
-        ticketId: this.props.ticketId,
-        projectId: this.props.projectId,
-        project: this.props.project.title
+        content: ''
     }
 
     onChange = (event) => {
@@ -21,15 +18,15 @@ class AddComment extends Component {
     }
 
     onSubmittingComment = () => {
-        console.log(this.state)
-        // this.props.createComment({
-        //     user: this.state.user,
-        //     role: this.state.role,
-        //     content: this.state.content,
-        //     ticketId: this.state.usticketIder,
-        //     project: this.state.project,
-        //     project: this.state.project
-        // })
+        this.props.createComment({ 
+            user: this.state.user,
+            role: this.state.role,
+            content: this.state.content,
+            ticketId: this.props.ticketId,
+            projectId: this.props.projectId,
+            project: this.props.project.title
+            // created: new Date().toString
+        })
     }
 
     render() {

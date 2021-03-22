@@ -3,7 +3,8 @@ const initialState = {
     // password: '',
     // email: '',
     users: [],
-    user: {}
+    user: {}, 
+    projectUsers:[]
     // role: '',
     // projectId: '',
     // ticketId: ''
@@ -21,6 +22,15 @@ const usersReducer = (state=initialState, action) => {
                 user: action.payload
             };
 
+        case 'FETCH_PROJECT_USERS':
+            return {...state,
+                projectUsers: action.payload
+            };
+        case 'ASSIGN_PROJECT':
+            return {...state
+                // user: action.payload
+            };
+
         // case 'CREATE_USER':
         //     return action.payload;
 
@@ -29,7 +39,7 @@ const usersReducer = (state=initialState, action) => {
         //         projectId: action.payload
         //     };
 
-        case 'EDIT_USER':
+        case 'EDIT_USER_ROLE': 
             return {
                 ...state
             };
