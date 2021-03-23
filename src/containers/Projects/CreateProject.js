@@ -13,7 +13,8 @@ class CreateProject extends Component {
     state = {
         title: '',
         description: '',
-        username: ''
+        username: '',
+        userId: ''
     }
 
     // componentDidMount = () => {
@@ -32,7 +33,12 @@ class CreateProject extends Component {
     }
 
     addUser = () => {
-        this.setState({ userAdded: this.state.username })
+        let user = this.props.users.filter(user => user.username === this.state.username);
+        let id = user[0].id;
+        this.setState({ 
+            userAdded: this.state.username,
+            userId: id 
+        })
     }
 
 
@@ -41,7 +47,8 @@ class CreateProject extends Component {
         this.props.createProject({
             title: this.state.title,
             description: this.state.description,
-            userAdded: this.state.userAdded
+            userAdded: this.state.userAdded,
+            userId: this.state.userId
         });
     }
 

@@ -9,7 +9,6 @@ class ProjectsList extends Component {
 
 	componentDidMount() {
 		this.props.fetchProjects();
-		console.log(this.props.projects)
 		
 	}
 
@@ -26,7 +25,7 @@ class ProjectsList extends Component {
 							to="/projectdetails" 
 							onClick={()=> {
 								this.props.saveProjectId(project.id);
-								this.props.fetchProject(project.id)
+								// this.props.fetchProject(project.id)
 							}}
 						>
 						Project details
@@ -72,46 +71,6 @@ class ProjectsList extends Component {
 								</header>
 								<div className="tableList-details-container">
 									{this.renderProjects()}
-									{/* <div className="tableList-row">
-										<p>Demo Project 2</p>
-										<p>Testing PM self assign on create</p>
-										<div className="project-action-buttons">
-											<a href="/projectassign">Manage Users</a>
-											<a href="/projectdetails">Project details</a>
-										</div>
-									</div>
-									<div className="tableList-row">
-										<p>Demo Project 2</p>
-										<p>Testing PM self assign on create</p>
-										<div className="project-action-buttons">
-											<a href="/projectassign">Manage Users</a>
-											<a href="/projectdetails">Project details</a>
-										</div>
-									</div>
-									<div className="tableList-row">
-										<p>Positive Touch</p>
-										<p>Working on Cloud migration</p>
-										<div className="project-action-buttons">
-											<a href="/projectassign">Manage Users</a>
-											<a href="/projectdetails">Project details</a>
-										</div>
-									</div>
-									<div className="tableList-row">
-										<p>Portfolio</p>
-										<p>My Portfolio</p>
-										<div className="project-action-buttons">
-											<a href="/projectassign">Manage Users</a>
-											<a href="/projectdetails">Project details</a>
-										</div>
-									</div>
-									<div className="tableList-row last-row">
-										<p>Auction Web Store</p>
-										<p>An auction web app</p>
-										<div className="project-action-buttons">
-											<a href="/projectassign">Manage Users</a>
-											<a href="/projectdetails">Project details</a>
-										</div>
-									</div> */}
 								</div>
 								<div className="tableList-footer">
 									<p>Showing 1 to 10 of 13 entries</p>
@@ -137,10 +96,5 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {fetchProjects, fetchProject, saveProjectId} 
 
-// const mapDispatchToProps = dispatch => {
-// 	return {
-// 		saveProjectId: (id) => dispatch({ type: 'STORE_PROJECT_ID', payload: id })
-// 	}
-// } 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectsList); 

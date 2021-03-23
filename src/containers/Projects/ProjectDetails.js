@@ -11,7 +11,7 @@ class ProjectDetails extends Component {
 
     componentDidMount = () => {
         this.props.fetchUsers();
-        this.props.fetchProject();
+        // this.props.fetchProject();
     }
 
     render() {
@@ -23,11 +23,11 @@ class ProjectDetails extends Component {
                     </header>
                     <div className="project-details-grid">
                         <div className="list-card">
-                        {
+                        {/* {
                             this.props.project ? <ProjectUsersList /> : <h2>FETCHING DETAILS...</h2>
 
-                        }
-                            {/* <ProjectUsersList /> */}
+                        } */}
+                            <ProjectUsersList />
                         </div>
                         <div className="list-card">
                             <ProjectTicketsList />

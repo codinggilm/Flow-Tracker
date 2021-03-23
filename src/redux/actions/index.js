@@ -12,6 +12,7 @@ export const fetchProjects = () => {
  
 export const fetchProject = (id) => {
     return async dispatch => {
+        // const response = await flowAPI.get(`/projects/${id}`);
         const response = await flowAPI.post('/projects', {id: id});
         dispatch({ type: 'FETCH_PROJECT', payload: response.data})
     }
@@ -24,9 +25,9 @@ export const saveProjectId = (id) => {
 export const createProject = (project) => {
     if (project.userAdded) {
         return async dispatch => { 
-            // const response = await flowAPI.post('/projects/createWithUser', project);
-            // dispatch({ type: 'CREATE_PROJECT', payload: response.data})
-            console.log(project.userAdded)
+            const response = await flowAPI.post('/projects/createWithUser', project);
+            dispatch({ type: 'CREATE_PROJECT', payload: response.data})
+            // console.log(project.userAdded)
         }
     } else {
         return async dispatch => { 
@@ -37,16 +38,16 @@ export const createProject = (project) => {
     }
 }
 
-export const editProject = (id, data) => {
-    // console.log(data)
+export const editProject = (data) => {
+    console.log(data)
     if (data.userToRemove === null) {
         return async dispatch => {
-            const response = await flowAPI.put('/projects', {id: id, data: data});
+            const response = await flowAPI.put('/projects', data);
             dispatch({ type: 'EDIT_PROJECT', payload: response.data});
         }
     } else {
         return async dispatch => {
-            const response = await flowAPI.put('/projects/editAndRemoveUser', {id: id, data: data});
+            const response = await flowAPI.put('/projects/editAndRemoveUser', data);
             dispatch({ type: 'EDIT_PROJECT', payload: response.data});
         }
     }
@@ -131,9 +132,8 @@ export const fetchUsers = () => {
 }
 
 export const fetchProjectUsers = (id) => {
-    console.log('boom')
     return async dispatch => {
-        const response = await flowAPI.get('/users/project-users', {id: id});
+        const response = await flowAPI.post('/users/project-users', {id: id});
         dispatch({ type: 'FETCH_PROJECT_USERS', payload: response.data})
         // console.log(response.data)
     }

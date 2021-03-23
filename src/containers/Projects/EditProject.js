@@ -12,7 +12,8 @@ class EditProject extends Component {
     state = {
         title: this.props.project.title,
         description: this.props.project.description,
-        user: '',
+        // projectId: this.props.projectId,
+        userID: '',
         userToRemove: null
     }
 
@@ -25,24 +26,29 @@ class EditProject extends Component {
     }
 
     renderAssignedUsers = () => {
-        const users = this.props.users.filter(user => user.projectId === this.props.projectId);
+        // const users = this.props.users.filter(user => user.projectId === this.props.projectId);
+        const users = this.props.projectUsers;
         return users.map(user => {
-            return <option key={user.id}>{user.username}</option>
+            return <option value={user.userID} key={user.userID}>{user.username}</option>
         })
     }
 
+    onSelectingUser = (event) => {
+        this.setState({ userID: parseInt(event.target.value) })
+    }
+
     removeUser = () => {
-        this.setState({userToRemove: this.state.user})
+        this.setState({userToRemove: this.state.userID})
     }
 
     onEditProject = () => {
-        this.props.editProject(
-            this.props.projectId, {
-                title: this.state.title,
-                description: this.state.description,
-                userToRemove: this.state.userToRemove
-            }
-        )
+        // console.log(this.state)
+        this.props.editProject({
+            title: this.state.title,
+            description: this.state.description,
+            projectId: this.props.projectId,
+            userToRemove: this.state.userToRemove
+        })
     } 
 
     onDeleteProject = () => {
@@ -88,7 +94,8 @@ class EditProject extends Component {
                                     <div className="details-row-leftside">
                                         <p className="row-title">Assigned Personnel</p>
                                         <div className="selection">
-                                            <select name="user" onChange={this.onChange}>
+                                            {/* <select name="user" onChange={this.onChange}> */}
+                                            <select onChange={this.onSelectingUser}>
                                                 <option> Select User </option>
                                                 {this.renderAssignedUsers()}
                                             </select>
@@ -151,7 +158,8 @@ const mapStateToProps = state => {
     return {
         project: state.projects.project[0],
         projectId: state.projects.projectId,
-        users: state.users.users
+        users: state.users.users,
+        projectUsers: state.users.projectUsers
     }
 }
 

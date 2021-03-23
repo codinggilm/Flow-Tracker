@@ -104,13 +104,6 @@ class ProjectAssign extends Component {
                                 {/* <select multiple name="username" onChange={this.onChange}> */}
                                 <select multiple onChange={this.setUsernameAndId}>
                                     {this.renderUsers()}
-                                    {/* <option>Joshua Mastertson</option>
-                                    <option>Rebecca Abell</option>
-                                    <option>Bobby Davis</option>
-                                    <option>Jorgen Malakith</option>
-                                    <option>Alexandre Plard</option>
-                                    <option>Guillaume Croizon</option>
-                                    <option>Brian Thomas</option> */}
                                 </select>
                             </label>
     
@@ -120,10 +113,6 @@ class ProjectAssign extends Component {
                                     <select name="project" onChange={this.onProjectSelection}>
                                         <option>--Select Role/None--</option>
                                         {this.renderProjects()}
-                                        {/* <option>Project Name</option>
-                                        <option>Project Name</option>
-                                        <option>Project Name</option>
-                                        <option>Project Name</option> */}
                                     </select>
                                 </label>
                                 <div className="btn-role">
