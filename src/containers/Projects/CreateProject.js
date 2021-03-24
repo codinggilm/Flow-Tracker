@@ -83,6 +83,7 @@ class CreateProject extends Component {
                                         <div className="selection">
                                             {/* <select name="developer" onChange={this.onChange}> */}
                                             <select name="username" onChange={this.onChange}>
+                                                <option>--Select User-- </option>
                                                 {this.renderUsersList()}
                                             </select>
                                         </div>

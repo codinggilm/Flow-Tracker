@@ -67,8 +67,12 @@ class CreateTicket extends Component {
         })
     }
 
-    onCreateTicket = (event) => {
-        event.preventDefault();
+    onCreateTicket = () => {
+        // console.log(this.state)
+        const name = this.state.developer;
+        const selectedDeveloper = this.props.users.filter(user => user.username === name);
+        // const id = selectedDeveloper[0].id;
+
         this.props.createTicket({
             title: this.state.title,
             description: this.state.description,
@@ -76,6 +80,7 @@ class CreateTicket extends Component {
             project: this.state.project,
             projectId: this.state.projectId,
             developer: this.state.developer,
+            developerId: selectedDeveloper[0].id,
             priority: this.state.priority,
             type: this.state.type,
             status: this.state.status,
@@ -131,6 +136,7 @@ class CreateTicket extends Component {
                                             <p className="row-title">Assign a Developer</p>
                                             <div className="selection">
                                                 <select name="developer" onChange={this.onChange}>
+                                                {/* <select name="developer" onChange={this.onSelectingDeveloper}> */}
                                                     <option>{this.state.developer}</option>
                                                     {this.renderDeveloperSelection()}
                                                 </select>

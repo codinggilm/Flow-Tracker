@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { deleteComment } from '../../redux/actions';
+import { fetchComments, deleteComment } from '../../redux/actions';
 import '../../scss/components/lists/TicketCommentsList.scss';
 
  
 class TicketCommentsList extends Component {
-
+	
+	componentDidMount = () => {
+		this.props.fetchComments(this.props.ticketId)
+	}
 
 	renderComments = () => {
 		const comments = this.props.ticketComments;
@@ -20,7 +23,7 @@ class TicketCommentsList extends Component {
 					</div> */}
 					<button 
 						className="small-del-btn"
-						onClick={()=>this.onDeleteComment(comment.id, comment.ticketId)}
+						onClick={()=>this.onDeleteComment(comment.id)}
 						// onClick={()=>this.props.deleteComment(comment.id)}
 					>DEL</button>
 				</div>
@@ -28,11 +31,9 @@ class TicketCommentsList extends Component {
 		})
 	}
 
-	onDeleteComment = (id, ticketId) => {
-		console.log(id)
-		this.props.deleteComment({
-			id, ticketId
-		})
+	onDeleteComment = (id) => {
+		console.log(id, this.props.ticketId)
+		this.props.deleteComment(id, this.props.ticketId)
 	}
 
 
@@ -97,10 +98,11 @@ class TicketCommentsList extends Component {
 
 const mapStateToProps = state => {
 	return {
-		ticketComments: state.comments.ticketComments,
+		ticketId: state.tickets.ticketId,
+		ticketComments: state.comments.ticketComments
 	}
 }
 
-const mapDispatchToProps = { deleteComment }
+const mapDispatchToProps = { deleteComment, fetchComments }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketCommentsList); 

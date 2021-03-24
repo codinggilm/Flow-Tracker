@@ -20,6 +20,7 @@ class AddComment extends Component {
     onSubmittingComment = () => {
         this.props.createComment({ 
             user: this.state.user,
+            userId: 2,
             role: this.state.role,
             content: this.state.content,
             ticketId: this.props.ticketId,

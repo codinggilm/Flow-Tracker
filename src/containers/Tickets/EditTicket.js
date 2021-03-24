@@ -82,6 +82,9 @@ class EditTicket extends Component {
     }
 
     onEditTicket = () => {
+        const name = this.state.developer;
+        const selectedDeveloper = this.props.users.filter(user => user.username === name);
+
         this.props.editTicket(
             this.props.ticketId, {
             title: this.state.title,
@@ -89,6 +92,7 @@ class EditTicket extends Component {
             project: this.state.project,
             projectId: this.state.projectId,
             developer: this.state.developer,
+            developerId: selectedDeveloper[0].id,
             priority: this.state.priority,
             type: this.state.type,
             status: this.state.status,

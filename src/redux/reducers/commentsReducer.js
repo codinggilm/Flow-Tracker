@@ -27,11 +27,6 @@ const commentsReducer = (state=initialState, action) => {
                 ticketComments: [...state.ticketComments, action.payload]           
             };
         case 'DELETE_COMMENT': 
-                // console.log(action.payload)
-                // const newCommentsArray = [];
-                // newCommentsArray.push(action.payload);
-                // console.log(newCommentsArray)
-            
             return {
                 ...state,
                 ticketComments: action.payload

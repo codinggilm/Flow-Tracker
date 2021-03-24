@@ -91,7 +91,6 @@ export const createTicket = (ticket) => {
             const response = await flowAPI.post('/tickets/create', ticket);
             dispatch({ type: 'CREATE_TICKET', payload: response.data})
             console.log(response.data)
-    
         }
     } else {
         return async dispatch => { 
@@ -105,8 +104,8 @@ export const createTicket = (ticket) => {
 }
 
 export const editTicket = (id, data) => {
-    console.log(id, data);
     return async dispatch => {
+        console.log(id, data);
         const response = await flowAPI.put('/tickets', {id: id, data: data});
         dispatch({ type: 'EDIT_TICKET', payload: response.data});
     }
@@ -173,6 +172,7 @@ export const fetchAllComments = () => {
 export const fetchComments = (ticketId) => {
     return async dispatch => {
         const response = await flowAPI.post('/comments', {id: ticketId});
+        // const response = await flowAPI.post('/comments', ticketId);
         dispatch({ type: 'FETCH_COMMENTS', payload: response.data})
         console.log(response.data)
     }
@@ -183,15 +183,17 @@ export const createComment = (comment) => {
     return async dispatch => { 
         const response = await flowAPI.post('/comments/create', comment);
         dispatch({ type: 'CREATE_COMMENT', payload: response.data})
-        console.log(response.data)
+        // console.log(response.data)
 
     }
 }
 
-export const deleteComment = (data) => {
+// export const deleteComment = (id, ticketId) => {
+export const deleteComment = (id, ticketId) => {
     return async dispatch => {
-        console.log(data)
-        const response = await flowAPI.post('/comments/delete', {id: data.id, ticketId: data.ticketId});
+        // console.log(id, ticketId)
+        // console.log(id, ticketId)
+        const response = await flowAPI.post('/comments/delete', {id: id, ticketId: ticketId});
         dispatch({ type: 'DELETE_COMMENT', payload: response.data});
         console.log(response.data)
     }
