@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchProjects, fetchProject, fetchTicket, editTicket, deleteTicket } from '../../redux/actions';
+import { fetchProjects, fetchProject, fetchTicket, editTicket, saveTicketHistory, deleteTicket } from '../../redux/actions';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/EditTicket.scss';
  
@@ -42,6 +42,8 @@ class EditTicket extends Component {
         })
     }
 
+    
+
     onChange = (event) => {
         this.setState({ [event.target.name]: event.target.value })
     }
@@ -81,23 +83,82 @@ class EditTicket extends Component {
         })
     }
 
+    saveHistory = (obj1, obj2) => {
+    
+        let diffs = {};
+        let oldData = {}
+        let key;
+    
+        const compare = (item1, item2, key) => {
+            if (item1 !== item2 ) {
+                diffs[key] = item2;
+                oldData[key] = item1;
+            }
+        };
+    
+        // Compare the two objects **************
+        // Loop through the first object
+        for (key in obj1) {
+            compare(obj1[key], obj2[key], key);
+        }
+        // Loop through the second object and find missing items
+        for (key in obj2) {
+            if (!obj1[key] && obj1[key] !== obj2[key] ) {
+                diffs[key] = obj2[key];
+            }
+        }
+        
+        let newData = {};
+
+        for (key in diffs) {
+            if(diffs[key] !== undefined) {
+                newData[key] = diffs[key]
+            }
+        }
+    
+        // Remove unecessary keys 
+        const filtered = (obj) => {
+            let skipKeys = ['createdAt', 'updatedAt', 'developerId', 'id', 'projectId'];
+
+            function filterObject(arr, obj) {
+                arr.forEach(key => {
+                    delete obj[key];
+                });
+                return obj;
+            }
+            return filterObject(skipKeys, obj)
+        }
+        filtered(oldData)
+
+        return {oldData, newData};
+    
+    };
+
     onEditTicket = () => {
         const name = this.state.developer;
         const selectedDeveloper = this.props.users.filter(user => user.username === name);
 
-        this.props.editTicket(
-            this.props.ticketId, {
-            title: this.state.title,
-            description: this.state.description,
-            project: this.state.project,
-            projectId: this.state.projectId,
-            developer: this.state.developer,
-            developerId: selectedDeveloper[0].id,
-            priority: this.state.priority,
-            type: this.state.type,
-            status: this.state.status,
-            submitter: this.state.submitter
-        })
+        // console.log(this.state)
+        let historyObject = this.saveHistory(this.props.ticket, this.state);
+        this.props.saveTicketHistory(this.props.ticketId, historyObject)
+        // let historyArray = this.saveHistory(this.props.ticket, this.state)
+        // console.log(historyArray)
+        console.log(historyObject)
+
+
+        // this.props.editTicket(
+        //     this.props.ticketId, {
+        //     title: this.state.title,
+        //     description: this.state.description,
+        //     project: this.state.project,
+        //     projectId: this.state.projectId,
+        //     developer: this.state.developer,
+        //     developerId: selectedDeveloper[0].id,
+        //     priority: this.state.priority,
+        //     type: this.state.type,
+        //     status: this.state.status,
+        //     submitter: this.state.submitter
+        // })
     }
 
     onDeleteTicket = () => {
@@ -161,12 +222,6 @@ class EditTicket extends Component {
                                             <select name="developer" onChange={this.onChange}>
                                                 <option>{ticket[0].developer}</option>
                                                 {this.renderDeveloperSelection()}
-                                                {/* <option>Rebecca Abell</option>
-                                                <option>Bobby Davis</option>
-                                                <option>Jorgen Malakith</option>
-                                                <option>Alexandre Plard</option>
-                                                <option>Guillaume Croizon</option>
-                                                <option>Brian Thomas</option> */}
                                             </select>
                                         </div>
                                     </div>
@@ -248,6 +303,6 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = { fetchProjects, fetchProject, fetchTicket, editTicket, deleteTicket }
+const mapDispatchToProps = { fetchProjects, fetchProject, fetchTicket, editTicket, saveTicketHistory, deleteTicket }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditTicket); 

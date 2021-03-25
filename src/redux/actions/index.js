@@ -111,6 +111,15 @@ export const editTicket = (id, data) => {
     }
 }
 
+// export const saveTicketHistory = (id, property, oldData, newData) => {
+export const saveTicketHistory = (id, data) => {
+    return async dispatch => {
+        // console.log(data)
+        // const response = await flowAPI.post('/tickets/save-history', {id: id, data: data});
+        // dispatch({ type: 'SAVE_TICKET_HISTORY', payload: response.data});
+    }
+}
+
 export const deleteTicket = (id) => {
     return async dispatch => {
         const response = await flowAPI.post('/tickets/delete', {id: id});

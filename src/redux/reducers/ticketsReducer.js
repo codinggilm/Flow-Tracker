@@ -12,7 +12,6 @@ const ticketsReducer = (state=initialState, action) => {
             };
 
         case 'FETCH_TICKET':
-            // console.log(action.payload)
             return {...state,
                 ticket: action.payload
             };
@@ -28,6 +27,16 @@ const ticketsReducer = (state=initialState, action) => {
             };
 
         case 'EDIT_TICKET':
+            return  {
+                ...state 
+            };
+
+        // case 'FETCH_TICKET_HISTORY':
+        //     return  {
+        //         ...state 
+        //     };
+
+        case 'SAVE_TICKET_HISTORY':
             return  {
                 ...state 
             };

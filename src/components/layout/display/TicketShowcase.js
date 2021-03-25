@@ -82,7 +82,7 @@ class TicketShowcase extends Component {
                                     </div>
                                     <div className="details-row-rightside">
                                         <p className="row-title">UPDATED</p>
-                                        <p className="row-text"></p>
+                                        <p className="row-text">{ticket.updatedAt}</p>
                                     </div>
                                 </div>
                             </div>
