@@ -8,7 +8,8 @@ import {
     fetchUsers, 
     saveTicketId, 
     saveProjectId, 
-    fetchComments
+    fetchComments,
+    fetchTicketHistory
 } from '../../redux/actions';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/Tickets.scss';
@@ -52,7 +53,8 @@ class Tickets extends Component {
                             onClick={ ()=> {
                                 this.saveTicketDetails(ticket.id, ticket.projectId);
                                 this.props.fetchComments(ticket.id);
-                                console.log(ticket.id)
+                                this.props.fetchTicketHistory(ticket.id);
+                                // console.log(ticket.id)
                                 }
                             }
                         >Details
@@ -139,7 +141,8 @@ const mapDispatchToProps = {
     fetchTicket, 
     saveTicketId, 
     saveProjectId,
-    fetchComments 
+    fetchComments,
+    fetchTicketHistory 
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tickets); 

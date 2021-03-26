@@ -1,7 +1,9 @@
 const initialState = {
     tickets: [],
+    ticketHistory: [],
     ticket: {},
     ticketId: '' 
+
 };
 
 const ticketsReducer = (state=initialState, action) => {
@@ -31,10 +33,11 @@ const ticketsReducer = (state=initialState, action) => {
                 ...state 
             };
 
-        // case 'FETCH_TICKET_HISTORY':
-        //     return  {
-        //         ...state 
-        //     };
+        case 'FETCH_TICKET_HISTORY':
+            return  {
+                ...state,
+                ticketHistory:action.payload
+            };
 
         case 'SAVE_TICKET_HISTORY':
             return  {

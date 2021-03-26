@@ -84,53 +84,66 @@ class EditTicket extends Component {
     }
 
     saveHistory = (obj1, obj2) => {
-    
-        let diffs = {};
-        let oldData = {}
+
         let key;
+        let diffs = {};
+        let oldData = {};
+        let newData = {};
+        let ticketHistory = [];
     
-        const compare = (item1, item2, key) => {
-            if (item1 !== item2 ) {
-                diffs[key] = item2;
-                oldData[key] = item1;
-            }
-        };
-    
-        // Compare the two objects **************
-        // Loop through the first object
+        // Loop through the first object, save differences & old data
         for (key in obj1) {
-            compare(obj1[key], obj2[key], key);
-        }
-        // Loop through the second object and find missing items
-        for (key in obj2) {
-            if (!obj1[key] && obj1[key] !== obj2[key] ) {
+            if (obj1[key] !== obj2[key] ) {
+
                 diffs[key] = obj2[key];
+                oldData[key] = obj1[key];
             }
         }
         
-        let newData = {};
-
+        // Save relevant changes into the newData object
         for (key in diffs) {
             if(diffs[key] !== undefined) {
                 newData[key] = diffs[key]
             }
         }
     
-        // Remove unecessary keys 
-        const filtered = (obj) => {
+        // Remove unecessary keys from oldData object 
+        const removeKeys = (obj) => {
             let skipKeys = ['createdAt', 'updatedAt', 'developerId', 'id', 'projectId'];
 
-            function filterObject(arr, obj) {
-                arr.forEach(key => {
-                    delete obj[key];
-                });
-                return obj;
-            }
-            return filterObject(skipKeys, obj)
-        }
-        filtered(oldData)
+            skipKeys.forEach(key => delete obj[key]);
 
-        return {oldData, newData};
+            return obj;
+        }
+        removeKeys(oldData);
+
+        // Extract proprety names into an array
+        const properties = Object.keys(oldData);
+        // const props = properties.toUpperCase();
+
+
+        // Extract values of old & new data into arrays
+        const value1 = Object.values(oldData);
+        const value2 = Object.values(newData);
+
+        // Helper function
+        const firstLetterCap = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+
+        // Create a new object for each change that occured
+        for(let i=0; i<properties.length; i++) {
+            ticketHistory.push({
+                property: firstLetterCap(properties[i]),
+                oldValue: value1[i],
+                newValue: value2[i]
+            })
+            
+        }
+
+        console.log(ticketHistory)
+        // Loop through the ticket history array and send all changes to the database
+        for(let i=0; i<ticketHistory.length; i++) {
+            this.props.saveTicketHistory(this.props.ticketId, ticketHistory[i])
+        }
     
     };
 
@@ -138,27 +151,21 @@ class EditTicket extends Component {
         const name = this.state.developer;
         const selectedDeveloper = this.props.users.filter(user => user.username === name);
 
-        // console.log(this.state)
-        let historyObject = this.saveHistory(this.props.ticket, this.state);
-        this.props.saveTicketHistory(this.props.ticketId, historyObject)
-        // let historyArray = this.saveHistory(this.props.ticket, this.state)
-        // console.log(historyArray)
-        console.log(historyObject)
+        this.saveHistory(this.props.ticket, this.state);
 
-
-        // this.props.editTicket(
-        //     this.props.ticketId, {
-        //     title: this.state.title,
-        //     description: this.state.description,
-        //     project: this.state.project,
-        //     projectId: this.state.projectId,
-        //     developer: this.state.developer,
-        //     developerId: selectedDeveloper[0].id,
-        //     priority: this.state.priority,
-        //     type: this.state.type,
-        //     status: this.state.status,
-        //     submitter: this.state.submitter
-        // })
+        this.props.editTicket(
+            this.props.ticketId, {
+            title: this.state.title,
+            description: this.state.description,
+            project: this.state.project,
+            projectId: this.state.projectId,
+            developer: this.state.developer,
+            developerId: selectedDeveloper[0].id,
+            priority: this.state.priority,
+            type: this.state.type,
+            status: this.state.status,
+            submitter: this.state.submitter
+        })
     }
 
     onDeleteTicket = () => {

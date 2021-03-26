@@ -30,9 +30,13 @@ class RoleAssign extends Component {
     }
 
     onChangingUserRole = () => {
+        // console.log(this.state)
+        const selectedUser = this.props.users.filter(user => user.username === this.state.username)
+        // console.log(selectedUser)
         this.props.editUserRole({
             username: this.state.username,
-            role: this.state.role
+            role: this.state.role,
+            id: selectedUser[0].id
         })
     }
 
@@ -49,13 +53,6 @@ class RoleAssign extends Component {
                                 <p className="selection-title">Select 1 or more Users</p>
                                 <select multiple name="username" onChange={this.onChange}>
                                     {this.renderUsers()}
-                                    {/* <option>Joshua Mastertson</option>
-                                    <option>Rebecca Abell</option>
-                                    <option>Bobby Davis</option>
-                                    <option>Jorgen Malakith</option>
-                                    <option>Alexandre Plard</option>
-                                    <option>Guillaume Croizon</option>
-                                    <option>Brian Thomas</option> */}
                                 </select>
                             </label>
     

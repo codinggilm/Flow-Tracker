@@ -43,12 +43,15 @@ class EditProject extends Component {
 
     onEditProject = () => {
         // console.log(this.state)
-        this.props.editProject({
-            title: this.state.title,
-            description: this.state.description,
-            projectId: this.props.projectId,
-            userToRemove: this.state.userToRemove
-        })
+        this.props.editProject(
+            this.props.projectId, 
+            {
+                title: this.state.title,
+                description: this.state.description,
+                // projectId: this.props.projectId,
+                userToRemove: this.state.userToRemove
+            }
+        )
     } 
 
     onDeleteProject = () => {
