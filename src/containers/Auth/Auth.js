@@ -8,32 +8,34 @@ import '../../scss/containers/Auth.scss';
 class Auth extends Component {
     
     state = {
-        isRegistered: true
+        isRegistered: true,
+        // email: '',
+        username: '',
+        password: ''
     }
-    // onSubmitSignIn = () => {
-    //     this.props.onSignIn('home');
-    // }
 
-    registerMe = () => {
+    onChange = (event) => {
+        this.setState({ [event.target.name]: event.target.value })
+    }
+
+    registerUser = () => {
         this.setState({isRegistered: false})
     }
     
-    haveAnAccount = () => {
+    hasAccount = () => {
         this.setState({isRegistered: true})
-        // console.log('cock')
     }
 
     
-
     onRequestLogin = () => {
-        this.props.requestLogin()
+        this.props.requestLogin(this.state);
     }
     
     render() {
         return (
             <div>
             {
-                !this.state.isRegistered ? <Register onHaveAccount={this.haveAnAccount}/>
+                !this.state.isRegistered ? <Register onHasAccount={this.hasAccount}/>
 
                 :
 
@@ -41,13 +43,17 @@ class Auth extends Component {
                     <div className="auth-container">
                         <header>Flow Tracker</header>
                         <div className="login-details">
-                            <div className="input email-input">
+                            {/* <div className="input email-input">
                                 <i className="far fa-envelope"></i>
-                                <input type="email"/>
+                                <input type="email" name="email" onChange={this.onChange}/>
+                            </div> */}
+                            <div className="input username-input" onChange={this.onChange}>
+                                <i className="fas fa-street-view"></i>
+                                <input type="text" name="username" placeholder="type username.."/>
                             </div>
                             <div className=" input password-input">
                                 <i className="fas fa-lock"></i>
-                                <input type="password"/>
+                                <input type="password" name="password" onChange={this.onChange}/>
                             </div> 
                         </div>        
                         {/* <button onClick={this.onSubmitSignIn}>SIGN IN</button> */}
@@ -55,7 +61,7 @@ class Auth extends Component {
                         {/* <a href="/"><button>SIGN IN</button></a> */}
                         <div className="login-links">
                             <p>Forgot your <a href="/">Password?</a></p>
-                            <p>Create an account? <Link to="" onClick={this.registerMe}>Sign Up</Link></p>
+                            <p>Create an account? <Link to="" onClick={this.registerUser}>Sign Up</Link></p>
                             <p>Sign in as a <a href="/">Demo User</a></p>
                         </div>
                     </div>

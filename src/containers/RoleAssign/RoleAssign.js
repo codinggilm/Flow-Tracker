@@ -5,7 +5,7 @@ import UsersList from '../../components/lists/UsersList';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/RoleAssign.scss';
  
- 
+  
 class RoleAssign extends Component {
 
     state = {

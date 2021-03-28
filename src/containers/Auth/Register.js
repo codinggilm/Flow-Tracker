@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { createUser } from '../../redux/actions';
 // import { requestLogin } from '../../redux/actions';
 import '../../scss/containers/Register.scss';
  
@@ -21,15 +22,19 @@ class Register extends Component {
     }
 
     onRequestRegister = () => {
-        console.log(this.state)
+        this.props.createUser(this.state)
     }
     
     render() {
         return (
             <div>
-                <main className="auth-main">
+                <main className="register-main">
                     <div className="auth-container">
                         <header>Flow Tracker</header>
+                        <div className="welcome-signup">
+                            <p>Welcome!</p>
+                            <p>Fill in the form below to get started</p>
+                        </div>
                         <div className="login-details">
                             <div className="input company-input" onChange={this.onChange}>
                                 <i className="fas fa-building"></i>
@@ -53,7 +58,7 @@ class Register extends Component {
                         <div className="login-links">
                             <p>Forgot your <a href="/">Password?</a></p>
                             <p>Sign in as a <a href="/">Demo User</a></p>
-                            <p><Link to="" onClick={this.props.onHaveAccount}>I already have an account</Link></p>
+                            <p><Link to="" onClick={this.props.onHasAccount}>I already have an account</Link></p>
                         </div>
                     </div>
                 </main>
@@ -63,6 +68,6 @@ class Register extends Component {
 }
 
 
-// const mapDispatchToProps = { requestLogin }
+const mapDispatchToProps = { createUser }
 
-export default connect()(Register);
+export default connect(null, mapDispatchToProps)(Register);

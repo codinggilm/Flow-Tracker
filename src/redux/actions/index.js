@@ -3,11 +3,15 @@ import flowAPI from '../apis/flowApi';
 
 //  ***************************** AUTH ACTIONS ****************************  //
 
-export const requestLogin = () => {
+export const requestLogin = (data) => {
     return async dispatch => {
-        // const response = await flowAPI.get('/projects');
-        dispatch({ type: 'LOGIN_SUCCESS', payload: 'Hello'})
-        // dispatch({ type: 'LOGIN_SUCCESS', payload: response.data})
+        const response = await flowAPI.post('/users/login', data);
+        if (response.payload !== 'no such user') {
+            dispatch({ type: 'LOGIN_SUCCESS', payload: response.data})
+            console.log(response.data)
+        } else {
+            dispatch({ type: 'LOGIN_FAILURE'})
+        }
     }
 }
 
@@ -165,6 +169,14 @@ export const deleteTicket = (id) => {
 
 //  ***************************** USERS ACTIONS ****************************  //
 
+
+export const createUser = (userData) => {
+    return async dispatch => {
+        const response = await flowAPI.post('/users/register', userData);
+        dispatch({ type: 'CREATE_USER', payload: response.data})
+        // console.log(response.data)
+    }
+}
 
 export const fetchUsers = () => {
     return async dispatch => {
