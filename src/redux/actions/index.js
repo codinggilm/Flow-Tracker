@@ -1,6 +1,24 @@
 import flowAPI from '../apis/flowApi';
 
 
+//  ***************************** AUTH ACTIONS ****************************  //
+
+export const requestLogin = () => {
+    return async dispatch => {
+        // const response = await flowAPI.get('/projects');
+        dispatch({ type: 'LOGIN_SUCCESS', payload: 'Hello'})
+        // dispatch({ type: 'LOGIN_SUCCESS', payload: response.data})
+    }
+}
+
+export const requestLogout = () => {
+    return async dispatch => {
+        // const response = await flowAPI.get('/projects');
+        // dispatch({ type: 'FETCH_PROJECTS', payload: response.data})
+        dispatch({ type: 'LOGOUT_SUCCESS', payload: 'Goodbye'})
+    }
+}
+
 //  ***************************** PROJECT ACTIONS ****************************  //
 
 export const fetchProjects = () => {

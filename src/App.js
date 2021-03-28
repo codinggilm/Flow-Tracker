@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 // import { BrowserRouter } from 'react-router-dom';
-import './scss/App.scss';
 // import Login from './containers/Login/Login';
 import Auth from './containers/Auth/Auth';
 // import MainApp from './MainApp';
@@ -18,31 +18,33 @@ import Tickets from './containers/Tickets/Tickets';
 import TicketDetails from './containers/Tickets/TicketDetails';
 import CreateTicket from './containers/Tickets/CreateTicket';
 import EditTicket from './containers/Tickets/EditTicket'; 
+import './scss/App.scss';
+
 
 class App extends Component {
 
-	state = {
-		route: 'signin'
-	}
+	// state = {
+	// 	route: 'signin'
+	// }
 
-	onSignIn = (route) => {
-		this.setState({route: route})
-	}
+	// onSignIn = (route) => {
+	// 	this.setState({route: route})
+	// }
 
 
 	render() {
 		return (
 			<div>
-				{/* { 
-					this.state.route === 'signin' ? 
+				{ 
+					!this.props.isAuthenticated ? 
 					
-					<Route path="/" exact render={() => <Auth onSignIn={this.onSignIn}/>} />
-				: */}
+					<Route path="/" exact component={Auth} />
+				:
 					<main>
 						<TopNav />
 						<SideNav />
 						<div className="main-content">
-							<Route path="/login" component={Auth} />
+							{/* <Route path="/login" component={Auth} /> */}
 							<Route path="/" exact component={Dashboard} /> 
 							{/* <Route path="/" exact render={() => <Dashboard />} /> */}
 							{/* <Route path="/" exact render={() => <Dashboard />} /> */}
@@ -58,13 +60,19 @@ class App extends Component {
 							<Route path="/editticket" component={EditTicket} />
 						</div>
 					</main>
-				{/* } */}
+				}
 			</div>
 		)
 	} 
 }
 
-export default App;
+const mapStateToProps = state => {
+    return { 
+        isAuthenticated: state.auth.isAuthenticated
+    }
+}
+
+export default connect(mapStateToProps, null)(App);
 
 
 /* <Route path="/" render={() => <Auth onSignIn={this.onSignIn}/>} />  */
