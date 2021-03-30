@@ -23,13 +23,6 @@ import './scss/App.scss';
 
 class App extends Component {
 
-	// state = {
-	// 	route: 'signin'
-	// }
-
-	// onSignIn = (route) => {
-	// 	this.setState({route: route})
-	// }
 
 
 	render() {
@@ -37,17 +30,27 @@ class App extends Component {
 			<div>
 				{ 
 					!this.props.isAuthenticated ? 
+
+					<div>
+						<Route path="/" exact component={Auth} />
+						<Route path="/roleassign" component={Auth} />
+						<Route path="/projectassign" component={Auth} />
+						<Route path="/projects" component={Auth} />
+						<Route path="/projectdetails" component={Auth} />
+						<Route path="/editproject" component={Auth} />
+						<Route path="/createproject" component={Auth} />
+						<Route path="/tickets" component={Auth} />
+						<Route path="/ticketdetails" component={Auth} />
+						<Route path="/createticket" component={Auth} />
+						<Route path="/editticket" component={Auth} />
+					</div>
 					
-					<Route path="/" exact component={Auth} />
 				:
 					<main>
 						<TopNav />
 						<SideNav />
 						<div className="main-content">
-							{/* <Route path="/login" component={Auth} /> */}
 							<Route path="/" exact component={Dashboard} /> 
-							{/* <Route path="/" exact render={() => <Dashboard />} /> */}
-							{/* <Route path="/" exact render={() => <Dashboard />} /> */}
 							<Route path="/roleassign" component={RoleAssign} />
 							<Route path="/projectassign" component={ProjectAssign} />
 							<Route path="/projects" component={Projects} />
@@ -73,6 +76,3 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, null)(App);
-
-
-/* <Route path="/" render={() => <Auth onSignIn={this.onSignIn}/>} />  */

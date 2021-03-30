@@ -29,6 +29,7 @@ class Auth extends Component {
     
     onRequestLogin = () => {
         this.props.requestLogin(this.state);
+        console.log(this.state)
     }
     
     render() {
