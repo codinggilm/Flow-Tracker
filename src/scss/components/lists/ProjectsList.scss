@@ -110,16 +110,18 @@
                     align-items: center;
                     
                     p {
-                        margin: 1rem 1rem;                        
+                        margin: 1rem 1rem;
+                        cursor: pointer;                        
                     }
 
                     .page-number {
                         padding: 0.7rem 1rem;
                         margin: 0.5rem;
+                        cursor: pointer;
+                    }
 
-                        &:hover {
-                            background: $pgn-background;
-                        }
+                    .page-number.page-selected {
+                        background: $pgn-background;
                     }
                 }
             }
