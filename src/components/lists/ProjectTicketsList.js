@@ -62,7 +62,7 @@ class ProjectTicketsList extends Component {
 							</div>
 						</div>
 						<div className="list-details-container">
-						<main className="tableList-container">
+						<main className="tableList-container"> 
 								<header className="tableList-titles">
 									<p>Title</p>
 									<p>Submitter</p>

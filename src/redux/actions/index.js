@@ -261,3 +261,13 @@ export const deleteComment = (id, ticketId) => {
         console.log(response.data)
     }
 }
+
+
+//*****************PAGINATION ACTIONS***********************/
+
+export const saveTotalEntries = (number) => { 
+    return { 
+        type: 'SAVE_TOTAL_ENTRIES', 
+        payload: number
+    };
+}

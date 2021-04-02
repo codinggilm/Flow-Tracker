@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchUsers } from '../../redux/actions';
 import Button from '../../components/layout/button/Button';
-import ProjectsList from '../../components/lists/ProjectsList'
+// import ProjectsList from '../../components/lists/ProjectsList'
+import ProjectsList2 from '../../components/lists/ProjectsList2'
 import '../../scss/containers/Projects.scss';
  
 
@@ -22,7 +23,8 @@ class Projects extends Component {
                     </header>
                     
                     <div className="projects-list-container">
-                        <ProjectsList />
+                        {/* <ProjectsList /> */}
+                        <ProjectsList2 />
                     </div>
                 </main>
             </div>

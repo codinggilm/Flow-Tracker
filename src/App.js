@@ -14,7 +14,8 @@ import Projects from './containers/Projects/Projects';
 import ProjectDetails from './containers/Projects/ProjectDetails';
 import CreateProject from './containers/Projects/CreateProject';
 import EditProject from './containers/Projects/EditProject';
-import Tickets from './containers/Tickets/Tickets';
+// import Tickets from './containers/Tickets/Tickets';
+import Tickets2 from './containers/Tickets/Tickets2';
 import TicketDetails from './containers/Tickets/TicketDetails';
 import CreateTicket from './containers/Tickets/CreateTicket';
 import EditTicket from './containers/Tickets/EditTicket'; 
@@ -57,7 +58,7 @@ class App extends Component {
 							<Route path="/projectdetails" component={ProjectDetails} />
 							<Route path="/editproject" component={EditProject} />
 							<Route path="/createproject" component={CreateProject} />
-							<Route path="/tickets" component={Tickets} />
+							<Route path="/tickets" component={Tickets2} />
 							<Route path="/ticketdetails" component={TicketDetails} />
 							<Route path="/createticket" component={CreateTicket} />
 							<Route path="/editticket" component={EditTicket} />

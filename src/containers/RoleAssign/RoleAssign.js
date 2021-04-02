@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchUsers, editUserRole } from '../../redux/actions';
-import UsersList from '../../components/lists/UsersList';
+// import UsersList from '../../components/lists/UsersList';
+import List from '../../components/layout/display/List';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/RoleAssign.scss';
  
@@ -17,12 +18,12 @@ class RoleAssign extends Component {
     componentDidMount = () => {
 		this.props.fetchUsers();
 	}
-
+ 
     onChange = (event) => {
         this.setState({ [event.target.name]: event.target.value })
     }
 
-    renderUsers = () => {
+    renderUsersSelection = () => {
         return this.props.users.map(user => {
             return <option key={user.id}>{user.username}</option>
             
@@ -30,9 +31,7 @@ class RoleAssign extends Component {
     }
 
     onChangingUserRole = () => {
-        // console.log(this.state)
         const selectedUser = this.props.users.filter(user => user.username === this.state.username)
-        // console.log(selectedUser)
         this.props.editUserRole({
             username: this.state.username,
             role: this.state.role,
@@ -40,7 +39,32 @@ class RoleAssign extends Component {
         })
     }
 
+    renderUsers = (entriesStart, maxPerPage, searchfield) => {
+        let { users } = this.props;
+		let entriesEnd = entriesStart + maxPerPage;
+		let filter = searchfield;
+          
+        let filteredList = users.filter(users => {
+			return (
+                users.username.toLowerCase().includes(filter) || users.email.toLowerCase().includes(filter) ||
+                users.role.toLowerCase().includes(filter)
+            )
+		})
+
+        return filteredList.slice(entriesStart, entriesEnd).map(user => {
+            return (
+                <div className="tableList-row users" key={user.id}>
+					<p>{user.username}</p>
+					<p>{user.email}</p>
+					<p>{user.role}</p>
+				</div>
+            )
+        })
+    }
+
     render() {
+        const { users } = this.props;
+
         return (
             <div>
                 <main className="roles-main">
@@ -52,7 +76,7 @@ class RoleAssign extends Component {
                             <label className="selection user-selection">
                                 <p className="selection-title">Select 1 or more Users</p>
                                 <select multiple name="username" onChange={this.onChange}>
-                                    {this.renderUsers()}
+                                    {this.renderUsersSelection()}
                                 </select>
                             </label>
     
@@ -74,7 +98,20 @@ class RoleAssign extends Component {
                         </div>
     
                         <div className="list-column">
-                            <UsersList />
+                            <List 
+                                listTitle="Your Personnel"
+                                listDescription="All the users in your database"
+                                titleGrid="tableList-titles users"
+                                stateObject={users}
+                                allEntries={users.length} 
+                                renderItems={(entriesStart, maxPerPage, searchfield) => 
+                                    this.renderUsers(entriesStart, maxPerPage, searchfield)
+                                }
+                            >
+                                <p>User Name</p>
+                                <p>Email</p>
+                                <p>Role</p>
+                            </List>
                         </div>
                     </div>
                 </main>

@@ -1,150 +1,150 @@
-@import'../../config';
+// @import'../../config';
  
-.tickets-comments-list-main {
-    background: #fff;
-    border: 1px solid rgba(204, 204, 204, 0.76);
-    border-left: none;
-    border-top: none;
-    box-shadow: $card-shadow;
-    // margin-top: 5rem;
+// .tickets-comments-list-main {
+//     background: #fff;
+//     border: 1px solid rgba(204, 204, 204, 0.76);
+//     border-left: none;
+//     border-top: none;
+//     box-shadow: $card-shadow;
+//     // margin-top: 5rem;
 
  
-    .list-container {
+//     .list-container {
 
-        .banner-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1.5rem;
+//         .banner-container {
+//             display: flex;
+//             justify-content: center;
+//             margin-bottom: 1.5rem;
 
-            .list-banner {
-                background: $bnr-primary;
-                position: relative;
-                margin-top: -1.5rem;
-                color: #fff;
-                padding: 1rem;
-                width: 95%;
-                box-shadow: 8px 8px 7px -3px rgba(0,0,0,0.25);
+//             .list-banner {
+//                 background: $bnr-primary;
+//                 position: relative;
+//                 margin-top: -1.5rem;
+//                 color: #fff;
+//                 padding: 1rem;
+//                 width: 95%;
+//                 box-shadow: 8px 8px 7px -3px rgba(0,0,0,0.25);
     
-                .list-title {
-                    font-size: 1.5rem;
-                    margin-bottom: 0.5rem;
-                }
+//                 .list-title {
+//                     font-size: 1.5rem;
+//                     margin-bottom: 0.5rem;
+//                 }
 
-                .list-detail {
-                    margin-left: 1rem;
-                }
-            }
-        }
+//                 .list-detail {
+//                     margin-left: 1rem;
+//                 }
+//             }
+//         }
 
-        .list-search {
-            margin: 1rem 0.8rem;
+//         .list-search {
+//             margin: 1rem 0.8rem;
 
-            .list-entries {
-                display: flex;
-                justify-content: space-between;
+//             .list-entries {
+//                 display: flex;
+//                 justify-content: space-between;
 
-                input {
-                    margin: 0rem 0.5rem;
-                    width: 40px;
-                }
+//                 input {
+//                     margin: 0rem 0.5rem;
+//                     width: 40px;
+//                 }
 
-                .entries-show, .entries-search {
-                    display: flex;
-                }
+//                 .entries-show, .entries-search {
+//                     display: flex;
+//                 }
 
-                .entries-search {
-                    justify-self: flex-end;
+//                 .entries-search {
+//                     justify-self: flex-end;
 
-                    input {
-                        width: 200px;
-                    }
-                }
+//                     input {
+//                         width: 200px;
+//                     }
+//                 }
 
-            }
-        }
+//             }
+//         }
 
-        .tableList-container {
+//         .tableList-container {
 
-            .tableList-titles {
-                display: grid;
-                grid-template-columns: 1fr 2fr 1fr 0.5fr;
-                color: #000;
-                font-weight: bold;
-                font-size: 1.2rem;
-                border-bottom: 1px solid #000;
-                margin: 1rem 0.7rem 0rem 0.7rem;
-                padding-bottom: 0.5rem;
-            }
+//             .tableList-titles {
+//                 display: grid;
+//                 grid-template-columns: 1fr 2fr 1fr 0.5fr;
+//                 color: #000;
+//                 font-weight: bold;
+//                 font-size: 1.2rem;
+//                 border-bottom: 1px solid #000;
+//                 margin: 1rem 0.7rem 0rem 0.7rem;
+//                 padding-bottom: 0.5rem;
+//             }
         
-            .tableList-details-container {
-                display: flex;
-                flex-direction: column;
-                margin: 0rem 0.5rem 1rem 0.5rem;
+//             .tableList-details-container {
+//                 display: flex;
+//                 flex-direction: column;
+//                 margin: 0rem 0.5rem 1rem 0.5rem;
         
-                .tableList-row {
-                    display: grid;
-                    grid-template-columns: 1fr 2fr 1fr 0.5fr;
-                    padding: 1rem 0.5rem;
-                    border-bottom: 1px solid #ccc;
+//                 .tableList-row {
+//                     display: grid;
+//                     grid-template-columns: 1fr 2fr 1fr 0.5fr;
+//                     padding: 1rem 0.5rem;
+//                     border-bottom: 1px solid #ccc;
 
-                    .small-del-btn {
-                        background: $small-del-btn;
-                        font-family: $main-font;
-                        color: #fff;
-                        border: none;
-                        // border-radius: 10px;
-                        width: 100%;
-                        cursor: pointer;
+//                     .small-del-btn {
+//                         background: $small-del-btn;
+//                         font-family: $main-font;
+//                         color: #fff;
+//                         border: none;
+//                         // border-radius: 10px;
+//                         width: 100%;
+//                         cursor: pointer;
                     
-                        &:hover {
-                            background: $small-del-btn-hover;
-                        }
+//                         &:hover {
+//                             background: $small-del-btn-hover;
+//                         }
                     
-                        &:focus {
-                            outline: none;
-                        }
-                    }
+//                         &:focus {
+//                             outline: none;
+//                         }
+//                     }
 
-                    p {
-                        padding-top: 0.7rem;
-                    }
+//                     p {
+//                         padding-top: 0.7rem;
+//                     }
 
-                    .project-action-buttons {
-                        display: flex;
-                        flex-direction: column;
-                    }
+//                     .project-action-buttons {
+//                         display: flex;
+//                         flex-direction: column;
+//                     }
         
-                }
+//                 }
 
-                .last-row {
-                    border-bottom: 1px solid #000;
-                }
-            }
+//                 .last-row {
+//                     border-bottom: 1px solid #000;
+//                 }
+//             }
         
-            .tableList-footer {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 0rem 1rem 1.5rem;
+//             .tableList-footer {
+//                 display: flex;
+//                 justify-content: space-between;
+//                 align-items: center;
+//                 padding: 0rem 1rem 1.5rem;
         
-                .tableList-pagination {
-                    display: flex; 
-                    align-items: center;
+//                 .tableList-pagination {
+//                     display: flex; 
+//                     align-items: center;
                     
-                    p {
-                        margin: 1rem 1rem;                        
-                    }
+//                     p {
+//                         margin: 1rem 1rem;                        
+//                     }
 
-                    .page-number {
-                        padding: 0.7rem 1rem;
-                        margin: 0.5rem;
+//                     .page-number {
+//                         padding: 0.7rem 1rem;
+//                         margin: 0.5rem;
 
-                        &:hover {
-                            background: $pgn-background;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+//                         &:hover {
+//                             background: $pgn-background;
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }

@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchProjects, fetchProject, saveProjectId } from '../../redux/actions';
-import '../../scss/components/lists/ProjectsList.scss';
+// import { Link } from 'react-router-dom';
+import '../../../scss/components/layouts/List.scss';
  
  
-class ProjectsList extends Component {
+class List extends Component {
+    constructor(props) {
+        super(props) 
 
-	state = {
-		currentPage: 1,
-		entriesStart: 0,
-		maxPerPage: 10,
-		currentEnd: this.props.projects.length,
-		searchfield: ''
-	}
+        this.state = {
+            currentPage: 1,
+            entriesStart: 0,
+            maxPerPage: 10,
+            currentEnd: '',
+            searchfield: ''
+        }
+    }
 
 	componentDidMount() {
-		this.props.fetchProjects();
+		this.setState({currentEnd: this.props.stateObject})
 		
 	}
 
@@ -32,7 +33,8 @@ class ProjectsList extends Component {
 
 	renderPagination = () => {
 		let { maxPerPage } = this.state;
-		let pages = this.props.projects.length / maxPerPage;
+		// let pages = this.props.stateObject.length / maxPerPage;
+		let pages = this.props.allEntries / maxPerPage;
 		let pagesArray = [];
 
 		for (let i=0; i < pages; i++) {
@@ -62,7 +64,7 @@ class ProjectsList extends Component {
 		let currentStart = this.state.entriesStart;
 		let { maxPerPage } = this.state;
 
-		if (currentStart + maxPerPage <= this.props.projects.length - 1) {
+		if (currentStart + maxPerPage <= this.props.stateObject.length - 1) {
 			this.setState({ 
 				entriesStart: currentStart + maxPerPage,
 				currentPage: this.state.currentPage + 1 
@@ -90,59 +92,50 @@ class ProjectsList extends Component {
 
 	}
 
-	calcCurrentEnd = () => {
-		let {projects} = this.props;
+	calcCurrentEnd = (n) => {
+		let { stateObject, allEntries } = this.props;
 		let { entriesStart, maxPerPage } = this.state;
-		let end;
+		let currEnd;
 
-		if (entriesStart + maxPerPage <= projects.length) {
-			end = entriesStart + maxPerPage;
-		} else {
-			end = projects.length;
-		}
-		return end;
+        if ( maxPerPage > allEntries) {
+            currEnd = allEntries
+        } else if (entriesStart + maxPerPage <= stateObject.length) {
+            currEnd = entriesStart + maxPerPage;
+        } else {
+            currEnd = stateObject.length;
+        }
+        return currEnd;
+
+        // function help() {
+        //     if (entriesStart + maxPerPage <= stateObject.length) {
+        //         currEnd = entriesStart + maxPerPage;
+        //     // } else if (entriesStart + maxPerPage <= allEntries) {
+        //     //     currEnd = allEntries;
+        //     } else {
+        //         currEnd = stateObject.length;
+        //     }
+        //     return currEnd;
+        // }
+
+        // let finalNumber = help()
+        
+        // if (finalNumber > finalNumber) 
+
 	}
-
-	renderProjects = () => {
-		let { projects } = this.props;
-		let { maxPerPage, entriesStart } = this.state;
-		let entriesEnd = entriesStart + maxPerPage;
-		let filter = this.state.searchfield;
-
-		let filteredList = projects.filter(projects => {
-			return projects.title.toLowerCase().includes(filter) || projects.description.toLowerCase().includes(filter)
-		})
-
-		return filteredList.slice(entriesStart, entriesEnd).map(project => {
-			return (
-				<div className="tableList-row" key={project.id}>
-					<p>{project.title}</p>
-					<p>{project.description}</p>
-					<div className="project-action-buttons">
-						<Link to="/projectassign">Manage Users</Link>
-						<Link to="/projectdetails" onClick={ ()=>this.props.saveProjectId(project.id) }>
-							Project details
-						</Link>
-					</div>
-				</div>
-			)
-		})
-	}
-
 
 
 	render() {
-		let { projects } = this.props;
-		let { entriesStart, maxPerPage } = this.state;
-		
+		let { stateObject } = this.props;
+		let { entriesStart, maxPerPage, searchfield } = this.state;
+
 		return (
 			<div>
-				<main className="list-main-projects">
+				<main className="list-main">
 					<div className="list-container">
 						<header className="banner-container">
 							<div className="list-banner">
-								<p className="list-title">Your Projects</p>
-								<p className="list-detail">All the projects you have in the database.</p>
+								<p className="list-title">{this.props.listTitle}</p>
+								<p className="list-detail">{this.props.listDescription}</p>
 							</div>
 						</header>
 						<div className="list-search">
@@ -163,19 +156,18 @@ class ProjectsList extends Component {
 									<input type="search" onChange={this.setFilter}/>
 								</div>
 							</div>
-						</div>
+						</div> 
 						<div className="list-details-container">
 						<main className="tableList-container">
-								<header className="tableList-titles">
-									<p>Project Name</p>
-									<p>Description</p>
-									<p>Actions</p>
+								<header className={this.props.titleGrid}>
+									{this.props.children}
 								</header>
 								<div className="tableList-details-container">
-									{this.renderProjects()}
+									{this.props.renderItems(entriesStart, maxPerPage, searchfield)}
 								</div>
 								<div className="tableList-footer">
-									<p>Showing {entriesStart + 1} to {this.calcCurrentEnd()} of {projects.length} entries</p>
+									<p>Showing {entriesStart + 1} to {this.calcCurrentEnd()} of {this.props.allEntries} entries</p>
+									{/* <p>Showing {entriesStart + 1} to {this.calcCurrentEnd()} of {stateObject.length} entries</p> */}
 									<div className="tableList-pagination">
 										<p onClick={this.previousPage}>Previous</p>
 										{this.renderPagination()}
@@ -190,12 +182,6 @@ class ProjectsList extends Component {
 		)
 	}
 }
-   
-const mapStateToProps = state => {
-	return { projects: state.projects.projects }
-}
-
-const mapDispatchToProps = { fetchProjects, fetchProject, saveProjectId }; 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectsList); 
+export default List; 

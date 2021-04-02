@@ -4,7 +4,7 @@ import { fetchUsers, fetchProjectUsers } from '../../redux/actions';
 import { connect } from 'react-redux';
 import '../../scss/components/lists/ProjectUsersList.scss';
 
-
+ 
 class ProjectUsersList extends Component {
 
 	// state = {
