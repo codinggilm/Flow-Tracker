@@ -1,0 +1,10 @@
+@import'../../config';
+
+.tickets-att-list-main {
+    background: #fff;
+    border: 1px solid rgba(204, 204, 204, 0.76);
+    border-left: none;
+    border-top: none;
+    box-shadow: $card-shadow;
+    // margin-top: 5rem;
+}

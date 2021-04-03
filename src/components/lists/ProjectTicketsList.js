@@ -9,7 +9,7 @@ class ProjectTicketsList extends Component {
 
 	componentDidMount() {
 		this.props.fetchTickets();
-		// console.log(this.props.tickets)
+		// console.log(this.props.tickets) 
 		// console.log(this.props.projectId)
 	}
 

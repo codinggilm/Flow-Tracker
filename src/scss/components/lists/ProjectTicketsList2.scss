@@ -1,6 +1,6 @@
 @import'../../config';
  
-.project-users-list-main {
+.project-tickets-list-main {
     background: #fff;
     border: 1px solid rgba(204, 204, 204, 0.76);
     border-left: none;
@@ -67,7 +67,8 @@
 
     //         .tableList-titles {
     //             display: grid;
-    //             grid-template-columns: 1fr 2fr 1fr;
+    //             grid-template-columns: 1fr 0.6fr 0.6fr 0.6fr 1fr 0.5fr;
+    //             // grid-template-columns: repeat(6, 1fr);
     //             color: #000;
     //             font-weight: bold;
     //             font-size: 1.2rem;
@@ -83,7 +84,8 @@
         
     //             .tableList-row {
     //                 display: grid;
-    //                 grid-template-columns: 1fr 2fr 1fr;
+    //                 grid-template-columns: 1fr 0.6fr 0.6fr 0.6fr 1fr 0.5fr;
+    //                 // grid-template-columns: repeat(6, 1fr);
     //                 padding: 1rem 0.5rem;
     //                 border-bottom: 1px solid #ccc;
 

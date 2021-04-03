@@ -1,9 +1,34 @@
 @import'../config';
 // @import "~bootstrap/scss/bootstrap";
 
+
+
+
+// MODAL *********************
+// .display-block {
+//     display: block;
+// }
+
+// .display-none {
+//     display: none;
+// }
+
+// .modal-container{
+//     // position: relative;
+//     // z-index: 2;
+//     // margin-top: 5rem;
+//     // display: flex;
+//     // justify-content: center;
+//     // align-items: center;
+// }
+//*************************************
+
 .create-project-container {
     padding: 5rem 3rem;
     height: 91.5vh;
+    // position: relative;
+    // z-index: 3;
+
     
     .edit-ticket-main {
         background: #fff;

@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
-import { fetchUsers, fetchProjectUsers, saveTotalEntries } from '../../redux/actions';
+import { fetchUsers, fetchProjectUsers, saveTotalProjectUsers } from '../../redux/actions';
 import List from '../layout/display/List'
 import { connect } from 'react-redux';
-import '../../scss/components/lists/ProjectUsersList.scss';
+import '../../scss/components/lists/ProjectUsersList2.scss';
 
 
 class ProjectUsersList2 extends Component {
 
-    // state = {
-    //     usersNumber: null
-    // }
+    
 
 	componentDidMount = () => {
 		this.props.fetchUsers();
 		this.props.fetchProjectUsers(this.props.projectId);
 	}
 
-	
-
 
 	renderProjectUsers = (entriesStart, maxPerPage, searchfield) => {
+	// renderProjectUsers = () => {
+		// let { users, entriesStart, maxPerPage, searchfield } = this.props;
 		let { users } = this.props;
 		let entriesEnd = entriesStart + maxPerPage;
 		let filter = searchfield;
@@ -35,14 +33,14 @@ class ProjectUsersList2 extends Component {
 		// Match project users IDs with Users
 		let finalUsers = users.filter(user => projectUsersIds.includes(user.id));
         // this.setState({usersNumber: finalUsers.length})
-        this.props.saveTotalEntries(finalUsers.length)
+        this.props.saveTotalProjectUsers(finalUsers.length)
 
         let filteredList = finalUsers.filter(users => {
 			return (
                 users.username.toLowerCase().includes(filter) || users.email.toLowerCase().includes(filter) ||
                 users.role.toLowerCase().includes(filter) 
             )
-		})
+		}) 
 
 		// return finalUsers.map(user => {
         return filteredList.slice(entriesStart, entriesEnd).map(user => {
@@ -55,9 +53,13 @@ class ProjectUsersList2 extends Component {
             )
 		})
 	}
+
+	
+
+
 	
 	render() {
-        let { users, totalEntries} = this.props;
+        let { users, totalProjectUsers} = this.props;
 
 		return (
 			<div>
@@ -76,10 +78,12 @@ class ProjectUsersList2 extends Component {
                             listDescription="Current Users assigned to this Project"
                             titleGrid="tableList-titles project-users"
                             stateObject={users}
-                            allEntries={totalEntries} 
+                            allEntries={totalProjectUsers} 
+                            // allEntries={users.length} 
                             renderItems={(entriesStart, maxPerPage, searchfield) => 
                                 this.renderProjectUsers(entriesStart, maxPerPage, searchfield)
                             } 
+                            // renderItems={this.renderProjectUsers} 
                         >
                             <p>User Name</p>
                             <p>Email</p>
@@ -98,11 +102,15 @@ const mapStateToProps = state => {
         users: state.users.users,
         projectUsers: state.users.projectUsers,
 		projectId: state.projects.projectId,
-        totalEntries: state.pagination.totalEntries
+        totalProjectUsers: state.pagination.totalProjectUsers,
+        // entriesStart: state.pagination.receivedProps.entriesStart,
+        // maxPerPage: state.pagination.receivedProps.maxPerPage,
+        // searchfield: state.pagination.receivedProps.searchfield
+        
     }
 }
 
-const mapDispatchToProps = { fetchUsers, fetchProjectUsers, saveTotalEntries }
+const mapDispatchToProps = { fetchUsers, fetchProjectUsers, saveTotalProjectUsers }
 // const mapDispatchToProps = { fetchUsers, fetchProject, fetchProjectUsers }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectUsersList2); 

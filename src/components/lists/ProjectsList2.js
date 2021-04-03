@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchProjects, fetchProject, saveProjectId } from '../../redux/actions';
+import { fetchProjects, fetchProject, saveProjectId, fetchProjectUsers } from '../../redux/actions';
 import List from '../layout/display/List'
 // import '../../scss/components/lists/ProjectsList.scss';
  
@@ -22,7 +22,9 @@ class ProjectsList2 extends Component {
 
 
 	renderProjects = (entriesStart, maxPerPage, searchfield) => {
+	// renderProjects = () => {
 
+		// let { projects, entriesStart, maxPerPage, searchfield } = this.props;
 		let { projects } = this.props;
 		// let { maxPerPage, entriesStart } = this.state;
 		let entriesEnd = entriesStart + maxPerPage;
@@ -40,7 +42,10 @@ class ProjectsList2 extends Component {
 					<p>{project.description}</p>
 					<div className="project-action-buttons">
 						<Link to="/projectassign">Manage Users</Link>
-						<Link to="/projectdetails" onClick={ ()=>this.props.saveProjectId(project.id)}>
+						<Link to="/projectdetails" onClick={ ()=>{
+							this.props.fetchProjectUsers(project.id);
+							this.props.saveProjectId(project.id);
+						}}>
 							Project details
 						</Link>
 					</div>
@@ -76,10 +81,15 @@ class ProjectsList2 extends Component {
 }
    
 const mapStateToProps = state => {
-	return { projects: state.projects.projects }
+	return { 
+		projects: state.projects.projects,
+		entriesStart: state.pagination.receivedProps.entriesStart,
+        maxPerPage: state.pagination.receivedProps.maxPerPage,
+        searchfield: state.pagination.receivedProps.searchfield 
+	}
 }
 
-const mapDispatchToProps = { fetchProjects, fetchProject, saveProjectId }; 
+const mapDispatchToProps = { fetchProjects, fetchProject, saveProjectId, fetchProjectUsers }; 
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectsList2); 

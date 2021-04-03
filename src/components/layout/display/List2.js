@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { sendPropsToParent } from '../../../redux/actions' 
 // import { Link } from 'react-router-dom';
 import '../../../scss/components/layouts/List.scss';
  
@@ -9,26 +11,23 @@ class List extends Component {
 
         this.state = {
             currentPage: 1,
-            totalPages: null,
-            lastPage: false,
-            maxPerPage: 10,
             entriesStart: 0,
+            maxPerPage: 10,
             currentEnd: '',
             searchfield: ''
         }
     }
 
 	componentDidMount() {
-        // this.saveTotalPages()
-		// this.setState({currentEnd: this.props.stateObject})
+        let { entriesStart, maxPerPage, searchfield } = this.state;
+		this.setState({currentEnd: this.props.stateObject})
+        // this.props.sendPropsToParent([entriesStart, maxPerPage, searchfield])
+        // console.log(entriesStart, maxPerPage, searchfield)
 		
 	}
 
 	setEntries = (event) => {
-        let { currentPage, totalPages} = this.state;
-		// if (event.target.value > 0 && (!this.state.lastPage)) {
-		if (event.target.value > 0 && (currentPage !== totalPages)) {
-		// if (event.target.value > 0) {
+		if (event.target.value > 0) {
 			this.setState({ maxPerPage: parseInt(event.target.value) })
 		}
 	}
@@ -37,45 +36,23 @@ class List extends Component {
 		this.setState({ searchfield: event.target.value })
 	}
 
-    setLastPage = () => {
-        // this.setState({lastPage: true})
-    }
-
-    // saveTotalPages = () => {
-    //     let { maxPerPage, currentPage } = this.state;
-	// 	let pages = this.props.allEntries / maxPerPage;
-	// 	let pagesArray = [];
-
-    //     for (let i=0; i < pages; i++) {
-    //         pagesArray.push(i)
-	// 	}
-
-    //     this.setState({totalPages: pagesArray.length})
-    // }
-
 	renderPagination = () => {
-		let { maxPerPage, currentPage } = this.state;
+		let { maxPerPage } = this.state;
 		// let pages = this.props.stateObject.length / maxPerPage;
 		let pages = this.props.allEntries / maxPerPage;
 		let pagesArray = [];
-        
+
 		for (let i=0; i < pages; i++) {
-            pagesArray.push(i)
+			pagesArray.push(i)
 		}
 
 		let pageButtons = pagesArray.map(el => {
 			let style;
-
-			if (el + 1  === currentPage) { 
-                style = 'page-number page-selected' 
-            } else { 
-                style = 'page-number' 
-            }
+			if ((el + 1)  === this.state.currentPage) { style = 'page-number page-selected' }
+			else { style = 'page-number' }
 
 			return <p className={style} key={el} onClick={() => this.changePage(el)}>{el + 1}</p>
 		})
-
-        // if (currentPage === totalPages)
 
 		return pageButtons;
 	}
@@ -87,7 +64,7 @@ class List extends Component {
 			currentPage: el + 1 
 		})
 	}
-
+ 
 	nextPage = () => {
 		let currentStart = this.state.entriesStart;
 		let { maxPerPage } = this.state;
@@ -134,12 +111,19 @@ class List extends Component {
             currEnd = stateObject.length;
         }
         return currEnd;
-
 	}
 
+    sendProps = () => {
+        let { entriesStart, maxPerPage, searchfield } = this.state;
+        this.props.sendPropsToParent({
+            entriesStart: entriesStart, 
+            maxPerPage: maxPerPage, 
+            searchfield: searchfield
+        })
+    }
 
 	render() {
-		let { stateObject } = this.props;
+		// let { stateObject } = this.props;
 		let { entriesStart, maxPerPage, searchfield } = this.state;
 
 		return (
@@ -177,6 +161,8 @@ class List extends Component {
 									{this.props.children}
 								</header>
 								<div className="tableList-details-container">
+                                    {/* {this.sendProps()} */}
+                                    {/* {this.props.renderUsers()} */}
 									{this.props.renderItems(entriesStart, maxPerPage, searchfield)}
 								</div>
 								<div className="tableList-footer">
@@ -197,5 +183,6 @@ class List extends Component {
 	}
 }
 
+const mapDispatchToProps = {sendPropsToParent }
 
-export default List; 
+export default connect(null, mapDispatchToProps)(List); 

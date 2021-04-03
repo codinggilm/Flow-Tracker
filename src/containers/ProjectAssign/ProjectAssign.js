@@ -118,7 +118,7 @@ class ProjectAssign extends Component {
                             </div>
                         </div>
     
-                        <div className="list-column">
+                        <div className="list-column"> 
                             <ProjectsList2 />
                         </div>
                     </div>

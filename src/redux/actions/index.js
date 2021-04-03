@@ -265,9 +265,31 @@ export const deleteComment = (id, ticketId) => {
 
 //*****************PAGINATION ACTIONS***********************/
 
-export const saveTotalEntries = (number) => { 
+export const saveTotalProjectUsers = (number) => { 
     return { 
-        type: 'SAVE_TOTAL_ENTRIES', 
+        type: 'SAVE_TOTAL_PROJECT_USERS', 
         payload: number
     };
 }
+
+export const saveTotalProjectTickets = (number) => { 
+    return { 
+        type: 'SAVE_TOTAL_PROJECT_TICKETS', 
+        payload: number
+    };
+}
+
+// export const sendPropsToParent = (props) => { 
+//     return { 
+//         type: 'SEND_PROPS_TO_PARENT', 
+//         payload: props
+//     };
+//     return async dispatch => {
+//         console.log('cock')
+//         // console.log(id, ticketId)
+//         // console.log(id, ticketId)
+//         // const response = await flowAPI.post(`/comments/delete/${id}`, {ticketId: ticketId});
+//         dispatch({ type: 'SEND_PROPS_TO_PARENT', payload: props});
+//         // console.log(response.data)
+//     }
+// }

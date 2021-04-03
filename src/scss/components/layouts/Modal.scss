@@ -1,0 +1,31 @@
+.display-block {
+    display: block;
+}
+
+.display-none {
+    display: none;
+}
+
+
+
+.modal-main {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 8%;
+    right: 0;
+    bottom: 0;
+    left: 15%;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.287);
+
+    .modal-container{
+        position: fixed;
+        top: 30%;
+        left: 50%;
+        height: 400px;
+        width: 400px;
+        background: rgba(245, 245, 245, 0.822);
+    }
+
+}

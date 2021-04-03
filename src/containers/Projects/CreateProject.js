@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { createProject, fetchUsers } from '../../redux/actions';
-// import DropdownButton from 'react-bootstrap/DropdownButton';
-// import Dropdown from 'react-bootstrap/Dropdown';
+import Modal from '../../components/layout/display/Modal'
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/CreateProject.scss';
 
@@ -14,7 +13,8 @@ class CreateProject extends Component {
         title: '',
         description: '',
         username: '',
-        userId: ''
+        userId: '',
+        showModal: false
     }
 
     // componentDidMount = () => {
@@ -41,22 +41,39 @@ class CreateProject extends Component {
         })
     }
 
+    closeModal = () => {
+        this.setState({showModal: false})
+        console.log(this.state)
+    }
 
     onCreateProject = () => {
-        console.log(this.state)
-        this.props.createProject({
-            title: this.state.title,
-            description: this.state.description,
-            userAdded: this.state.userAdded,
-            userId: this.state.userId
-        });
+        this.setState({showModal: true})
+        // console.log(this.state)
+        // this.props.createProject({
+        //     title: this.state.title,
+        //     description: this.state.description,
+        //     userAdded: this.state.userAdded,
+        //     userId: this.state.userId
+        // });
     }
 
 
 
     render() {
+        const showHideClassName = this.state.showModal ? "display-block" : "display-none";
+        
         return (
             <div> 
+
+               
+                <Modal 
+                    exitModal={this.closeModal} 
+                    style={showHideClassName}
+                    title="Confirm changes?"
+
+                />
+ 
+            
                 <main className="create-project-container">
                     <div className="edit-ticket-main">
                         <div className="list-container">
@@ -86,7 +103,7 @@ class CreateProject extends Component {
                                                 <option>--Select User-- </option>
                                                 {this.renderUsersList()}
                                             </select>
-                                        </div>
+                                        </div> 
                                     </div>
                                     <div className="details-row-rightside">
                                         <p className="row-title">Action</p>

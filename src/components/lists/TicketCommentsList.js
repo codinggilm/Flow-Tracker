@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'; 
 import { connect } from 'react-redux';
 import { fetchComments, deleteComment } from '../../redux/actions';
 import '../../scss/components/lists/TicketCommentsList.scss';

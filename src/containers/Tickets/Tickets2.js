@@ -8,7 +8,7 @@ import List from '../../components/layout/display/List'
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/Tickets2.scss';
  
-  
+   
 class Tickets2 extends Component {
 
     componentDidMount = () => {
@@ -48,14 +48,13 @@ class Tickets2 extends Component {
                     <p>{ticket.type}</p>
                     <p>{ticket.createdAt}</p>
                     <div className="ticket-action-buttons">
-                        <Link to="/editticket"
-                            onClick={ () => {
+                        <Link 
+                            to="/editticket"
+                            onClick={ () => { 
                                 this.saveTicketDetails(ticket.id, ticket.projectId);
                                 this.props.fetchTicket(ticket.id);
                             }}
-                        >
-                        Edit/Assign
-                        </Link>
+                        >Edit/Assign</Link>
                         <Link 
                             to="/ticketdetails" 
                             onClick={ () => {
@@ -63,9 +62,7 @@ class Tickets2 extends Component {
                                 this.props.fetchComments(ticket.id);
                                 this.props.fetchTicketHistory(ticket.id);
                             }}
-                        >
-                        Details
-                        </Link>
+                        >Details</Link>
                     </div>
                 </div>
             )
@@ -82,25 +79,28 @@ class Tickets2 extends Component {
                     <header className="ticket-create">
                         <Link to="/createticket"><Button text="CREATE NEW TICKET"/></Link>
                     </header>
-                    <List 
-                        listTitle="Your Tickets"
-                        listDescription="All the tickets you have in the database"
-                        titleGrid="tableList-titles tickets"
-                        stateObject={tickets}
-                        allEntries={tickets.length} 
-                        renderItems={(entriesStart, maxPerPage, searchfield) => 
-                            this.renderTickets(entriesStart, maxPerPage, searchfield)
-                        } 
-                    >
-                        <p>Title</p>
-                        <p>Project Name</p>
-                        <p>Developer Assigned</p>
-                        <p>Priority</p>
-                        <p>Status</p>
-                        <p>Type</p>
-                        <p>Created</p>
-                        <p>Actions</p>
-                    </List>
+
+                    <div className="tickets-main">
+                        <List 
+                            listTitle="Your Tickets"
+                            listDescription="All the tickets you have in the database"
+                            titleGrid="tableList-titles tickets"
+                            stateObject={tickets}
+                            allEntries={tickets.length} 
+                            renderItems={(entriesStart, maxPerPage, searchfield) => 
+                                this.renderTickets(entriesStart, maxPerPage, searchfield)
+                            } 
+                        >
+                            <p>Title</p>
+                            <p>Project Name</p>
+                            <p>Developer Assigned</p>
+                            <p>Priority</p>
+                            <p>Status</p>
+                            <p>Type</p>
+                            <p>Created</p>
+                            <p>Actions</p>
+                        </List>
+                    </div>
                 </main>
             </div>
         )

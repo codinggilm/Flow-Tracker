@@ -2,7 +2,7 @@
  
 .list-main {
     background: #fff;
-    margin: 0rem 2rem 4rem 2rem;
+    // margin: 0rem 2rem 4rem 2rem;
 
 
     .list-container {
@@ -89,6 +89,22 @@
                 grid-template-columns: 1fr 2fr 1fr;
             }
 
+            .tableList-titles.project-tickets {
+                grid-template-columns: 1fr 0.6fr 0.6fr 0.6fr 1fr 0.5fr;
+            }
+
+            .tableList-titles.ticket-history {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+            }
+
+            .tableList-titles.comments {
+                grid-template-columns: 1fr 2fr 1fr 0.5fr;
+            }
+
+            .tableList-titles.attachments {
+                grid-template-columns: 1fr 1fr 2fr 1fr;
+            }
+
         
             .tableList-details-container {
                 display: flex;
@@ -132,6 +148,18 @@
 
                 .tableList-row.project-users {
                     grid-template-columns: 1fr 2fr 1fr;
+                }
+
+                .tableList-row.project-tickets {
+                    grid-template-columns: 1fr 0.6fr 0.6fr 0.6fr 1fr 0.5fr;
+                }
+
+                .tableList-row.ticket-history {
+                    grid-template-columns: 1fr 1fr 1fr 1fr; 
+                }
+
+                .tableList-row.comments {
+                    grid-template-columns: 1fr 2fr 1fr 0.5fr; 
                 }
                 
 

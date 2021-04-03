@@ -6,7 +6,7 @@ import List from '../../components/layout/display/List';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/RoleAssign.scss';
  
-  
+   
 class RoleAssign extends Component {
 
     state = {
@@ -97,7 +97,7 @@ class RoleAssign extends Component {
                             </div>
                         </div>
     
-                        <div className="list-column">
+                        <div className="list-column"> 
                             <List 
                                 listTitle="Your Personnel"
                                 listDescription="All the users in your database"

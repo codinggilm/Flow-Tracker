@@ -1,0 +1,11 @@
+@import'../../config';
+ 
+.ticket-history-main {
+    background: #fff;
+    border: 1px solid rgba(204, 204, 204, 0.76);
+    border-left: none;
+    border-top: none;
+    box-shadow: $card-shadow;
+    margin-top: 3rem;
+
+}

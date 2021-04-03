@@ -13,7 +13,7 @@ class Projects extends Component {
     componentDidMount = () => {
         this.props.fetchUsers()
     }
-
+ 
     render() {
         return (
             <div>  

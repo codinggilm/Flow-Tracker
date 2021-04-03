@@ -1,4 +1,5 @@
 import React from 'react';
+import List from '../layout/display/List';
 import '../../scss/components/lists/TicketAttList.scss';
 
  
@@ -6,6 +7,21 @@ const TicketAttList = () => {
 	return (
 		<div>
 			<main className="tickets-att-list-main">
+			<List 
+                            listTitle="Ticket Attachments"
+                            listDescription="All comments for this ticket"
+                            titleGrid="tableList-titles comments"
+                            stateObject={ticketComments}
+                            allEntries={ticketComments.length} 
+                            renderItems={(entriesStart, maxPerPage, searchfield) => 
+                                this.renderComments(entriesStart, maxPerPage, searchfield)
+                            } 
+                        >
+                            <p>Commenter</p>
+                            <p>Message</p>
+                            <p>Created</p>
+                            <p>Delete</p>
+                        </List>
 				<div className="list-container">
 					<header className="banner-container">
 						<div className="list-banner">
@@ -25,7 +41,7 @@ const TicketAttList = () => {
 								<input type="search"/>
 							</div>
 						</div>
-					</div>
+					</div> 
 					<div className="list-details-container">
 					<main className="tableList-container">
 							<header className="tableList-titles">
