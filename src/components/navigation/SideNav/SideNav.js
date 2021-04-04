@@ -18,7 +18,7 @@ const SideNav = () => {
 							<p>Dashboard</p>
 						</div>
 					</Link>
-					<Link to="/roleassign">
+					<Link to="/role-assign">
 						<div className="manage-role side-container" >
 							<div className="icon">
 								<i className="fas fa-users-cog"></i>

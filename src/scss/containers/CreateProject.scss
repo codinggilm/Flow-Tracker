@@ -1,34 +1,11 @@
 @import'../config';
-// @import "~bootstrap/scss/bootstrap";
 
 
-
-
-// MODAL *********************
-// .display-block {
-//     display: block;
-// }
-
-// .display-none {
-//     display: none;
-// }
-
-// .modal-container{
-//     // position: relative;
-//     // z-index: 2;
-//     // margin-top: 5rem;
-//     // display: flex;
-//     // justify-content: center;
-//     // align-items: center;
-// }
 //*************************************
 
 .create-project-container {
     padding: 5rem 3rem;
     height: 91.5vh;
-    // position: relative;
-    // z-index: 3;
-
     
     .edit-ticket-main {
         background: #fff;
@@ -79,7 +56,6 @@
                 .details-row {
                     display: flex;
                     padding: 1.5rem 1rem;
-                    // border-bottom: 1px solid #ccc;
     
                     .details-row-leftside {
                         width: 40%;
@@ -101,7 +77,6 @@
                     }
 
                     .selection {
-                        
 
                         select {
                             padding: 0.2rem 0rem;
@@ -168,5 +143,4 @@
             }
         }
     }
-
 }

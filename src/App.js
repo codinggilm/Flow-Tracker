@@ -34,7 +34,7 @@ class App extends Component {
 
 					<div>
 						<Route path="/" exact component={Auth} />
-						<Route path="/roleassign" component={Auth} />
+						<Route path="/role-assign" component={Auth} />
 						<Route path="/projectassign" component={Auth} />
 						<Route path="/projects" component={Auth} />
 						<Route path="/projectdetails" component={Auth} />
@@ -52,7 +52,7 @@ class App extends Component {
 						<SideNav />
 						<div className="main-content">
 							<Route path="/" exact component={Dashboard} /> 
-							<Route path="/roleassign" component={RoleAssign} />
+							<Route path="/role-assign" component={RoleAssign} />
 							<Route path="/projectassign" component={ProjectAssign} />
 							<Route path="/projects" component={Projects} />
 							<Route path="/projectdetails" component={ProjectDetails} />

@@ -1,3 +1,5 @@
+@import'../../config';
+
 .display-block {
     display: block;
 }
@@ -5,7 +7,6 @@
 .display-none {
     display: none;
 }
-
 
 
 .modal-main {
@@ -19,13 +20,147 @@
     z-index: 1;
     background: rgba(0, 0, 0, 0.287);
 
-    .modal-container{
+
+
+    .main {
         position: fixed;
         top: 30%;
-        left: 50%;
-        height: 400px;
-        width: 400px;
-        background: rgba(245, 245, 245, 0.822);
+        left: 45%;
+        min-height: 250px;
+        min-width: 350px;
+        background: #fff;
+        border-radius: 5%;
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem;
+        // align-items: center;
+        // text-align: center;
+    }
+
+    .notification {
+        position: fixed;
+        top: 0;
+        left: 45%;
+        height: 100px;
+        min-width: 150px;
+        background: #fff;
+        z-index: -1;
+        // border-radius: 5%;
+        // display: flex;
+        // flex-direction: column;
+        padding: 1rem;
+    }
+
+    .modal-container {
+
+        // Project creation **************
+        .header {
+            text-align: center;
+        }
+
+        .changes-details {
+            // margin-top: 1.5rem;
+            margin: 1.5rem 0rem;
+            text-align: center;
+
+            .title {
+                margin-bottom: 0.5rem;
+                // text-decoration: underline;
+            }
+
+            .detail {
+                margin-bottom: 1rem;
+            }
+
+        }
+
+        .modal-btns {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+
+            .modal-btn {
+                padding: 0.5rem;
+            } 
+    
+            .btn-confirm {
+                background: #007bff;
+                border: #007bff;
+                margin-left: 0.5rem;
+    
+                &:hover {
+                    background: #479ffd;
+                }
+            }
+    
+            .btn-cancel {
+                background: #6c757d;
+                border: #6c757d;
+    
+                &:hover {
+                    background: #858688;
+                }
+            }
+        }
+        
+    }
+    
+
+    // Animation styles ***************
+    .scale-up-center {
+        -webkit-animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+        animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    }
+
+    .slide-bottom {
+        -webkit-animation: slide-bottom 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        animation: slide-bottom 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
     }
 
 }
+
+
+@-webkit-keyframes scale-up-center {
+    0% {
+      -webkit-transform: scale(0.5);
+              transform: scale(0.5);
+    }
+    100% {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+    }
+  }
+  @keyframes scale-up-center {
+    0% {
+      -webkit-transform: scale(0.5);
+              transform: scale(0.5);
+    }
+    100% {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+    }
+}
+
+@-webkit-keyframes slide-bottom {
+    0% {
+      -webkit-transform: translateY(0);
+              transform: translateY(0);
+    }
+    100% {
+      -webkit-transform: translateY(100px);
+              transform: translateY(100px);
+    }
+  }
+  @keyframes slide-bottom {
+    0% {
+      -webkit-transform: translateY(0);
+              transform: translateY(0);
+    }
+    100% {
+      -webkit-transform: translateY(100px);
+              transform: translateY(100px);
+    }
+}
+
+
+  

@@ -37,3 +37,16 @@ $bnr-primary: linear-gradient(90deg, rgba(233,168,0,1) 30%, rgba(235,124,6,1) 77
 // Shadows
 $card-shadow: 4px 4px 8px 0px rgba(0,0,0,0.09);
 $bnr-shadow: 8px 8px 7px -3px rgba(0,0,0,0.25);
+
+
+// Button base style
+
+.btn2-main {
+    font-family: $main-font;
+    color: #fff;
+    cursor: pointer;
+    
+    &:focus {
+        outline: none;
+    }
+}

@@ -12,14 +12,12 @@ class CreateProject extends Component {
     state = {
         title: '',
         description: '',
-        username: '',
+        username: null,
         userId: '',
-        showModal: false
+        showModal: false,
+        notification: false,
+        warning: false
     }
-
-    // componentDidMount = () => {
-    //     this.props.fetchUsers()
-    // }
 
     renderUsersList = () => {
         return this.props.users.map(user => {
@@ -33,45 +31,102 @@ class CreateProject extends Component {
     }
 
     addUser = () => {
-        let user = this.props.users.filter(user => user.username === this.state.username);
-        let id = user[0].id;
-        this.setState({ 
-            userAdded: this.state.username,
-            userId: id 
-        })
+        const { username } = this.state
+        if (username && username !== '--Select User--') {
+            let user = this.props.users.filter(user => user.username === username);
+            let id = user[0].id;
+            this.setState({ 
+                userAdded: username,
+                userId: id,
+                notification: true
+            })
+        }
+
     }
 
     closeModal = () => {
         this.setState({showModal: false})
-        console.log(this.state)
+    }
+
+    closeNotification = () => {
+        this.setState({notification: false, warning: false})
+    }
+
+    onSubmitProject = () => {
+        const { title, description } = this.state;
+        if (!title || !description) {
+            this.setState({notification: true, warning: true})
+        } else {
+            this.setState({showModal: true})
+        }
     }
 
     onCreateProject = () => {
-        this.setState({showModal: true})
-        // console.log(this.state)
-        // this.props.createProject({
-        //     title: this.state.title,
-        //     description: this.state.description,
-        //     userAdded: this.state.userAdded,
-        //     userId: this.state.userId
-        // });
+        this.props.createProject({
+            title: this.state.title,
+            description: this.state.description,
+            userAdded: this.state.userAdded,
+            userId: this.state.userId
+        })
+
+        this.resetState();
     }
 
-
+    resetState = () => {
+        this.setState({
+            title: '',
+            description: '',
+            username: null,
+            userId: '',
+            showModal: false,
+            notification: false,
+            warning: false
+        })
+    }
 
     render() {
-        const showHideClassName = this.state.showModal ? "display-block" : "display-none";
+        const { title, description, username, warning, showModal, notification } = this.state;
+        const showHideModal = showModal ? "display-block" : "display-none";
+        const showHideNotification = notification ? "display-block" : "display-none";
         
         return (
             <div> 
 
-               
-                <Modal 
-                    exitModal={this.closeModal} 
-                    style={showHideClassName}
-                    title="Confirm changes?"
+                <Modal visibility={showHideNotification} style="modal-container notification slide-bottom">
+                {
+                    warning ? 
+                    <p>Your project needs a Name and a Description</p> 
+                    : 
+                    <p>You've added {username} to this Project</p>
+                }
+                    <div className="modal-btns">
+                        <button className="btn2-main modal-btn btn-confirm" onClick={this.closeNotification}>
+                            Ok
+                        </button>
+                    </div>
+                </Modal>
 
-                />
+                <Modal visibility={showHideModal} style="modal-container main scale-up-center">
+                    <h2 className="header">Create this Project?</h2>
+                    <div className="changes-details">
+                        <h3 className="title">Title</h3>
+                        <p className="detail">{title}</p>
+                        <h3 className="title">Description</h3>
+                        <p className="detail">{description}</p>
+                        <h3 className="title">User</h3>
+                        <p className="detail">{username}</p>
+                    </div>
+                        <div className="modal-btns">
+                            <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
+                                Cancel
+                            </button>
+                            <a href="/projects">
+                                <button className="btn2-main modal-btn btn-confirm" onClick={this.onCreateProject}>
+                                    Confirm
+                                </button>
+                            </a>
+                        </div>
+                </Modal>
  
             
                 <main className="create-project-container">
@@ -87,7 +142,12 @@ class CreateProject extends Component {
                                 <div className="details-row">
                                     <div className="details-row-leftside">
                                         <p className="row-title">Project Name</p>
-                                        <input type="text" className="row-input" name="title" onChange={this.onChange}/>
+                                        <input 
+                                            type="text"
+                                            className="row-input"
+                                            name="title" 
+                                            onChange={this.onChange}
+                                        />
                                     </div>
                                     <div className="details-row-rightside">
                                         <p className="row-title">Project Description</p>
@@ -96,7 +156,7 @@ class CreateProject extends Component {
                                 </div>
                                 <div className="details-row">
                                     <div className="details-row-leftside">
-                                        <p className="row-title">Available Personnel</p>
+                                        <p className="row-title">Add a user</p>
                                         <div className="selection">
                                             {/* <select name="developer" onChange={this.onChange}> */}
                                             <select name="username" onChange={this.onChange}>
@@ -110,13 +170,10 @@ class CreateProject extends Component {
                                         <div className="btn-actions">
                                             <button 
                                                 className="btn-add-user"
-                                                // name="username" 
                                                 onClick={this.addUser}
-                                                // onChange={this.onChange}
                                             >
-                                            ADD USER TO PROJECT
+                                            ADD THIS USER
                                             </button>
-                                            {/* <button className="btn-del-user">REMOVE USER</button> */}
                                         </div>
                                     </div>
                                 </div>
@@ -126,7 +183,7 @@ class CreateProject extends Component {
                                     <div className="btn-container">
                                         <Button 
                                             text="CREATE PROJECT"
-                                            onClick={this.onCreateProject}  
+                                            onClick={this.onSubmitProject}  
                                         />
                                     </div>
                                 </div>

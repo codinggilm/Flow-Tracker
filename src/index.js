@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
-import reduxThunk from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom';
+import reduxThunk from 'redux-thunk';
 // import { Auth0Provider } from "@auth0/auth0-react";
 import reducers from './redux/reducers';
 import App from './App';
@@ -37,11 +37,11 @@ const persistedState = loadStateFromLocalStorage()
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
 	reducers,
-	// persistedState, 
+	persistedState, 
 	composeEnhancers(applyMiddleware(reduxThunk))
 );
 
-// store.subscribe(() => saveStateToLocalStorage(store.getState()))
+store.subscribe(() => saveStateToLocalStorage(store.getState()))
 
  
 ReactDOM.render(

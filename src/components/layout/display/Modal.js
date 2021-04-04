@@ -14,11 +14,10 @@ class Modal extends Component {
 
     render() {
         return (
-            <div className={this.props.style}> 
+            <div className={this.props.visibility}> 
                 <div className="modal-main">
-                    <div className="modal-container">
-                        <h1>{this.props.title}</h1>
-                        <button onClick={this.props.exitModal}>EXIT</button>
+                    <div className={this.props.style}>
+                        {this.props.children}
                     </div>
                 </div>
             </div>
