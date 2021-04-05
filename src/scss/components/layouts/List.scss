@@ -1,8 +1,7 @@
 @import'../../config';
  
-.list-main {
+.list-main { 
     background: #fff;
-    // margin: 0rem 2rem 4rem 2rem;
 
 
     .list-container {
@@ -33,7 +32,7 @@
         }
 
         .list-search {
-            margin: 1rem 0.8rem;
+            margin: 1rem 2rem;
 
             .list-entries {
                 display: flex;
@@ -68,7 +67,7 @@
                 font-weight: bold;
                 font-size: 1.2rem;
                 border-bottom: 1px solid #000;
-                margin: 1rem 0.7rem 0rem 0.7rem;
+                margin: 1rem 2rem 0rem 2rem;
                 padding-bottom: 0.5rem;
             }
 
@@ -99,17 +98,23 @@
 
             .tableList-titles.comments {
                 grid-template-columns: 1fr 2fr 1fr 0.5fr;
-            }
+            } 
 
             .tableList-titles.attachments {
                 grid-template-columns: 1fr 1fr 2fr 1fr;
             }
 
+            .tableList-titles.all-project-users {
+                grid-template-columns: 1fr 1fr 1fr 0.5fr;
+            }
+
+
+
         
             .tableList-details-container {
                 display: flex;
                 flex-direction: column;
-                margin: 0rem 0.5rem 1rem 0.5rem;
+                margin: 0rem 1.5rem 1rem 1.5rem;
 
                 p {
                     padding-top: 0.7rem;
@@ -160,6 +165,10 @@
 
                 .tableList-row.comments {
                     grid-template-columns: 1fr 2fr 1fr 0.5fr; 
+                }
+
+                .tableList-row.all-project-users {
+                    grid-template-columns: 1fr 1fr 1fr 0.5fr; 
                 }
                 
 

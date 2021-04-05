@@ -194,6 +194,13 @@ export const fetchUsers = () => {
     }
 }
 
+export const fetchAllProjectUsers = () => {
+    return async dispatch => {
+        const response = await flowAPI.get('/users/project-users');
+        dispatch({ type: 'FETCH_ALL_PROJECT_USERS', payload: response.data})
+    }
+}
+
 export const fetchProjectUsers = (id) => {
     return async dispatch => {
         const response = await flowAPI.get(`/users/project-users/${id}`);
@@ -234,7 +241,6 @@ export const fetchAllComments = () => {
 
 export const fetchComments = (ticketId) => {
     return async dispatch => {
-        console.log(ticketId)
         const response = await flowAPI.get(`/comments/ticket/${ticketId}`);
         // const response = await flowAPI.post('/comments', ticketId);
         dispatch({ type: 'FETCH_COMMENTS', payload: response.data})

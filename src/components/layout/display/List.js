@@ -139,7 +139,7 @@ class List extends Component {
 
 
 	render() {
-		let { stateObject } = this.props;
+		// let { stateObject } = this.props;
 		let { entriesStart, maxPerPage, searchfield } = this.state;
 
 		return (
@@ -155,7 +155,7 @@ class List extends Component {
 						<div className="list-search">
 							<div className="list-entries">
 								<div className="entries-show">
-									<p>show</p>
+									<p>Show</p>
 									<input 
 										type="number" 
 										name= "entries" 

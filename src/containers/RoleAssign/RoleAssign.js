@@ -17,7 +17,7 @@ class RoleAssign extends Component {
         showModal: false,
         notification: false,
         warning: false,
-        unavailable: false
+        sameRole: false
     }
 
     componentDidMount = () => {
@@ -26,20 +26,38 @@ class RoleAssign extends Component {
 	}
  
     onChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value })
+        this.setState({ [event.target.name]: event.target.value });
     }
 
     closeModal = () => {
-        this.setState({showModal: false})
+        this.setState({showModal: false});
     }
 
     closeNotification = () => {
-        this.setState({notification: false})
+        this.setState({notification: false});
+        // this.resetState();
     }
 
-    onSubmitRole = () => {
-        const { username, role } = this.state;
+    // IsAvailable = (username) => {
+    //     const { users, tickets } = this.props;
+    //     const selectedUser = users.filter(user => user.username === username);
+    //     const unavailable = tickets.filter(ticket => ticket.status === 'Open' && ticket.developer === selectedUser[0].username)
 
+    //     if (unavailable.length !== 0) {
+    //             this.setState ({
+    //             notification: true, 
+    //             warning: true,
+    //             showModal: false,
+    //             unavailable: true
+    //         })
+    //     } else {
+    //         this.setState({showModal: true})
+    //     }
+    // }
+
+    onSubmit = () => {
+        const { username, role } = this.state;
+        
         if (!username || !role) {
             this.setState({ notification: true })
         } else {
@@ -59,6 +77,12 @@ class RoleAssign extends Component {
                 warning: true,
                 showModal: false
             })
+        } else if (selectedUser[0].role === role) {
+            this.setState ({
+                notification: true, 
+                sameRole: true,
+                showModal: false,
+            })
         } else {
             this.props.editUserRole({
                 username: username,
@@ -66,7 +90,8 @@ class RoleAssign extends Component {
                 id: selectedUser[0].id
             })
             
-            this.resetState()
+            this.resetState();
+            document.location.reload();
         }
         
     }
@@ -113,7 +138,7 @@ class RoleAssign extends Component {
 
     render() {
         const { users } = this.props;
-        const { username, role, notification, showModal, warning } = this.state;
+        const { username, role, notification, showModal, warning, sameRole } = this.state;
 
         const showHideModal = showModal ? "display-block" : "display-none";
         const showHideNotification = notification ? "display-block" : "display-none";
@@ -121,10 +146,19 @@ class RoleAssign extends Component {
         return (
             <div>
 
-                <Modal visibility={showHideNotification} style="modal-container notification slide-bottom">
+                <Modal visibility={showHideNotification} type="modal-container notification slide-bottom">
                     {
                         warning ?
-                        <p>{username} is currently assigned to an open Ticket. You cannot change his role right now </p> 
+                        <div>
+                            <p>{username} is currently assigned to an open Ticket. You cannot change this user's role right now.</p>
+                            <br/>
+                            <p>Please assign a new developer to {username}'s open Ticket(s) before proceeding.</p>
+                        </div>
+                        :
+                        sameRole ?
+                        <div>
+                            <p>{username} is already a {role}.</p>
+                        </div>
                         :
                         <p>You need to select a User and a Role</p> 
 
@@ -136,7 +170,7 @@ class RoleAssign extends Component {
                     </div>
                 </Modal>
 
-                <Modal visibility={showHideModal} style="modal-container main scale-up-center">
+                <Modal visibility={showHideModal} type="modal-container main scale-up-center">
                     <h2 className="header">Confirm role assignment?</h2>
                     <div className="changes-details">
                         <h3 className="title">User</h3>
@@ -148,11 +182,10 @@ class RoleAssign extends Component {
                             <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
                                 Cancel
                             </button>
-                            <a href="/role-assign">
-                                <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmRole}>
-                                    Confirm
-                                </button>
-                            </a>
+                            <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmRole}>
+                                Confirm
+                            </button>
+
                         </div>
                 </Modal>
 
@@ -173,7 +206,8 @@ class RoleAssign extends Component {
                                 <label>
                                     <p className="selection-title">Select the Role to assign</p>
                                     <select name="role" onChange={this.onChange}>
-                                        <option>--Select Role/None--</option>
+                                        <option>--Select Role--</option>
+                                        <option>None</option>
                                         <option>Admin</option>
                                         <option>Project Manager</option>
                                         <option>Developer</option>
@@ -181,7 +215,7 @@ class RoleAssign extends Component {
                                     </select>
                                 </label>
                                 <div className="btn-role">
-                                    <Button text="SUBMIT" onClick={this.onSubmitRole}/>
+                                    <Button text="SUBMIT" onClick={this.onSubmit}/>
                                 </div>
                             </div>
                         </div>

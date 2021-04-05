@@ -224,7 +224,7 @@ class EditTicket extends Component {
                                         </div>
                                     </div>
                                     <div className="details-row-rightside">
-                                        <p className="row-title">Assigne New Developer</p>
+                                        <p className="row-title">Assign to another Developer</p>
                                         <div className="selection">
                                             <select name="developer" onChange={this.onChange}>
                                                 <option>{ticket[0].developer}</option>

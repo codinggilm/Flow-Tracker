@@ -5,7 +5,7 @@ import { createProject, fetchUsers } from '../../redux/actions';
 import Modal from '../../components/layout/display/Modal'
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/CreateProject.scss';
-
+ 
    
 class CreateProject extends Component { 
  
@@ -16,7 +16,8 @@ class CreateProject extends Component {
         userId: '',
         showModal: false,
         notification: false,
-        warning: false
+        warning: false,
+        sameTitle: false
     }
 
     renderUsersList = () => {
@@ -31,7 +32,8 @@ class CreateProject extends Component {
     }
 
     addUser = () => {
-        const { username } = this.state
+        const { username } = this.state;
+        
         if (username && username !== '--Select User--') {
             let user = this.props.users.filter(user => user.username === username);
             let id = user[0].id;
@@ -54,49 +56,49 @@ class CreateProject extends Component {
 
     onSubmitProject = () => {
         const { title, description } = this.state;
+        const { projects } = this.props;
+        const sameTitle = projects.filter(project => project.title === title);
+
         if (!title || !description) {
             this.setState({notification: true, warning: true})
+
+        } else if (sameTitle.length !== 0) {
+            this.setState({
+                notification: true, 
+                sameTitle: true
+            })
         } else {
             this.setState({showModal: true})
         }
     }
 
     onCreateProject = () => {
+        const { title, description, userAdded, userId } = this.state;
+
         this.props.createProject({
-            title: this.state.title,
-            description: this.state.description,
-            userAdded: this.state.userAdded,
-            userId: this.state.userId
-        })
-
-        this.resetState();
-    }
-
-    resetState = () => {
-        this.setState({
-            title: '',
-            description: '',
-            username: null,
-            userId: '',
-            showModal: false,
-            notification: false,
-            warning: false
-        })
+            title: title,
+            description: description,
+            userAdded: userAdded,
+            userId: userId
+        })   
     }
 
     render() {
-        const { title, description, username, warning, showModal, notification } = this.state;
+        const { title, description, username, warning, showModal, notification, sameTitle } = this.state;
         const showHideModal = showModal ? "display-block" : "display-none";
         const showHideNotification = notification ? "display-block" : "display-none";
         
         return (
             <div> 
 
-                <Modal visibility={showHideNotification} style="modal-container notification slide-bottom">
+                <Modal visibility={showHideNotification} type="modal-container notification slide-bottom">
                 {
                     warning ? 
                     <p>Your project needs a Name and a Description</p> 
-                    : 
+                    :
+                    sameTitle ?
+                    <p>A project named {title} already exists. Please choose a different name.</p>
+                    :
                     <p>You've added {username} to this Project</p>
                 }
                     <div className="modal-btns">
@@ -106,7 +108,7 @@ class CreateProject extends Component {
                     </div>
                 </Modal>
 
-                <Modal visibility={showHideModal} style="modal-container main scale-up-center">
+                <Modal visibility={showHideModal} type="modal-container main scale-up-center">
                     <h2 className="header">Create this Project?</h2>
                     <div className="changes-details">
                         <h3 className="title">Title</h3>
@@ -199,7 +201,7 @@ class CreateProject extends Component {
 
 const mapStateToProps = (state) => {
 	return { 
-        // project: state.project,
+        projects: state.projects.projects,
         users: state.users.users 
     }
 }

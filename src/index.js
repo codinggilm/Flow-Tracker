@@ -9,8 +9,8 @@ import reducers from './redux/reducers';
 import App from './App';
 import './scss/App.scss';
 
-const jwt = require('jsonwebtoken');
-const hashAlgorithm = (s) => "THIS" + s + "SECURE";
+// const jwt = require('jsonwebtoken');
+// const hashAlgorithm = (s) => "THIS" + s + "SECURE";
 
 const saveStateToLocalStorage = state => {
 	try {
@@ -37,11 +37,11 @@ const persistedState = loadStateFromLocalStorage()
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
 	reducers,
-	persistedState, 
+	// persistedState, 
 	composeEnhancers(applyMiddleware(reduxThunk))
 );
 
-store.subscribe(() => saveStateToLocalStorage(store.getState()))
+// store.subscribe(() => saveStateToLocalStorage(store.getState()))
 
  
 ReactDOM.render(

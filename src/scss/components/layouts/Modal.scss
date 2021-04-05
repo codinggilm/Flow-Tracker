@@ -20,8 +20,6 @@
     z-index: 1;
     background: rgba(0, 0, 0, 0.287);
 
-
-
     .main {
         position: fixed;
         top: 30%;
@@ -29,31 +27,37 @@
         min-height: 250px;
         min-width: 350px;
         background: #fff;
-        border-radius: 5%;
+        border-radius: 15px;
         display: flex;
         flex-direction: column;
         padding: 1.5rem;
-        // align-items: center;
-        // text-align: center;
     }
 
     .notification {
         position: fixed;
         top: 0;
         left: 45%;
-        height: 100px;
+        min-height: 100px;
         min-width: 150px;
         background: #fff;
-        z-index: -1;
-        // border-radius: 5%;
-        // display: flex;
-        // flex-direction: column;
         padding: 1rem;
+    }
+
+    .new-ticket {
+        position: fixed;
+        top: 20%;
+        left: 45%;
+        min-height: 250px;
+        min-width: 350px;
+        background: #fff;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem;
     }
 
     .modal-container {
 
-        // Project creation **************
         .header {
             text-align: center;
         }

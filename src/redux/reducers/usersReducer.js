@@ -3,7 +3,8 @@ const initialState = {
     // password: '',
     // email: '',
     users: [],
-    user: {}, 
+    user: {},
+    allProjectUsers: [], 
     projectUsers:[]
     // role: '',
     // projectId: '',
@@ -22,6 +23,10 @@ const usersReducer = (state=initialState, action) => {
                 user: action.payload
             };
 
+        case 'FETCH_ALL_PROJECT_USERS':
+            return {...state,
+                allProjectUsers: action.payload
+            };
         case 'FETCH_PROJECT_USERS':
             return {...state,
                 projectUsers: action.payload

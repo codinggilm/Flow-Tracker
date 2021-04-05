@@ -32,7 +32,6 @@ class ProjectUsersList2 extends Component {
 
 		// Match project users IDs with Users
 		let finalUsers = users.filter(user => projectUsersIds.includes(user.id));
-        // this.setState({usersNumber: finalUsers.length})
         this.props.saveTotalProjectUsers(finalUsers.length)
 
         let filteredList = finalUsers.filter(users => {
