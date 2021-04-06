@@ -13,17 +13,15 @@
     height: 100%;
     width: 100%;
     position: fixed;
-    top: 8%;
-    right: 0;
-    bottom: 0;
-    left: 15%;
+    top: 0;
+    left: 0;
     z-index: 1;
     background: rgba(0, 0, 0, 0.287);
 
     .main {
         position: fixed;
-        top: 30%;
-        left: 45%;
+        top: 25%;
+        left: 40%;
         min-height: 250px;
         min-width: 350px;
         background: #fff;

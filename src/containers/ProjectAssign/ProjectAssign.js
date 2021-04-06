@@ -13,6 +13,7 @@ class ProjectAssign extends Component {
     state = {
         username: '',
         userId: '',
+        role: '',
         project: '',
         projectId: '',
         showModal: false,
@@ -35,12 +36,23 @@ class ProjectAssign extends Component {
 
     saveUsernameToLocalState = (id) => {
         let { users } = this.props;
-        let user;
+        let selectedUser;
         for(let i=0; i < users.length; i++) {
             if (users[i].id === id) {
-                user = users[i].username
+                // selectedUser = { 
+                //     username: users[i].username,
+                //     role: users[i].role
+                // }
+                // this.setState({
+                //     username: selectedUser.username, 
+                //     role: selectedUser.role 
+                // })
+                this.setState({
+                    username: users[i].username, 
+                    role: users[i].role 
+                })
+                console.log(this.state)
             }
-            this.setState({username: user})
         }
     }
 
@@ -102,7 +114,7 @@ class ProjectAssign extends Component {
     }
 
     onConfirmProjectAssignment = () => {
-        const { username, userId, project, projectId } = this.state;
+        const { username, userId, role, project, projectId } = this.state;
         const { projectUsers } = this.props;
 
         const checkSelection = projectUsers.filter(entry => entry.projectID === projectId && entry.userID === userId);
@@ -117,6 +129,7 @@ class ProjectAssign extends Component {
             this.props.assignProject({
                 username: username,
                 userId: userId,
+                role: role,
                 project: project,
                 projectId: projectId,
             })
@@ -166,6 +179,8 @@ class ProjectAssign extends Component {
                         <p className="detail">{username}</p>
                         <h3 className="title">Project</h3>
                         <p className="detail">{project}</p>
+                        {/* <h3 className="title">Role</h3>
+                        <p className="detail">{role}</p> */}
                     </div>
                         <div className="modal-btns">
                             <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
@@ -185,7 +200,7 @@ class ProjectAssign extends Component {
                     <div className="roles-manage-container">
                         <div className="roles-column">
                             <label className="selection user-selection">
-                                <p className="selection-title">Select 1 or more Users</p>
+                                <p className="selection-title">Select a User</p>
                                 {/* <select multiple name="username" onChange={this.onChange}> */}
                                 <select multiple onChange={this.setUsernameAndId}>
                                     {this.renderUsers()}

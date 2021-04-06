@@ -85,6 +85,15 @@ export const editProject = (id, data) => {
     }
 }
 
+export const removeUserFromProject = (projectId, userId) => {
+    return async dispatch => {
+        console.log(projectId, userId)
+        const response = await flowAPI.put(`/projects/remove-user/${projectId}`, {userId: userId});
+        dispatch({ type: 'REMOVE_USER_FROM_PROJECT', payload: response.data});
+    }
+}
+
+
 
 export const deleteProject = (id) => {
     return async dispatch => {

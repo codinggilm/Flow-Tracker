@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { createTicket } from '../../redux/actions';
+import { createTicket, fetchAllProjectUsers } from '../../redux/actions';
 import Modal from '../../components/layout/display/Modal'
 // import { createTicket, fetchProjects } from '../../redux/actions';
 import Button from '../../components/layout/button/Button';
@@ -9,6 +9,7 @@ import '../../scss/containers/CreateTicket.scss';
 
     
 class CreateTicket extends Component {
+    
     state = {
         title: '',
         description: '',
@@ -22,25 +23,31 @@ class CreateTicket extends Component {
         submitter: 'admin',
         showModal: false,
         notification: false,
-        warning: false
-    }  
+        warning: false,
+        noDeveloper: false
+    }   
 
     componentDidMount() {
-        let developers = this.props.users.filter(user => user.role === 'Developer');
+        // this.props.fetchAllProjectUsers();
+        // const { users, developers, projects } = this.props;
+        let firstProject = this.props.projects[0];
+        let developers = this.props.allProjectUsers.filter(user => user.role === 'Developer' && user.projectID === firstProject.id)
+        // console.log(developers)
+        // let developers = this.props.users.filter(user => user.role === 'Developer');
         this.setState({developer: developers[0].username})
-    }
+    };
 
     closeModal = () => {
         this.setState({showModal: false})
-    }
+    };
 
     closeNotification = () => {
         this.setState({notification: false, warning: false})
-    }
+    };
 
     onChange = (event) => {
         this.setState({ [event.target.name]: event.target.value })
-    }
+    };
 
     saveProjectId = (name) => {
         const projects = this.props.projects;
@@ -51,14 +58,28 @@ class CreateTicket extends Component {
             }
             this.setState({ projectId: id })
         }
-    }
+    };
 
     onSelectingProject = (event) => {
-        this.saveProjectId(event.target.value);
-        this.setState({ 
-            project: event.target.value
-        })
-    }
+        const { allProjectUsers } = this.props;
+        let availableDevs =  allProjectUsers.filter(el => el.project.includes(event.target.value) && el.role.includes('Developer'))
+        
+        if (availableDevs.length === 0) {
+            this.saveProjectId(event.target.value);
+            this.setState({
+                notification: true, 
+                noDeveloper: true
+            })
+        } else {
+            this.saveProjectId(event.target.value);
+            this.setState({ 
+                project: event.target.value,
+                developer: availableDevs[0].username,
+                noDeveloper: false
+            })
+        }
+        
+    };
 
 
     renderProjectSelection = () => {
@@ -67,19 +88,27 @@ class CreateTicket extends Component {
                 <option key={project.id}>{project.title}</option>
             )
         })
-    }
+    };
 
     renderDeveloperSelection = () => {
-        let developers = this.props.users.filter(user => user.role === 'Developer');
-        return developers.map(dev => {
+        // let developers = this.props.users.filter(user => user.role === 'Developer');
+        let noDev = {username: 'No existing developer'}
+        let developers = this.props.allProjectUsers.filter(user => user.role === 'Developer' && user.projectID === this.state.projectId)
+        if (developers.length === 0) {
             return (
-                <option key={dev.id}>{dev.username}</option>
+                <option key={Math.random()}>{noDev.username}</option>
             )
-        })
-    }
+        } else {
+            return developers.map(dev => {
+                return (
+                    <option key={dev.id}>{dev.username}</option>
+                )
+            })
+        }
+    };
 
     onSubmitTicket = () => {
-        const { title, description } = this.state;
+        const { title, description, noDeveloper } = this.state;
         const { tickets } = this.props;
         const sameTitle = tickets.filter(ticket => ticket.title === title);
 
@@ -91,10 +120,15 @@ class CreateTicket extends Component {
                 notification: true, 
                 warning: true
             })
-        } else {
+        } else if (noDeveloper) {
+            this.setState({notification: true})
+        }
+        
+        
+        else {
             this.setState({ showModal: true })
         }
-    }
+    };
 
     onCreateTicket = () => {
         const { 
@@ -117,13 +151,13 @@ class CreateTicket extends Component {
             status: status,
             submitter: submitter
         })
-    }
+    };
 
 
     render() {
         const { 
-            showModal, notification, warning, title, 
-            description, comment, developer, priority, type 
+            showModal, notification, warning, noDeveloper, title, 
+            description, project, comment, developer, priority, type 
         } = this.state;
         const showHideModal = showModal ? "display-block" : "display-none";
         const showHideNotification = notification ? "display-block" : "display-none";
@@ -135,6 +169,13 @@ class CreateTicket extends Component {
                 {
                     warning ? 
                     <p>A ticket named {title} already exists. Please choose a different name.</p>
+                    :
+                    noDeveloper?
+                    <div>
+                        <p>No developer has been assigned to this project.</p>
+                        <br/>
+                        <p>Please contact an Admin or the Project Manager.</p>
+                    </div>
                     :
                     <p>Your ticket needs a Title and a Description</p>
                     
@@ -164,6 +205,9 @@ class CreateTicket extends Component {
                                 : 
                                 null
                             }
+
+                            <h3 className="title">Project</h3>
+                            <p className="detail">{project}</p>
 
                             <h3 className="title">Developer</h3>
                             <p className="detail">{developer}</p>
@@ -213,7 +257,7 @@ class CreateTicket extends Component {
                                 </div>
                                 <div className="details-row">
                                     <div className="details-row-leftside">
-                                        <p className="row-title">Assign to a Project</p>
+                                        <p className="row-title">Select a Project</p>
                                         <div className="selection">
                                             <select name="project" onChange={this.onSelectingProject}>
                                                 {this.renderProjectSelection()}
@@ -221,11 +265,11 @@ class CreateTicket extends Component {
                                         </div>
                                     </div>
                                     <div className="details-row-rightside">
-                                        <p className="row-title">Assign a Developer</p>
+                                        <p className="row-title">Select a Developer</p>
                                         <div className="selection">
                                             <select name="developer" onChange={this.onChange}>
                                             {/* <select name="developer" onChange={this.onSelectingDeveloper}> */}
-                                                <option>{this.state.developer}</option>
+                                                {/* <option>{this.state.developer}</option> */}
                                                 {this.renderDeveloperSelection()}
                                             </select>
                                         </div>
@@ -275,11 +319,12 @@ class CreateTicket extends Component {
 const mapStateToProps = state => {
     return { 
         projects: state.projects.projects,
+        allProjectUsers: state.users.allProjectUsers,
         tickets: state.tickets.tickets,
         users: state.users.users 
     }
 }
 
-const mapDispatchToProps = {  createTicket }
+const mapDispatchToProps = {  createTicket, fetchAllProjectUsers }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateTicket); 

@@ -30,6 +30,11 @@ const projectsReducer = (state=initialState, action) => {
             return {
                 ...state
             };
+
+        case 'REMOVE_USER_FROM_PROJECT':
+            return {
+                ...state
+            };
             
         case 'DELETE_PROJECT':
             return {

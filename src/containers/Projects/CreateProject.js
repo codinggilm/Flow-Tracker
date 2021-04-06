@@ -20,16 +20,23 @@ class CreateProject extends Component {
         sameTitle: false
     }
 
+    onChange = (event) => {
+        this.setState({ [event.target.name]: event.target.value })
+    };
+
     renderUsersList = () => {
         return this.props.users.map(user => {
            return <option key={user.id}>{user.username}</option>
         })
-    }
+    };
 
+    closeModal = () => {
+        this.setState({showModal: false})
+    };
 
-    onChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value })
-    }
+    closeNotification = () => {
+        this.setState({notification: false, warning: false})
+    };
 
     addUser = () => {
         const { username } = this.state;
@@ -44,15 +51,8 @@ class CreateProject extends Component {
             })
         }
 
-    }
+    };
 
-    closeModal = () => {
-        this.setState({showModal: false})
-    }
-
-    closeNotification = () => {
-        this.setState({notification: false, warning: false})
-    }
 
     onSubmitProject = () => {
         const { title, description } = this.state;
@@ -70,7 +70,7 @@ class CreateProject extends Component {
         } else {
             this.setState({showModal: true})
         }
-    }
+    };
 
     onCreateProject = () => {
         const { title, description, userAdded, userId } = this.state;
@@ -81,7 +81,7 @@ class CreateProject extends Component {
             userAdded: userAdded,
             userId: userId
         })   
-    }
+    };
 
     render() {
         const { title, description, username, warning, showModal, notification, sameTitle } = this.state;
@@ -99,7 +99,7 @@ class CreateProject extends Component {
                     sameTitle ?
                     <p>A project named {title} already exists. Please choose a different name.</p>
                     :
-                    <p>You've added {username} to this Project</p>
+                    <p>You've added {username} to your Project</p>
                 }
                     <div className="modal-btns">
                         <button className="btn2-main modal-btn btn-confirm" onClick={this.closeNotification}>
@@ -115,7 +115,7 @@ class CreateProject extends Component {
                         <p className="detail">{title}</p>
                         <h3 className="title">Description</h3>
                         <p className="detail">{description}</p>
-                        <h3 className="title">User</h3>
+                        <h3 className="title">Assigned User</h3>
                         <p className="detail">{username}</p>
                     </div>
                         <div className="modal-btns">
@@ -162,7 +162,7 @@ class CreateProject extends Component {
                                         <div className="selection">
                                             {/* <select name="developer" onChange={this.onChange}> */}
                                             <select name="username" onChange={this.onChange}>
-                                                <option>--Select User-- </option>
+                                                <option>Select User</option>
                                                 {this.renderUsersList()}
                                             </select>
                                         </div> 

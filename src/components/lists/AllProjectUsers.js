@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchUsers, fetchProjects, fetchTickets, fetchAllProjectUsers } from '../../redux/actions';
+import { 
+    fetchUsers, fetchProjects, fetchTickets, 
+    fetchAllProjectUsers, removeUserFromProject 
+} from '../../redux/actions';
 import List from '../layout/display/List';
 import Modal from '../layout/display/Modal';
 // import '../../scss/components/lists/ProjectUsersList2.scss';
 
 
-class ProjectUsers extends Component {
+class AllProjectUsers extends Component {
     
     state = {
         username: '',
         userId: '',
         project: '',
+        projectId: '',
         showModal: false,
         notification: false,
         warning: false
@@ -34,26 +38,35 @@ class ProjectUsers extends Component {
         this.setState({notification: false});
     }
 
-    removeUser = (userID, username, role, project, projectID) => {
+    // removeUser = (userID, username, role, project, projectID) => {
+    onRemoveUserRequest = (userID, username, project, projectID) => {
         const { tickets } =  this.props;
+        console.log(projectID, userID)
         
-        const unavailable = tickets.filter(
+        const cannotRemove = tickets.filter(
             ticket => ticket.status === 'Open' && ticket.developer === username && 
             ticket.projectId === projectID
         )
         
-        if (unavailable.length !== 0) {
+        if (cannotRemove.length !== 0) {
             this.setState({notification: true})
         } else {
             this.setState({
                 username: username,
-                project: project, 
                 userId: userID,
+                project: project,
+                projectId: projectID, 
                 showModal: true
             })
         }
 
-    } 
+    }
+    
+    onConfirmRemoveUser = () => {
+        const { projectId, userId } = this.state;
+        this.props.removeUserFromProject(projectId, userId);
+        document.location.reload();
+    }
 
 
 	renderAllProjectUsers = (entriesStart, maxPerPage, searchfield) => {
@@ -71,12 +84,12 @@ class ProjectUsers extends Component {
         return filteredList.slice(entriesStart, entriesEnd).map(user => {
             const {username, userID, project, projectID, role } = user;
             return (
-                <div className="tableList-row all-project-users" key={(Math.random())}>
+                <div className="tableList-row all-project-users" key={Math.random()}>
                     <p>{username}</p>
                     <p>{project}</p>
                     <p>{role}</p>
                     <button 
-                        onClick={()=> this.removeUser(userID, username, role, project, projectID)}
+                        onClick={()=> this.onRemoveUserRequest(userID, username, project, projectID)}
                     >Remove user
                     </button>
                 </div>
@@ -101,8 +114,6 @@ class ProjectUsers extends Component {
                     {
                         notification ?
                         <div>
-                            {/* <p>{username} is assigned to an open ticket on this project</p>
-                            <br/> */}
                             <p>You cannot remove a user currently assigned to an open ticket on a project</p>
                         </div>
                         :
@@ -127,7 +138,7 @@ class ProjectUsers extends Component {
                             <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
                                 Cancel
                             </button>
-                            <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmProjectAssignment}>
+                            <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmRemoveUser}>
                                 Confirm
                             </button>
 
@@ -141,7 +152,6 @@ class ProjectUsers extends Component {
                         titleGrid="tableList-titles all-project-users"
                         stateObject={allProjectUsers}
                         allEntries={allProjectUsers.length} 
-                        // allEntries={users.length} 
                         renderItems={(entriesStart, maxPerPage, searchfield) => 
                             this.renderAllProjectUsers(entriesStart, maxPerPage, searchfield)
                         } 
@@ -170,6 +180,6 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = { fetchUsers, fetchTickets, fetchProjects, fetchAllProjectUsers }
+const mapDispatchToProps = { fetchUsers, fetchTickets, fetchProjects, fetchAllProjectUsers, removeUserFromProject }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectUsers); 
+export default connect(mapStateToProps, mapDispatchToProps)(AllProjectUsers); 

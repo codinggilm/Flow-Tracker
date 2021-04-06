@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchTickets, fetchTicket, fetchProjects, fetchUsers, 
+import { fetchTickets, fetchTicket, fetchProjects, fetchUsers, fetchAllProjectUsers, 
     saveTicketId, saveProjectId, fetchComments, fetchTicketHistory
 } from '../../redux/actions';
 import List from '../../components/layout/display/List'
@@ -15,6 +15,7 @@ class Tickets2 extends Component {
         this.props.fetchTickets();
         this.props.fetchProjects();
         this.props.fetchUsers();
+        this.props.fetchAllProjectUsers();
     }
     
 
@@ -115,7 +116,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = { 
     fetchTickets, fetchUsers, fetchProjects, fetchTicket, saveTicketId, 
-    saveProjectId, fetchComments, fetchTicketHistory 
+    saveProjectId, fetchComments, fetchTicketHistory, fetchAllProjectUsers 
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tickets2); 
