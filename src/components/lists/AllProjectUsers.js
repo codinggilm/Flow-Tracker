@@ -40,16 +40,14 @@ class AllProjectUsers extends Component {
 
     // removeUser = (userID, username, role, project, projectID) => {
     onRemoveUserRequest = (userID, username, project, projectID) => {
-        const { tickets } =  this.props;
-        console.log(projectID, userID)
-        
+        const { tickets } =  this.props;        
         const cannotRemove = tickets.filter(
             ticket => ticket.status === 'Open' && ticket.developer === username && 
             ticket.projectId === projectID
         )
         
         if (cannotRemove.length !== 0) {
-            this.setState({notification: true})
+            this.setState({ notification: true })
         } else {
             this.setState({
                 username: username,
@@ -113,9 +111,7 @@ class AllProjectUsers extends Component {
                 <Modal visibility={showHideNotification} type="modal-container notification slide-bottom">
                     {
                         notification ?
-                        <div>
-                            <p>You cannot remove a user currently assigned to an open ticket on a project</p>
-                        </div>
+                        <p>You cannot remove a user currently assigned to an open ticket on a project</p>
                         :
                         <p>You need to select a Project and a User</p> 
                     }

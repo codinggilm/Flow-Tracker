@@ -73,13 +73,11 @@ export const editProject = (id, data) => {
         return async dispatch => {
             console.log(id, data)
             const response = await flowAPI.put(`/projects/update/${id}`, data);
-            // const response = await flowAPI.put('/projects', data);
             dispatch({ type: 'EDIT_PROJECT', payload: response.data});
         }
     } else {
         return async dispatch => {
             const response = await flowAPI.put(`/projects/updateAndRemoveUser/${id}`, data);
-            // const response = await flowAPI.put('/projects/editAndRemoveUser', data);
             dispatch({ type: 'EDIT_PROJECT', payload: response.data});
         }
     }
@@ -87,7 +85,6 @@ export const editProject = (id, data) => {
 
 export const removeUserFromProject = (projectId, userId) => {
     return async dispatch => {
-        console.log(projectId, userId)
         const response = await flowAPI.put(`/projects/remove-user/${projectId}`, {userId: userId});
         dispatch({ type: 'REMOVE_USER_FROM_PROJECT', payload: response.data});
     }

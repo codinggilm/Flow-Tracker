@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchProjects, fetchProject, fetchTicket, editTicket, saveTicketHistory, deleteTicket } from '../../redux/actions';
+import { fetchProjects, fetchProject, fetchTicket, 
+    editTicket, fetchAllProjectUsers, saveTicketHistory, deleteTicket 
+} from '../../redux/actions';
+import Modal from '../../components/layout/display/Modal';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/EditTicket.scss';
  
@@ -17,39 +20,63 @@ class EditTicket extends Component {
         priority: '',
         type: '',
         status: '',
-        submitter: 'admin'
+        submitter: 'Admin',
+        showModal: false,
+        notification: false,
+        warning: false,
+        noChange: false,
+        sameTitle: false,
+        deleteTicket: false
+        // noDeveloper: false,
+        // newProject: false,
+        // currentTicket: true
     }
 
     componentDidMount() {
         this.props.fetchProjects();
         this.props.fetchProject(this.props.projectId);
         this.props.fetchTicket(this.props.ticketId);
-        this.setDefaultState(this.props.tickets);
-        
-    }
+        this.props.fetchAllProjectUsers();
+        this.setDefaultState();        
+    };
 
-    setDefaultState = (tickets) => {
-        const currentTicket = tickets.filter(ticket => ticket.id === this.props.ticketId);
+    setDefaultState = () => {
+        const { ticket } = this.props;
         this.setState({
-            title: currentTicket[0].title,
-            description: currentTicket[0].description,
-            project: currentTicket[0].project,
-            projectId: currentTicket[0].projectId,
-            developer: currentTicket[0].developer,
-            priority: currentTicket[0].priority,
-            type: currentTicket[0].type,
-            status: currentTicket[0].status
+            title: ticket.title,
+            description: ticket.description,
+            project: ticket.project,
+            projectId: ticket.projectId,
+            developer: ticket.developer,
+            priority: ticket.priority,
+            type: ticket.type,
+            status: ticket.status
         })
-    }
+    };
 
-    
+    closeModal = () => {
+        this.setState({showModal: false})
+    };
+
+    closeNotification = () => {
+        this.setState({
+            notification: false,
+            warning: false,
+            newProject: false,
+            noChange: false,
+            sameTitle: false
+        })
+    };
 
     onChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value })
-    }
+        this.setState({ 
+            [event.target.name]: event.target.value
+        })
+        
+    };
 
     saveProjectIdToLocalState = (name) => {
-        const projects = this.props.projects;
+        const { projects } = this.props;
         let id;
         for (let i=0; i < projects.length; i++) {
             if (projects[i].title === name) {
@@ -57,14 +84,28 @@ class EditTicket extends Component {
             }
             this.setState({ projectId: id })
         }
-    }
+    };
 
     onSelectingProject = (event) => {
         this.saveProjectIdToLocalState(event.target.value);
-        this.setState({ 
-            project: event.target.value
-        })
-    }
+        let developers = this.props.allProjectUsers.filter(user => user.role === 'Developer' && 
+            user.projectID === this.state.projectId
+        )
+
+        if (developers.length === 0) {
+            this.setState({ 
+                project: event.target.value,
+                noDeveloper: true,
+                currentTicket: false 
+            })
+        } else {
+            this.setState({  
+                project: event.target.value,
+                noDeveloper: false,
+                currentTicket: false 
+            })
+        }
+    };
 
     renderProjectSelection = () => {
         return this.props.projects.map(project => {
@@ -72,16 +113,23 @@ class EditTicket extends Component {
                 <option key={project.id}>{project.title}</option>
             )
         })
-    }
+    };
 
     renderDeveloperSelection = () => {
-        let developers = this.props.users.filter(user => user.role === 'Developer');
-        return developers.map(dev => {
-            return (
-                <option key={dev.id}>{dev.username}</option>
-            )
-        })
-    }
+        // let noDev = {username: 'No existing developer'}
+        let developers = this.props.allProjectUsers.filter(user => user.role === 'Developer' && user.projectID === this.state.projectId)
+        // if (developers.length === 0) {
+        //     return (
+        //         <option key={Math.random()}>{noDev.username}</option>
+        //     )
+        // } else {
+            return developers.map(dev => {
+                return (
+                    <option key={dev.id}>{dev.username}</option>
+                )
+            })
+        // }
+    };
 
     saveHistory = (obj1, obj2) => {
 
@@ -102,7 +150,7 @@ class EditTicket extends Component {
         
         // Save relevant changes into the newData object
         for (key in diffs) {
-            if(diffs[key] !== undefined) {
+            if (diffs[key] !== undefined) {
                 newData[key] = diffs[key]
             }
         }
@@ -119,14 +167,12 @@ class EditTicket extends Component {
 
         // Extract proprety names into an array
         const properties = Object.keys(oldData);
-        // const props = properties.toUpperCase();
-
 
         // Extract values of old & new data into arrays
         const value1 = Object.values(oldData);
         const value2 = Object.values(newData);
 
-        // Helper function
+        // Helper function to make first letter a capital
         const firstLetterCap = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
         // Create a new object for each change that occured
@@ -139,7 +185,6 @@ class EditTicket extends Component {
             
         }
 
-        console.log(ticketHistory)
         // Loop through the ticket history array and send all changes to the database
         for(let i=0; i<ticketHistory.length; i++) {
             this.props.saveTicketHistory(this.props.ticketId, ticketHistory[i])
@@ -147,151 +192,289 @@ class EditTicket extends Component {
     
     };
 
-    onEditTicket = () => {
-        const name = this.state.developer;
-        const selectedDeveloper = this.props.users.filter(user => user.username === name);
+    onSubmitEditTicket = () => {
+        const { title, description, project, projectId, developer, priority, status, type } = this.state;
+        const { tickets, ticket } = this.props;
+        const sameTitle = tickets.filter(ticket => ticket.title === title);
 
-        this.saveHistory(this.props.ticket, this.state);
+        if (!title || !description) {
+            this.setState({ notification: true, warning: true })
+        
+        } else if (title !== ticket.title && sameTitle.length !== 0) {
+            this.setState({
+                notification: true, 
+                sameTitle: true
+            })
+        } 
+        else if (title === ticket.title && description === ticket.description && projectId === ticket.projectId && 
+            developer === ticket.developer && priority === ticket.priority && status === ticket.status &&
+            type === ticket.type) {
+            this.setState({
+                notification: true, 
+                noChange: true
+            })
+        } else {
+            this.setState({
+                showModal: true
+            })
+        }
+    };
 
-        this.props.editTicket(
-            this.props.ticketId, {
-            title: this.state.title,
-            description: this.state.description,
-            project: this.state.project,
-            projectId: this.state.projectId,
-            developer: this.state.developer,
-            developerId: selectedDeveloper[0].id,
-            priority: this.state.priority,
-            type: this.state.type,
-            status: this.state.status,
-            submitter: this.state.submitter
-        })
-    }
+    onConfirmEditTicket = () => {
+        const { title, description, project, projectId, developer, priority, type, status, submitter, deleteTicket } = this.state;
+        const { users, ticket, ticketId } = this.props;
+        const selectedDeveloper = users.filter(user => user.username === developer)[0];
+        
+        if (deleteTicket) {
+            this.props.deleteTicket(this.props.ticketId)
+        } else {
+            this.saveHistory(ticket, this.state);
+    
+            this.props.editTicket(
+                ticketId, {
+                    title: title,
+                    description: description,
+                    project: project,
+                    projectId: projectId,
+                    developer: developer,
+                    developerId: selectedDeveloper.id,
+                    priority: priority,
+                    type: type,
+                    status: status,
+                    submitter: submitter
+                }
+            )
+        }
+    };
 
-    onDeleteTicket = () => {
-        this.props.deleteTicket(this.props.ticketId)
-    }
+    onSubmitDeleteTicket = () => {
+        this.setState({ showModal: true, deleteTicket: true })
+    };
     
     render() {
-        // const ticket = this.props.ticket;
-        const ticket = this.props.tickets.filter(ticket => ticket.id === this.props.ticketId);
+        const {  
+            showModal, notification, warning, noChange, deleteTicket, sameTitle, newProject, title, 
+            description, project, developer, priority, status, type 
+        } = this.state;
+
+        const { ticket } = this.props;
+        const showHideModal = showModal ? "display-block" : "display-none";
+        const showHideNotification = notification ? "display-block" : "display-none";
+        
         return (
             <div>
             {
                 !ticket ? <div>LOADING... </div>
-
+                
                 :
 
-                <main className="edit-ticket-container">
-                    <div className="edit-ticket-main">
-                        <div className="list-container">
-                            <header className="banner-container">
-                                <div className="list-banner">
-                                    <p className="list-title">Edit Ticket</p>
-                                    <p>Change Ticket properties</p>
+                <div>
+                    <Modal visibility={showHideNotification} type="modal-container notification slide-bottom">
+                    {
+                        warning ?
+                        <p>Your ticket needs a Title and a Description</p> 
+                        :
+                        newProject ?
+                        <div>
+                            <p>It is not possible to assign a ticket to a new project.</p>
+                            <br/>
+                            <p>I am working on adding this functionality though!</p>
+                        </div>
+                        :
+                        noChange ? 
+                        <p>Nothing has changed.</p>
+                        :
+                        sameTitle ? 
+                        <p>A ticket named "{title}" already exists. Please choose a different title.</p> : null
+                        
+                    }
+                        <div className="modal-btns">
+                            <button className="btn2-main modal-btn btn-confirm" onClick={this.closeNotification}>
+                                Ok
+                            </button>
+                        </div>
+                    </Modal>
+
+                    <Modal visibility={showHideModal} type="modal-container new-ticket scale-up-center">
+                    {   
+                        deleteTicket ? 
+                        <div>
+                            <div className="warning">
+                                <i className="fas fa-exclamation-triangle fa-5x"></i>
+                                <h2 className="header warning-header">Are you sure you want to delete this ticket?</h2>
+                                <div className="warning-text">
+                                    <h3>The following will be permanently deleted:</h3>
+                                    <p>- All the history, comments and attachments of this tickets</p>
+                                    <p className="final-warning">
+                                        <strong>There is no going back, are you sure you wish to proceed?</strong>
+                                    </p>
                                 </div>
-                            </header>
-                            <div className="details-container">
-                                <div className="details-row">
-                                    <div className="details-row-leftside">
-                                        <p className="row-title">Title</p>
-                                        <input 
-                                            type="text" 
-                                            className="row-input" 
-                                            name="title"
-                                            defaultValue={ticket[0].title} 
-                                            onChange={this.onChange}
-                                        />
-                                    </div>
-                                    <div className="details-row-rightside">
-                                        <p className="row-title">Description</p>
-                                        <input type="text" 
-                                            className="row-input" 
-                                            name="description"
-                                            defaultValue={ticket[0].description} 
-                                            onChange={this.onChange}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="details-row">
-                                    <div className="details-row-leftside">
-                                        <p className="row-title">Project</p>
-                                        <div className="selection">
-                                            <select name="project" onChange={this.onSelectingProject}>
-                                                <option>{ticket[0].project}</option>
-                                                {this.renderProjectSelection()}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="details-row-rightside">
-                                        <p className="row-title">Assign to another Developer</p>
-                                        <div className="selection">
-                                            <select name="developer" onChange={this.onChange}>
-                                                <option>{ticket[0].developer}</option>
-                                                {this.renderDeveloperSelection()}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="details-row">
-                                    <div className="details-row-leftside">
-                                        <p className="row-title">Ticket Priority</p>
-                                        <div className="selection">
-                                            <select name="priority" onChange={this.onChange}>
-                                                <option>{ticket[0].priority}</option>
-                                                <option>None</option>
-                                                <option>Low</option>
-                                                <option>Medium</option>
-                                                <option>High</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="details-row-rightside">
-                                        <p className="row-title">Ticket Status</p>
-                                        <div className="selection">
-                                            <select name="status" onChange={this.onChange}>
-                                                <option>{ticket[0].status}</option>
-                                                <option>In Progress</option>
-                                                <option>Open</option>
-                                                <option>Closed</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="details-row">
-                                    <div className="details-row-leftside">
-                                        <p className="row-title">Ticket type</p>
-                                        <div className="selection">
-                                            <select name="type" onChange={this.onChange}>
-                                                <option>{ticket[0].type}</option>
-                                                <option>Bugs/Errors</option>
-                                                <option>Feature Requests</option>
-                                                <option>Other Comments</option>
-                                                <option>Training/Documents Requests</option>
-                                                
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="nav-links">
-                                    <Link to="/tickets">Back to List</Link>
-                                    <button 
-                                        className="btn-del-ticket"
-                                        onClick={this.onDeleteTicket}
-                                    >DELETE TICKET
-                                    </button>
-                                    <div className="btn-container">
-                                        <Button 
-                                            text="UPDATE TICKET" 
-                                            onClick={this.onEditTicket}
-                                        />
-                                    </div>
-                                </div>
-    
                             </div>
                         </div>
-                    </div>
-                </main>
+                        :
+                        <div>
+                            <h2 className="header">Save these changes?</h2>
+                            <div className="changes-details">
+                                <h3 className="title">Title</h3>
+                                <p className="detail">{title}</p>
+
+                                <h3 className="title">Description</h3>
+                                <p className="detail">{description}</p>
+
+                                <h3 className="title">Project</h3>
+                                <p className="detail">{project}</p>
+
+                                <h3 className="title">Developer</h3>
+                                <p className="detail">{developer}</p>
+
+                                <h3 className="title">Priority</h3>
+                                <p className="detail">{priority}</p>
+
+                                <h3 className="title">Status</h3>
+                                <p className="detail">{status}</p>
+
+                                <h3 className="title">Type</h3>
+                                <p className="detail">{type}</p>
+                            </div>
+                        </div>
+                    }
+                        
+                        <div className="modal-btns">
+                            <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
+                                Cancel
+                            </button>
+                            <a href="/tickets">
+                                <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmEditTicket}>
+                                    Confirm
+                                </button>
+                            </a>
+                        </div>
+                    </Modal>
+
+                    <main className="edit-ticket-container">
+
+                        <div className="edit-ticket-main">
+                            <div className="list-container">
+                                <header className="banner-container">
+                                    <div className="list-banner">
+                                        <p className="list-title">Edit Ticket</p>
+                                        <p>Change Ticket properties</p>
+                                    </div>
+                                </header>
+                                <div className="details-container">
+                                    <div className="details-row">
+                                        <div className="details-row-leftside">
+                                            <p className="row-title">Title</p>
+                                            <input 
+                                                type="text" 
+                                                className="row-input" 
+                                                name="title"
+                                                defaultValue={ticket.title} 
+                                                onChange={this.onChange}
+                                            />
+                                        </div>
+                                        <div className="details-row-rightside">
+                                            <p className="row-title">Description</p>
+                                            <input type="text" 
+                                                className="row-input" 
+                                                name="description"
+                                                defaultValue={ticket.description} 
+                                                onChange={this.onChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="details-row">
+                                        <div className="details-row-leftside">
+                                            <p className="row-title">Project</p>
+                                            <div className="selection">
+                                                <select name="project" onChange={this.onSelectingProject}>
+                                                    <option>{ticket.project}</option>
+                                                    {/* {this.renderProjectSelection()} */}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="details-row-rightside">
+                                            <p className="row-title">Assigned Developer</p>
+                                            <div className="selection">
+                                                <select name="developer" onChange={this.onChange}>
+                                                    <option>{ticket.developer}</option>
+                                                    {this.renderDeveloperSelection()}
+                                                </select>
+                                                {/* <select name="developer" onChange={this.onChange}>
+                                                {   
+                                                    currentTicket ?
+                                                    <option>{ticket.developer}</option>
+                                                    :
+                                                    noDeveloper ?
+                                                    <option>No existing developer</option>
+                                                    :
+                                                    <option>Select developer</option>
+                                                }  
+                                                    {this.renderDeveloperSelection()}
+                                                </select> */}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="details-row">
+                                        <div className="details-row-leftside">
+                                            <p className="row-title">Ticket Priority</p>
+                                            <div className="selection">
+                                                <select name="priority" onChange={this.onChange}>
+                                                    <option>{ticket.priority}</option>
+                                                    <option>None</option>
+                                                    <option>Low</option>
+                                                    <option>Medium</option>
+                                                    <option>High</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="details-row-rightside">
+                                            <p className="row-title">Ticket Status</p>
+                                            <div className="selection">
+                                                <select name="status" onChange={this.onChange}>
+                                                    <option>{ticket.status}</option>
+                                                    <option>In Progress</option>
+                                                    <option>Open</option>
+                                                    <option>Closed</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="details-row">
+                                        <div className="details-row-leftside">
+                                            <p className="row-title">Ticket type</p>
+                                            <div className="selection">
+                                                <select name="type" onChange={this.onChange}>
+                                                    <option>{ticket.type}</option>
+                                                    <option>Bugs/Errors</option>
+                                                    <option>Feature Requests</option>
+                                                    <option>Other Comments</option>
+                                                    <option>Training/Documents Requests</option>
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="nav-links">
+                                        <Link to="/tickets">Back to List</Link>
+                                        <button 
+                                            className="btn-del-ticket"
+                                            onClick={this.onSubmitDeleteTicket}
+                                        >DELETE TICKET
+                                        </button>
+                                        <div className="btn-container">
+                                            <Button 
+                                                text="UPDATE TICKET" 
+                                                onClick={this.onSubmitEditTicket}
+                                            />
+                                        </div>
+                                    </div>
+        
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
             }
             </div>
         )
@@ -306,10 +489,14 @@ const mapStateToProps = state => {
         ticketId: state.tickets.ticketId,
         ticket: state.tickets.ticket[0],
         tickets: state.tickets.tickets,
-        users: state.users.users
+        users: state.users.users,
+        allProjectUsers: state.users.allProjectUsers
     }
 }
 
-const mapDispatchToProps = { fetchProjects, fetchProject, fetchTicket, editTicket, saveTicketHistory, deleteTicket }
+const mapDispatchToProps = { 
+    fetchProjects, fetchProject, fetchTicket, fetchAllProjectUsers,
+    editTicket, saveTicketHistory, deleteTicket 
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditTicket); 

@@ -168,7 +168,7 @@ class CreateTicket extends Component {
                 <Modal visibility={showHideNotification} type="modal-container notification slide-bottom">
                 {
                     warning ? 
-                    <p>A ticket named {title} already exists. Please choose a different name.</p>
+                    <p>A ticket named "{title}" already exists. Please choose a different title.</p>
                     :
                     noDeveloper?
                     <div>

@@ -74,11 +74,14 @@ class CreateProject extends Component {
 
     onCreateProject = () => {
         const { title, description, userAdded, userId } = this.state;
+        const { users } = this.props;
+        const userRole = users.filter(user => user.id === userId)[0].role;
 
         this.props.createProject({
             title: title,
             description: description,
             userAdded: userAdded,
+            role: userRole,
             userId: userId
         })   
     };
@@ -97,7 +100,7 @@ class CreateProject extends Component {
                     <p>Your project needs a Name and a Description</p> 
                     :
                     sameTitle ?
-                    <p>A project named {title} already exists. Please choose a different name.</p>
+                    <p>A project named "{title}" already exists. Please choose a different title.</p>
                     :
                     <p>You've added {username} to your Project</p>
                 }

@@ -30,9 +30,6 @@ const Dashboard = () => {
                         <SubmitterChart />
                         <p>Tickets by Submitter</p>
                     </div>
-
-
-                    {/* <ChartCard /> */}
                 </div>
 			</main>
 		</div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchProject, editProject, deleteProject } from '../../redux/actions';
+import { fetchProject, editProject, deleteProject, removeUserFromProject } from '../../redux/actions';
 import Modal from '../../components/layout/display/Modal';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/EditProject.scss';
@@ -13,14 +13,17 @@ class EditProject extends Component {
     state = {
         title: this.props.project.title,
         description: this.props.project.description,
-        // projectId: this.props.projectId,
         userID: '',
         userToRemove: null,
         showModal: false,
         notification: false,
         warning: false,
         sameTitle: false,
-        removeUser: false
+        removeUserRequest: false,
+        cannotRemoveUser: false,
+        noChanges: false,
+        deleteProject: false,
+        
     }
 
     componentDidMount = () => {
@@ -32,14 +35,17 @@ class EditProject extends Component {
     };
 
     closeModal = () => {
-        this.setState({ showModal: false })
+        this.setState({ showModal: false, deleteProject: false })
     };
 
     closeNotification = () => {
         this.setState({ 
             notification: false, 
             warning: false, 
-            removeUser: false
+            removeUserRequest: false,
+            sameTitle: false,
+            cannotRemoveUser: false,
+            noChanges: false
         })
     };
 
@@ -58,54 +64,85 @@ class EditProject extends Component {
     };
 
     removeUser = () => {
-        const selectedUser = this.props.users.filter(user => user.id === this.state.userID)[0].username;
-        this.setState({ 
-            notification: true,
-            removeUser: true,
-            userToRemove: selectedUser
-        })
+        const { users, tickets, projectId } =  this.props;
+        const { userID } = this.state;
+        const selectedUser = users.filter(user => user.id === userID)[0].username;
+        const cannotRemove = tickets.filter(
+            ticket => ticket.status === 'Open' && ticket.developer === selectedUser && 
+            ticket.projectId === projectId
+        )
+
+        if (cannotRemove.length !== 0) {
+            this.setState({ 
+                notification: true,
+                cannotRemoveUser: true  
+            })
+        } else {
+            this.setState({ 
+                notification: true,
+                removeUser: true,
+                userToRemove: selectedUser
+            })
+        }
     };
 
     onSubmitEditProject = () => {
-        const { projects } = this.props;
+        const { projects, project } = this.props;
         const { title, description, userToRemove } = this.state;
         const sameTitle = projects.filter(project => project.title === title);
 
-
         if (!title || !description) {
             this.setState({ notification: true, warning: true })
-
-        } else if (sameTitle.length !== 0 && userToRemove === null) {
+        
+        } else if (title !== project.title && sameTitle.length !== 0 && userToRemove === null) {
             this.setState({
                 notification: true, 
                 sameTitle: true
+            })
+        } else if (title === project.title && description === project.description && userToRemove === null) {
+            this.setState({
+                notification: true, 
+                noChanges: true
             })
         } else {
             this.setState({
                 showModal: true
             })
         }
+    };
+    
+    onConfirmEditProject = () => {
+        const { title, description, userToRemove, userID } = this.state
+        const { project, projectId } = this.props;
 
-        // const { title, description, userToRemove } = this.state;
-        // this.props.editProject(
-        //     this.props.projectId, 
-        //     {
-        //         title: title,
-        //         description: description,
-        //         // projectId: this.props.projectId,
-        //         userToRemove: userToRemove
-        //     }
-        // )
-    }; 
+        if (title === project.title && description === project.description && userToRemove !== null) {
+            this.props.removeUserFromProject(project.id, userID)
+        } else if (deleteProject) {
+            this.props.deleteProject(projectId)
+        } else {
+            this.props.editProject(
+                projectId, 
+                {
+                    title: title,
+                    description: description,
+                    userToRemove: userToRemove
+                }
+            )
+        }
 
-    onDeleteProject = () => {
-        this.props.deleteProject(this.props.projectId)
+    }
+
+    onSubmitDeleteProject = () => {
+        this.setState({
+            showModal: true,
+            deleteProject: true
+        })
     };
 
     render() {
         const { 
-            title, description, username, userToRemove, showModal, 
-            warning, removeUser, notification, sameTitle 
+            title, description, username, userToRemove, showModal, notification, 
+            warning, cannotRemoveUser, sameTitle, noChanges, deleteProject 
         } = this.state;
         const showHideModal = showModal ? "display-block" : "display-none";
         const showHideNotification = notification ? "display-block" : "display-none";
@@ -113,19 +150,21 @@ class EditProject extends Component {
         return (
             <div>
 
-
             <Modal visibility={showHideNotification} type="modal-container notification slide-bottom">
                 {
                     warning ? 
                     <p>Your project needs a Name and a Description</p> 
                     :
                     sameTitle ?
-                    <p>A project named {title} already exists. Please choose a different name.</p>
+                    <p>A project named "{title}" already exists. Please choose a different title.</p>
                     :
-                    removeUser ?
-                    <p>{userToRemove} will be removed from the Project upon confirmation</p>
+                    cannotRemoveUser ? 
+                    <p>You cannot remove a user currently assigned to an open ticket on this project.</p>
                     :
-                    <p>You've added {username} to your Project</p>
+                    noChanges ? 
+                    <p>Nothing has changed</p>
+                    :
+                    <p>{userToRemove} will be removed from the Project once you confirm the update.</p>
                 }
                     <div className="modal-btns">
                         <button className="btn2-main modal-btn btn-confirm" onClick={this.closeNotification}>
@@ -135,30 +174,48 @@ class EditProject extends Component {
                 </Modal>
 
                 <Modal visibility={showHideModal} type="modal-container main scale-up-center">
-                    <h2 className="header">Save these changes?</h2>
-                    <div className="changes-details">
-                        <h3 className="title">Title</h3>
-                        <p className="detail">{title}</p>
-                        <h3 className="title">Description</h3>
-                        <p className="detail">{description}</p>
-                        {
-                            userToRemove !== null ?
-                            <div>
-                                <h3 className="title">User to remove from Project</h3>
-                                <p className="detail">{userToRemove}</p>
+                {
+                    deleteProject ? 
+
+                    <div>
+                        <div className="warning">
+                            <i className="fas fa-exclamation-triangle fa-5x"></i>
+                            <h2 className="header warning-header">Are you sure you want to delete this project?</h2>
+                            <div className="warning-text">
+                                <h3>The following will be permanently deleted:</h3>
+                                <p>- All the past & present tickets associated with this project</p>
+                                <p>- All the history, comments and attachments of these tickets</p>
+                                <p>- All the analytics of these tickets</p>
+                                <p className="final-warning"><strong>There is no going back, are you sure you wish to proceed?</strong></p>
                             </div>
-                            :
-                            null
-                        }
-                        <h3 className="title">Assigned User</h3>
-                        <p className="detail">{username}</p>
+                        </div>
                     </div>
+                    :
+                    <div>
+                        <h2 className="header">Save these changes?</h2>
+                        <div className="changes-details">
+                            <h3 className="title">Title</h3>
+                            <p className="detail">{title}</p>
+                            <h3 className="title">Description</h3>
+                            <p className="detail">{description}</p>
+                            {
+                                userToRemove !== null ?
+                                <div>
+                                    <h3 className="title">User to remove from Project</h3>
+                                    <p className="detail">{userToRemove}</p>
+                                </div>
+                                :
+                                null
+                            }
+                        </div>
+                    </div>
+                }   
                         <div className="modal-btns">
                             <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
                                 Cancel
                             </button>
                             <a href="/projects">
-                                <button className="btn2-main modal-btn btn-confirm" onClick={this.onCreateProject}>
+                                <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmEditProject}>
                                     Confirm
                                 </button>
                             </a>
@@ -220,7 +277,7 @@ class EditProject extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="details-row">
+                                {/* <div className="details-row">
                                     <div className="details-row-leftside">
                                         <p className="row-title">Tickets</p>
                                         <div className="selection">
@@ -235,16 +292,15 @@ class EditProject extends Component {
                                     <div className="details-row-rightside">
                                         <p className="row-title">Actions</p>
                                         <div className="btn-actions">
-                                            {/* <button className="btn-add-user">ADD</button> */}
                                             <button className="btn-del-user">REMOVE TICKET</button>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="nav-links">
                                     <Link to="/projects">Back to List</Link>
                                     <button 
                                         className="btn-del-project"
-                                        onClick={this.onDeleteProject}>DELETE PROJECT
+                                        onClick={this.onSubmitDeleteProject}>DELETE PROJECT
                                     </button>
                                     <div className="btn-container">
                                         <Button 
@@ -268,10 +324,11 @@ const mapStateToProps = state => {
         projects: state.projects.projects,
         projectId: state.projects.projectId,
         users: state.users.users,
-        projectUsers: state.users.projectUsers
+        projectUsers: state.users.projectUsers,
+        tickets: state.tickets.tickets
     }
 }
 
-const mapDispatchToProps = { fetchProject, editProject, deleteProject }
+const mapDispatchToProps = { fetchProject, editProject, deleteProject, removeUserFromProject }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditProject); 
