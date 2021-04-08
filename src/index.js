@@ -37,11 +37,11 @@ const persistedState = loadStateFromLocalStorage()
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
 	reducers,
-	// persistedState, 
+	persistedState, 
 	composeEnhancers(applyMiddleware(reduxThunk))
 );
 
-// store.subscribe(() => saveStateToLocalStorage(store.getState()))
+store.subscribe(() => saveStateToLocalStorage(store.getState()))
 
  
 ReactDOM.render(

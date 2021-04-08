@@ -1,6 +1,7 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
+import '../../../scss/components/layouts/BarChart.scss';
 
 class ChartsPage extends React.Component {
 state = {

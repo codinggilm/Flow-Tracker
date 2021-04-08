@@ -6,15 +6,10 @@ import flowAPI from '../apis/flowApi';
 export const requestLogin = (data) => {
     return async dispatch => {
         const response = await flowAPI.post('/login', data);
-        // const response = await flowAPI.post('/users/login', data);
-        // if (response.payload !== 'no such user') {
         if (response.data === 'wrong credentials') {
-            // dispatch({ type: 'LOGIN_SUCCESS', payload: response.data})
             dispatch({ type: 'LOGIN_FAILURE', payload: response.data})
             console.log(response)
-            // console.log(response.payload.status)
         } else {
-            // dispatch({ type: 'LOGIN_FAILURE', payload: response.data})
             dispatch({ type: 'LOGIN_SUCCESS', payload: response.data})
             console.log(response)
             // console.log(response.payload.status)

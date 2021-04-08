@@ -6,6 +6,7 @@ import PriorityChart from '../../components/layout/charts/PriorityChart';
 import StatusChart from '../../components/layout/charts/StatusChart';
 import TypeChart from '../../components/layout/charts/TypeChart';
 import SubmitterChart from '../../components/layout/charts/SubmitterChart';
+import ProjectsChart from '../../components/layout/charts/ProjectsChart';
 import '../../scss/containers/Dashboard.scss';
 
  
@@ -23,12 +24,18 @@ const Dashboard = () => {
                         <p>Tickets by Type</p>
                     </div>
                     <div className="chart-card">
-                        <StatusChart />
-                        <p>Tickets by Status</p>
+                        {/* <StatusChart />
+                        <p>Tickets by Status</p> */}
+                        {/* <SubmitterChart />
+                        <p>Tickets by Submitter</p> */}
+                        <ProjectsChart />
+                        <p>Tickets by Project</p>
                     </div>
                     <div className="chart-card">
-                        <SubmitterChart />
-                        <p>Tickets by Submitter</p>
+                        {/* <SubmitterChart />
+                        <p>Tickets by Submitter</p> */}
+                        <StatusChart />
+                        <p>Tickets by Status</p>
                     </div>
                 </div>
 			</main>
