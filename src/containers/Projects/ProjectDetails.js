@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchUsers, fetchProject} from '../../redux/actions';
 import Showcase from '../../components/layout/display/Showcase';
-// import ProjectUsersList from '../../components/lists/ProjectUsersList';
-// import ProjectTicketsList from '../../components/lists/ProjectTicketsList';
-import ProjectUsersList2 from '../../components/lists/ProjectUsersList2';
-import ProjectTicketsList2 from '../../components/lists/ProjectTicketsList2';
+import ProjectUsersList from '../../components/lists/ProjectUsersList';
+import ProjectTicketsList from '../../components/lists/ProjectTicketsList';
 import '../../scss/containers/ProjectDetails.scss';
  
  
@@ -25,16 +23,10 @@ class ProjectDetails extends Component {
                     </header>
                     <div className="project-details-grid">
                         <div className="list-card">
-                        {/* {
-                            this.props.project ? <ProjectUsersList /> : <h2>FETCHING DETAILS...</h2>
-
-                        } */}
-                            {/* <ProjectUsersList /> */}
-                            <ProjectUsersList2 />
+                            <ProjectUsersList />
                         </div>
                         <div className="list-card">
-                            {/* <ProjectTicketsList /> */}
-                            <ProjectTicketsList2 />
+                            <ProjectTicketsList />
                         </div>
                     </div>
                 </main>

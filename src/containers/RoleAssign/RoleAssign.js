@@ -18,42 +18,24 @@ class RoleAssign extends Component {
         notification: false,
         warning: false,
         sameRole: false
-    }
+    };
 
     componentDidMount = () => {
 		this.props.fetchUsers();
         this.props.fetchTickets();
-	}
+	};
  
     onChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
-    }
+    };
 
     closeModal = () => {
-        this.setState({showModal: false});
-    }
+        this.setState({ showModal: false });
+    };
 
     closeNotification = () => {
-        this.setState({notification: false});
-        // this.resetState();
-    }
-
-    // IsAvailable = (username) => {
-    //     const { users, tickets } = this.props;
-    //     const selectedUser = users.filter(user => user.username === username);
-    //     const unavailable = tickets.filter(ticket => ticket.status === 'Open' && ticket.developer === selectedUser[0].username)
-
-    //     if (unavailable.length !== 0) {
-    //             this.setState ({
-    //             notification: true, 
-    //             warning: true,
-    //             showModal: false,
-    //             unavailable: true
-    //         })
-    //     } else {
-    //         this.setState({showModal: true})
-    //     }
-    // }
+        this.setState({ notification: false });
+    };
 
     onSubmit = () => {
         const { username, role } = this.state;
@@ -61,9 +43,9 @@ class RoleAssign extends Component {
         if (!username || !role) {
             this.setState({ notification: true })
         } else {
-            this.setState({showModal: true})
+            this.setState({ showModal: true })
         }
-    }
+    };
 
     onConfirmRole = () => {
         const { username, role } = this.state;
@@ -94,7 +76,7 @@ class RoleAssign extends Component {
             document.location.reload();
         }
         
-    }
+    };
 
     resetState = () => {
         this.setState({
@@ -104,14 +86,14 @@ class RoleAssign extends Component {
             showModal: false,
             notification: false
         })
-    }
+    };
 
     renderUsersSelection = () => {
         return this.props.users.map(user => {
             return <option key={user.id}>{user.username}</option>
             
         })
-    }
+    };
 
     renderUsers = (entriesStart, maxPerPage, searchfield) => {
         let { users } = this.props;
@@ -134,7 +116,7 @@ class RoleAssign extends Component {
 				</div>
             )
         })
-    }
+    };
 
     render() {
         const { users } = this.props;
@@ -154,12 +136,14 @@ class RoleAssign extends Component {
                             <br/>
                             <p>Please assign a new developer to {username}'s open Ticket(s) before proceeding.</p>
                         </div>
+
                         :
-                        sameRole ?
-                        <div>
-                            <p>{username} is already a {role}.</p>
-                        </div>
+
+                        sameRole ? 
+                        <p>{username} is already a {role}.</p>
+
                         :
+
                         <p>You need to select a User and a Role</p> 
 
                     }

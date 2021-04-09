@@ -1,22 +1,88 @@
-import React from 'react';
-// import TicketCommentsList from '../../lists/TicketCommentsList';
-import TicketCommentsList2 from '../../lists/TicketCommentsList2';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { fetchComments, deleteComment } from '../../../redux/actions';
+import List from './List';
 import AddComment from './AddComment';
-import '../../../scss/components/layouts/TicketComments.scss';
-
    
-const TicketComments = () => {
-	return (
-		<div> 
-			<main className="showcase-main">
-				<div className="list-container">
-                    <AddComment />
-					{/* <TicketCommentsList /> */}
-					<TicketCommentsList2 />
+class TicketComments extends Component {
+    
+    componentDidMount = () => {
+		this.props.fetchComments(this.props.ticketId) 
+	}
+
+	renderComments = (entriesStart, maxPerPage, searchfield) => {
+        const comments = this.props.ticketComments;
+		let entriesEnd = entriesStart + maxPerPage;
+		let filter = searchfield;
+
+		let filteredList = comments.filter(comments => {
+			return (
+                comments.user.toLowerCase().includes(filter) || comments.content.toLowerCase().includes(filter) ||
+                comments.createdAt.toLowerCase().includes(filter) 
+            )
+		})
+		
+        return filteredList.slice(entriesStart, entriesEnd).map(comment => {
+			return (
+				<div className="tableList-row comments" key={comment.id}>
+					<p>{comment.user}</p>
+					<p>{comment.content}</p>
+					<p>{comment.createdAt}</p>
+					<button 
+						className="small-del-btn"
+						onClick={()=>this.onDeleteComment(comment.id)}
+					>
+                    DEL
+                    </button>
 				</div>
-			</main>
-		</div>
-	)
+			)
+		})
+	}
+
+    onDeleteComment = (id) => {
+		// console.log(id, this.props.ticketId)
+		this.props.deleteComment(id, this.props.ticketId)
+	}
+
+    render() {
+        const { ticketComments } = this.props;
+
+        return (
+            <div> 
+                <main className="showcase-main">
+                    <div className="list-container">
+                        <AddComment />
+                        <div className="tickets-comments-list-main">
+                            <List 
+                                listTitle="Ticket Comments"
+                                listDescription="All comments for this ticket"
+                                titleGrid="tableList-titles comments"
+                                stateObject={ticketComments}
+                                allEntries={ticketComments.length} 
+                                renderItems={(entriesStart, maxPerPage, searchfield) => 
+                                    this.renderComments(entriesStart, maxPerPage, searchfield)
+                                } 
+                            >
+                                <p>Commenter</p>
+                                <p>Message</p>
+                                <p>Created</p>
+                                <p>Delete</p>
+                            </List>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        )
+    }
 }
 
-export default TicketComments; 
+const mapStateToProps = state => {
+	return {
+		ticketId: state.tickets.ticketId,
+		ticketComments: state.comments.ticketComments
+	}
+}
+
+const mapDispatchToProps = { deleteComment, fetchComments }
+
+export default connect(mapStateToProps, mapDispatchToProps)(TicketComments); 
