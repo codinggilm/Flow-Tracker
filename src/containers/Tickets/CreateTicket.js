@@ -34,7 +34,7 @@ class CreateTicket extends Component {
         let developers = this.props.allProjectUsers.filter(user => user.role === 'Developer' && user.projectID === firstProject.id)
         // console.log(developers)
         // let developers = this.props.users.filter(user => user.role === 'Developer');
-        this.setState({developer: developers[0].username})
+        // this.setState({developer: developers[0].username})
     };
 
     closeModal = () => {
@@ -88,7 +88,7 @@ class CreateTicket extends Component {
                 <option key={project.id}>{project.title}</option>
             )
         })
-    };
+    }; 
 
     renderDeveloperSelection = () => {
         // let developers = this.props.users.filter(user => user.role === 'Developer');

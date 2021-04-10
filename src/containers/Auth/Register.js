@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { createUser } from '../../redux/actions';
+import { createUser, registerSuccess } from '../../redux/actions';
+import Modal from '../../components/layout/display/Modal'
 // import { requestLogin } from '../../redux/actions';
 import '../../scss/containers/Register.scss';
  
 class Register extends Component {
-    // constructor(props){
-    //     super(props)
-    // }
 
     state = {
         company: '',
@@ -22,13 +20,43 @@ class Register extends Component {
     }
 
     onRequestRegister = () => {
-        console.log(this.state)
-        this.props.createUser(this.state)
+        this.props.createUser(this.state);
     }
     
     render() {
+        const { showModal, existingEmail, existingCompany, registerSuccess } = this.props;
+        const showHideModal = showModal ? "display-block" : "display-none";
+
         return (
             <div>
+
+                <Modal visibility={showHideModal} type="modal-container main scale-up-center">
+                    <h2 className="header">Welcome to Flow Tracker!</h2>
+                    <div className="changes-details">
+                        {
+                            existingCompany ? 
+
+                            <div>
+                                <p>You are joining an existing company's account, so you will not have a default Role.</p>
+                                <br/>
+                                <p>Please contact your Admin to have a Role assigned to you and get started.</p>
+                            </div>
+                            :
+                            <div>
+                                <p>Thank you for registering. As this is a new company, your Role will be set to Admin by default.</p>
+                                <br/>
+                                <p>You can now start creating Projects, Tickets, and you can assign Roles to future Users who register under your company.</p>
+                            </div>
+                        }
+
+                    </div>
+                        <div className="modal-btns">
+                            <button className="btn2-main modal-btn btn-confirm" onClick={registerSuccess}>
+                                Ok
+                            </button>
+                        </div>
+                </Modal>
+                
                 <main className="register-main">
                     <div className="auth-container">
                         <header>Flow Tracker</header>
@@ -48,6 +76,9 @@ class Register extends Component {
                             <div className="input email-input" onChange={this.onChange}>
                                 <i className="far fa-envelope"></i>
                                 <input type="email" name="email" placeholder="type email.."/>
+                                {
+                                    existingEmail? <p className="email-warning">Email already in use. Please use another address.</p> : null
+                                }
                             </div>
                             <div className=" input password-input" onChange={this.onChange}>
                                 <i className="fas fa-key"></i>
@@ -55,7 +86,6 @@ class Register extends Component {
                             </div> 
                         </div>        
                         <button onClick={this.onRequestRegister}>REGISTER ME</button>
-                        {/* <a href="/"><button>SIGN IN</button></a> */}
                         <div className="login-links">
                             <p>Forgot your <a href="/">Password?</a></p>
                             <p>Sign in as a <a href="/">Demo User</a></p>
@@ -68,7 +98,16 @@ class Register extends Component {
     } 
 }
 
+const mapStateToProps = state => {
+	return { 
+		existingEmail: state.auth.existingEmail,
+		existingCompany: state.auth.existingCompany,
+		showModal: state.auth.showModal,
+		currentUser: state.auth.currentUser
+	}
+}
 
-const mapDispatchToProps = { createUser }
 
-export default connect(null, mapDispatchToProps)(Register);
+const mapDispatchToProps = { createUser, registerSuccess }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

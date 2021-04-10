@@ -31,11 +31,11 @@ class CreateProject extends Component {
     };
 
     closeModal = () => {
-        this.setState({showModal: false})
+        this.setState({ showModal: false })
     };
 
     closeNotification = () => {
-        this.setState({notification: false, warning: false})
+        this.setState({ notification: false, warning: false })
     };
 
     addUser = () => {
@@ -43,10 +43,11 @@ class CreateProject extends Component {
         
         if (username && username !== '--Select User--') {
             let user = this.props.users.filter(user => user.username === username);
-            let id = user[0].id;
+            let { id, role } = user[0];
             this.setState({ 
                 userAdded: username,
                 userId: id,
+                role: role,
                 notification: true
             })
         }
@@ -73,15 +74,18 @@ class CreateProject extends Component {
     };
 
     onCreateProject = () => {
-        const { title, description, userAdded, userId } = this.state;
-        const { users } = this.props;
-        const userRole = users.filter(user => user.id === userId)[0].role;
+        const { title, description, userAdded, userId, role } = this.state;
+        const { users, currentUser } = this.props;
+        // const userRole = users.filter(user => user.id === userId)[0].role;
 
+        console.log(this.state)
         this.props.createProject({
             title: title,
             description: description,
+            company: currentUser.company,
+            companyId: currentUser.companyId,
             userAdded: userAdded,
-            role: userRole,
+            role: role,
             userId: userId
         })   
     };
@@ -205,7 +209,8 @@ class CreateProject extends Component {
 const mapStateToProps = (state) => {
 	return { 
         projects: state.projects.projects,
-        users: state.users.users 
+        users: state.users.users,
+        currentUser: state.auth.currentUser 
     }
 }
 

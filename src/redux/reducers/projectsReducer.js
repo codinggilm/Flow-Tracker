@@ -1,5 +1,6 @@
 const initialState = {
     projects: [],
+    userProjects: [],
     project: {},
     projectId: ''
 };
@@ -9,6 +10,11 @@ const projectsReducer = (state=initialState, action) => {
         case 'FETCH_PROJECTS':
             return {...state,
                 projects: action.payload
+            };
+
+        case 'FETCH_USER_PROJECTS':
+            return {...state,
+                userProjects: action.payload
             }; 
 
         case 'FETCH_PROJECT':

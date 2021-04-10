@@ -10,7 +10,6 @@ class TicketShowcase extends Component {
     componentDidMount() {
         this.props.fetchTicket(this.props.ticketId);
         this.props.fetchProject(this.props.projectId)
-        // console.log(this.props.ticket.projectId)
     }
     
     render() {
@@ -98,7 +97,7 @@ const mapStateToProps = state => {
     return {
         ticketId: state.tickets.ticketId,
         ticket: state.tickets.ticket[0],
-        projectId: state.projects.projectId
+        projectId: state.projects.projectId 
     }
 }
 

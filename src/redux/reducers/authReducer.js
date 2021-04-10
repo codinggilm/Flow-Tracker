@@ -1,17 +1,14 @@
 const initialState = {
-    // isFetching: false,
-    isRegistered: false,
     isAuthenticated: false,
+    existingEmail: false,
+    existingCompany: false,
+    showModal: false,
     currentUser: '',
 };
 
 const authReducer = (state=initialState, action) => {
     switch (action.type) {
-        // case 'LOGIN_REQUEST':
-        //     return {...state,
-        //         isFetching: true
-        //     }; 
-
+        
         case 'LOGIN_SUCCESS':
             return {...state,
                 isAuthenticated: true,
@@ -26,7 +23,36 @@ const authReducer = (state=initialState, action) => {
         case 'LOGOUT_SUCCESS': 
             return { ...state, 
                 isAuthenticated: false,
+                existingEmail: false,
                 currentUser: ''           
+            };
+
+        case 'REGISTER_USER_NEW_COMPANY': 
+            return { ...state, 
+                showModal: true,
+                existingEmail: false,
+                existingCompany: false,
+                currentUser: action.payload           
+            };
+
+        case 'REGISTER_USER_EXISTING_COMPANY': 
+            return { ...state, 
+                showModal: true,
+                existingEmail: false,
+                existingCompany: true,
+                currentUser: action.payload           
+            };
+
+        case 'REGISTER_SUCCESS': 
+            return { ...state, 
+                isAuthenticated: true,
+                showModal: false         
+            };
+
+        case 'REGISTERING_FAILED': 
+            return { ...state, 
+                isAuthenticated: false,
+                existingEmail: true          
             };
 
         default:

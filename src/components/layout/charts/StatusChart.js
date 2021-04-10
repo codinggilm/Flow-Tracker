@@ -6,6 +6,11 @@ import { fetchTickets } from '../../../redux/actions';
 import '../../../scss/components/layouts/BarChart.scss';
 
 class StatusChart extends React.Component {
+
+    componentDidMount = () => {
+        this.props.fetchTickets(this.props.currentUser.companyId);
+    }
+    
     state = {
 	    barChartOptions: {
             responsive: true,
@@ -91,6 +96,7 @@ class StatusChart extends React.Component {
 const mapStateToProps = state => {
     return {
         tickets: state.tickets.tickets,
+        currentUser: state.auth.currentUser  
     }
 }
 

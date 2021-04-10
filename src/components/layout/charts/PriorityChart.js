@@ -6,6 +6,11 @@ import { fetchTickets } from '../../../redux/actions';
 import '../../../scss/components/layouts/BarChart.scss';
 
 class PriorityChart extends React.Component {
+	
+	componentDidMount = () => {
+        this.props.fetchTickets(this.props.currentUser.companyId);
+    }
+
 
   	state = {
 		barChartOptions: {
@@ -87,12 +92,13 @@ class PriorityChart extends React.Component {
 			
 		</MDBContainer>
 		);
-  	}
+  	} 
 }
 
 const mapStateToProps = state => {
   	return {
 	  	tickets: state.tickets.tickets,
+		currentUser: state.auth.currentUser  
   	}
 }
 

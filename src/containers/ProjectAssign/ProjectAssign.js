@@ -109,12 +109,12 @@ class ProjectAssign extends Component {
             this.setState({ notification: true });
         } else {
             this.setState({showModal: true});
-            this.props.fetchProjectUsers(projectId);
+            this.props.fetchProjectUsers(projectId); 
         }
     }
 
     onConfirmProjectAssignment = () => {
-        const { username, userId, role, project, projectId } = this.state;
+        const { username, userId, role, project, projectId, currentUser } = this.state;
         const { projectUsers } = this.props;
 
         const checkSelection = projectUsers.filter(entry => entry.projectID === projectId && entry.userID === userId);
@@ -132,6 +132,8 @@ class ProjectAssign extends Component {
                 role: role,
                 project: project,
                 projectId: projectId,
+                company: currentUser.company,
+                companyId: currentUser.companyId
             })
 
             this.resetState();
@@ -236,7 +238,8 @@ const mapStateToProps = state => {
     return { 
         users: state.users.users,
         projects: state.projects.projects,
-        projectUsers: state.users.projectUsers
+        projectUsers: state.users.projectUsers,
+        currentUser: state.auth.currentUser 
     }
 }
 

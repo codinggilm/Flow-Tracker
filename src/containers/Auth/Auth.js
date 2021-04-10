@@ -19,17 +19,16 @@ class Auth extends Component {
     }
 
     registerUser = () => {
-        this.setState({isRegistered: false})
+        this.setState({ isRegistered: false })
     }
     
     hasAccount = () => {
-        this.setState({isRegistered: true})
+        this.setState({ isRegistered: true })
     }
 
     
     onRequestLogin = () => {
         this.props.requestLogin(this.state);
-        console.log(this.state)
     }
     
     render() {

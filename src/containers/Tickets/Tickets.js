@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchTickets, fetchTicket, fetchProjects, fetchUsers, fetchAllProjectUsers, 
+import { fetchTickets, fetchTicket, fetchProjects, fetchUserProjects, fetchUsers, fetchAllProjectUsers, 
     saveTicketId, saveProjectId, fetchComments, fetchTicketHistory
 } from '../../redux/actions';
 import List from '../../components/layout/display/List'
@@ -12,10 +12,16 @@ import '../../scss/containers/Tickets.scss';
 class Tickets extends Component {
 
     componentDidMount = () => {
-        this.props.fetchTickets();
-        this.props.fetchProjects();
+        const { currentUser } = this.props;
+
+        this.props.fetchTickets(this.props.currentUser.companyId);
         this.props.fetchUsers();
         this.props.fetchAllProjectUsers();
+
+        if (currentUser.role !== 'Admin') {
+			this.props.fetchUserProjects(currentUser.id)
+		} 
+        
     }
     
 
@@ -25,11 +31,34 @@ class Tickets extends Component {
     }
 
     renderTickets(entriesStart, maxPerPage, searchfield) {
-        let { tickets } = this.props;
+        let { tickets, currentUser, userProjects } = this.props;
 		let entriesEnd = entriesStart + maxPerPage;
 		let filter = searchfield;
+        let userTickets = [];
 
-		let filteredList = tickets.filter(tickets => {
+        if (currentUser.role === 'Admin') {
+            userTickets = tickets;
+        }
+
+        if (currentUser.role === 'Project Manager') {
+            for (let i=0;  i < tickets.length; i++) {
+                for (let v=0; v < userProjects.length; v++) {
+                    if (tickets[i].projectId === userProjects[v].projectID) {
+                        userTickets.push(tickets[i]);
+                    }
+                }
+            };
+        }
+
+        if (currentUser.role === 'Developer') {
+            for (let i=0;  i < tickets.length; i++) {
+                if (tickets[i].developerId === currentUser.id) {
+                    userTickets.push(tickets[i]);
+                }
+            };
+        }
+
+		let filteredList = userTickets.filter(tickets => {
 			return (
                 tickets.title.toLowerCase().includes(filter) || tickets.project.toLowerCase().includes(filter) ||
                 tickets.developer.toLowerCase().includes(filter) || tickets.priority.toLowerCase().includes(filter) ||
@@ -110,12 +139,14 @@ class Tickets extends Component {
 
 const mapStateToProps = state => {
     return { 
-        tickets: state.tickets.tickets 
+        tickets: state.tickets.tickets,
+        currentUser: state.auth.currentUser,
+        userProjects: state.projects.userProjects  
     }
 }
 
 const mapDispatchToProps = { 
-    fetchTickets, fetchUsers, fetchProjects, fetchTicket, saveTicketId, 
+    fetchTickets, fetchUsers, fetchProjects, fetchUserProjects, fetchTicket, saveTicketId, 
     saveProjectId, fetchComments, fetchTicketHistory, fetchAllProjectUsers 
 }
 

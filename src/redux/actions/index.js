@@ -20,18 +20,34 @@ export const requestLogin = (data) => {
 
 export const requestLogout = () => {
     return async dispatch => {
-        // const response = await flowAPI.get('/projects');
-        // dispatch({ type: 'FETCH_PROJECTS', payload: response.data})
-        dispatch({ type: 'LOGOUT_SUCCESS', payload: 'Goodbye'})
+        const response = await flowAPI.get('/logout');
+        // localStorage.clear();
+        // dispatch({ type: 'LOGOUT_SUCCESS', payload: response})
+        dispatch({ type: 'RESET_STATE'})
     }
+}
+
+export const registerSuccess = () => {
+    return { type:'REGISTER_SUCCESS', payload: 'ok' }
+
 }
 
 //  ***************************** PROJECT ACTIONS ****************************  //
 
-export const fetchProjects = () => {
+
+export const fetchProjects = (companyId) => {
     return async dispatch => {
-        const response = await flowAPI.get('/projects');
+        const response = await flowAPI.get(`/projects/${companyId}`);
         dispatch({ type: 'FETCH_PROJECTS', payload: response.data})
+    }
+}
+
+export const fetchUserProjects = (userId) => {
+    return async dispatch => {
+        const response = await flowAPI.get(`/projects/user/${userId}`);
+        dispatch({ type: 'FETCH_USER_PROJECTS', payload: response.data})
+        // dispatch({ type: 'FETCH_PROJECTS_OF_USER', payload: response.data})
+        // console.log(response.data)
     }
 }
  
@@ -52,13 +68,11 @@ export const createProject = (project) => {
         return async dispatch => { 
             const response = await flowAPI.post('/projects/createWithUser', project);
             dispatch({ type: 'CREATE_PROJECT', payload: response.data})
-            // console.log(project.userAdded)
         }
     } else {
         return async dispatch => { 
             const response = await flowAPI.post('/projects/create', project);
             dispatch({ type: 'CREATE_PROJECT', payload: response.data})
-    
         }
     }
 }
@@ -66,7 +80,6 @@ export const createProject = (project) => {
 export const editProject = (id, data) => {
     if (data.userToRemove === null) {
         return async dispatch => {
-            console.log(id, data)
             const response = await flowAPI.put(`/projects/update/${id}`, data);
             dispatch({ type: 'EDIT_PROJECT', payload: response.data});
         }
@@ -86,7 +99,6 @@ export const removeUserFromProject = (projectId, userId) => {
 }
 
 
-
 export const deleteProject = (id) => {
     return async dispatch => {
         const response = await flowAPI.post(`/projects/delete/${id}`);
@@ -95,22 +107,23 @@ export const deleteProject = (id) => {
 }
 
 
-
 //  ***************************** TICKET ACTIONS ****************************  //
 
 
-export const fetchTickets = () => {
+export const fetchTickets = (companyId) => {
     return async dispatch => {
-        const response = await flowAPI.get('/tickets');
+        const response = await flowAPI.get(`/tickets/${companyId}`);
         dispatch({ type: 'FETCH_TICKETS', payload: response.data})
     }
 }
 
 export const fetchTicket = (id) => {
     return async dispatch => {
+        console.log('fetching ticket')
+        console.log(id)
         const response = await flowAPI.get(`/tickets/${id}`);
-        // const response = await flowAPI.get(`/tickets/${id}`, {id: id});
         dispatch({ type: 'FETCH_TICKET', payload: response.data})
+        console.log(response.data)
     }
 }
 
@@ -182,8 +195,21 @@ export const deleteTicket = (id) => {
 export const createUser = (userData) => {
     return async dispatch => {
         const response = await flowAPI.post('/users/register', userData);
-        dispatch({ type: 'CREATE_USER', payload: response.data})
-        // console.log(response.data)
+        console.log(response);
+        if (response.data === 'Email address already exists') {
+            dispatch({ type: 'REGISTERING_FAILED', payload: response})
+
+        } else if (response.data.message === 'existing company'){
+            dispatch({ type: 'REGISTER_USER_EXISTING_COMPANY', payload: response.data.user})
+            // dispatch({ type: 'REGISTER_USER', payload: response.data})
+            console.log(response.message)
+
+        } else if (response.data.message === 'new company'){
+            dispatch({ type: 'REGISTER_USER_NEW_COMPANY', payload: response.data.user})
+            // dispatch({ type: 'REGISTER_USER', payload: response.data})
+            console.log(response.message)
+        }
+        // console.log(userData)
     }
 }
 

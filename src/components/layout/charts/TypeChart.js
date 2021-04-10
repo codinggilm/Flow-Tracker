@@ -8,7 +8,7 @@ import '../../../scss/components/layouts/BarChart.scss';
 class TypeChart extends React.Component {
 
 	componentDidMount () {
-        this.props.fetchTickets();
+        this.props.fetchTickets(this.props.currentUser.companyId);
     }
 
 	calculateChartData = () => {
@@ -54,6 +54,7 @@ class TypeChart extends React.Component {
 const mapStateToProps = state => {
     return {
         tickets: state.tickets.tickets,
+		currentUser: state.auth.currentUser  
     }
 }
 

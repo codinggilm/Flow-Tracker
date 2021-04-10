@@ -1,29 +1,50 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchProjects, fetchProject, saveProjectId, fetchProjectUsers } from '../../redux/actions';
+import { fetchProjects, fetchUserProjects, fetchProject, saveProjectId, fetchProjectUsers } from '../../redux/actions';
 import List from '../layout/display/List' 
  
 class ProjectsList extends Component {
 
 	componentDidMount() {
-		this.props.fetchProjects();
+		const { currentUser } = this.props;
 		
+		this.props.fetchProjects(this.props.currentUser.companyId);
+		if (currentUser.role !== 'Admin') {
+			this.props.fetchUserProjects(currentUser.id)
+		} 
+		// else {
+		// 	this.props.fetchProjects(this.props.currentUser.companyId);
+		// }
+		// this.props.fetchProjects(this.props.currentUser.companyId);
 	}
 
 
 	renderProjects = (entriesStart, maxPerPage, searchfield) => {
-
-		// let { projects, entriesStart, maxPerPage, searchfield } = this.props;
-		let { projects } = this.props;
-		// let { maxPerPage, entriesStart } = this.state;
+		let { projects, currentUser, userProjects } = this.props;
 		let entriesEnd = entriesStart + maxPerPage;
-		// let filter = this.state.searchfield;
-		let filter = searchfield; 
+		let filter = searchfield;
+		let currentUserProjects = [];
+		let filteredList;
 
-		let filteredList = projects.filter(projects => {
-			return projects.title.toLowerCase().includes(filter) || projects.description.toLowerCase().includes(filter)
-		})
+		for (let i=0;  i < projects.length; i++) {
+			for (let v=0; v < userProjects.length; v++) {
+				if (projects[i].id === userProjects[v].projectID) {
+					currentUserProjects.push(projects[i]);
+				}
+			}
+		};
+
+		if (currentUser.role !== 'Admin') {
+			filteredList = currentUserProjects.filter(projects => {
+				return projects.title.toLowerCase().includes(filter) || projects.description.toLowerCase().includes(filter)
+			})
+		} else {
+			filteredList = projects.filter(projects => {
+				return projects.title.toLowerCase().includes(filter) || projects.description.toLowerCase().includes(filter)
+			})
+		}
+
 
 		return filteredList.slice(entriesStart, entriesEnd).map(project => {
 			return (
@@ -38,7 +59,7 @@ class ProjectsList extends Component {
 						}}>
 							Project details
 						</Link>
-					</div>
+					</div> 
 				</div>
 			)
 		})
@@ -47,7 +68,7 @@ class ProjectsList extends Component {
 
 
 	render() {
-		let { projects } = this.props;
+		let { projects, userProjects } = this.props;
 		
 		return (
 			<div>
@@ -55,8 +76,8 @@ class ProjectsList extends Component {
 					listTitle="Your Projects"
 					listDescription="All the projects you have in the database"
 					titleGrid="tableList-titles projects"
-					stateObject={projects}
-					allEntries={projects.length} 
+					stateObject={userProjects}
+					allEntries={userProjects.length} 
 					renderItems={(entriesStart, maxPerPage, searchfield) => 
 						this.renderProjects(entriesStart, maxPerPage, searchfield)
 					} 
@@ -73,13 +94,15 @@ class ProjectsList extends Component {
 const mapStateToProps = state => {
 	return { 
 		projects: state.projects.projects,
+		userProjects: state.projects.userProjects,
 		entriesStart: state.pagination.receivedProps.entriesStart,
         maxPerPage: state.pagination.receivedProps.maxPerPage,
-        searchfield: state.pagination.receivedProps.searchfield 
+        searchfield: state.pagination.receivedProps.searchfield,
+		currentUser: state.auth.currentUser 
 	}
 }
 
-const mapDispatchToProps = { fetchProjects, fetchProject, saveProjectId, fetchProjectUsers }; 
+const mapDispatchToProps = { fetchProjects, fetchUserProjects, fetchProject, saveProjectId, fetchProjectUsers }; 
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectsList); 

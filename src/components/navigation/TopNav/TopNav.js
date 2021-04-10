@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import '../../../scss/components/navigation/TopNav.scss';
-
+import { requestLogout } from '../../../redux/actions'
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Dropdown from 'react-bootstrap/Dropdown';
+import '../../../scss/components/navigation/TopNav.scss';
 
  
 class TopNav extends Component {
@@ -16,7 +16,7 @@ class TopNav extends Component {
 				<div className="container-top-nav">
 					<div className="top-nav-main">
 						<div className="user-details">
-							<p>Logged in as: Admin</p>
+							<p>Logged in as: {currentUser.role}</p>
 						</div>
 						<div className="top-nav-content">
 							<Form inline>
@@ -40,7 +40,16 @@ class TopNav extends Component {
 									<Dropdown.Menu className="drop-menu">
 										<Dropdown.Item href="#/action-1">Profile</Dropdown.Item>
 										<Dropdown.Item href="#/action-2">Settings</Dropdown.Item>
-										<Dropdown.Item href="#/action-3" className="logout">Log out</Dropdown.Item>
+										<Dropdown.Item 
+											// href="#/action-3" 
+											className="logout"
+											onClick={()=>{
+												window.localStorage.clear();
+												this.props.requestLogout()
+											}}
+										>
+										Log out
+										</Dropdown.Item>
 									</Dropdown.Menu>
 								</Dropdown>
 							</div>
@@ -58,6 +67,6 @@ const mapStateToProps = state => {
 	}
 }
 
-// const mapDispatchToProps = { fetchTickets }
+const mapDispatchToProps = { requestLogout }
 
-export default connect(mapStateToProps, null)(TopNav); 
+export default connect(mapStateToProps, mapDispatchToProps)(TopNav); 

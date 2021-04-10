@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from 'react-redux';
 import { fetchTickets, fetchProjects } from '../../../redux/actions';
 import { Pie } from "react-chartjs-2";
-import { MDBContainer } from "mdbreact";
+import { MDBContainer } from "mdbreact"; 
 import '../../../scss/components/layouts/BarChart.scss';
 import '../../../scss/_config.scss';
 
@@ -10,7 +10,7 @@ class ProjectsChart extends React.Component {
 
 	componentDidMount () {
 		this.props.fetchTickets();
-		this.props.fetchProjects();
+		this.props.fetchProjects(this.props.currentUser.companyId);
 	}
 
 
@@ -156,7 +156,8 @@ class ProjectsChart extends React.Component {
 const mapStateToProps = state => {
 	return {
 		tickets: state.tickets.tickets,
-		projects: state.projects.projects
+		projects: state.projects.projects,
+		currentUser: state.auth.currentUser
 	}
 }
 
