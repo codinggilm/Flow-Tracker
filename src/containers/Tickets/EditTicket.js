@@ -33,10 +33,11 @@ class EditTicket extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchProjects();
-        this.props.fetchProject(this.props.projectId);
-        this.props.fetchTicket(this.props.ticketId);
-        this.props.fetchAllProjectUsers();
+        const { currentUser, projectId, ticketId } = this.props;
+        this.props.fetchProjects(currentUser.companyId);
+        this.props.fetchProject(projectId);
+        this.props.fetchTicket(ticketId);
+        this.props.fetchAllProjectUsers(currentUser.companyId);
         this.setDefaultState();        
     };
 
@@ -337,8 +338,7 @@ class EditTicket extends Component {
                                 <p className="detail">{type}</p>
                             </div>
                         </div>
-                    }
-                        
+                    } 
                         <div className="modal-btns">
                             <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
                                 Cancel
@@ -352,7 +352,6 @@ class EditTicket extends Component {
                     </Modal>
 
                     <main className="edit-ticket-container">
-
                         <div className="edit-ticket-main">
                             <div className="list-container">
                                 <header className="banner-container">
@@ -400,18 +399,6 @@ class EditTicket extends Component {
                                                     <option>{ticket.developer}</option>
                                                     {this.renderDeveloperSelection()}
                                                 </select>
-                                                {/* <select name="developer" onChange={this.onChange}>
-                                                {   
-                                                    currentTicket ?
-                                                    <option>{ticket.developer}</option>
-                                                    :
-                                                    noDeveloper ?
-                                                    <option>No existing developer</option>
-                                                    :
-                                                    <option>Select developer</option>
-                                                }  
-                                                    {this.renderDeveloperSelection()}
-                                                </select> */}
                                             </div>
                                         </div>
                                     </div>
@@ -433,9 +420,10 @@ class EditTicket extends Component {
                                             <div className="selection">
                                                 <select name="status" onChange={this.onChange}>
                                                     <option>{ticket.status}</option>
-                                                    <option>In Progress</option>
                                                     <option>Open</option>
-                                                    <option>Closed</option>
+                                                    <option>In Progress</option>
+                                                    <option>Resolved</option>
+                                                    <option>Needs more info</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -490,7 +478,9 @@ const mapStateToProps = state => {
         ticket: state.tickets.ticket[0],
         tickets: state.tickets.tickets,
         users: state.users.users,
-        allProjectUsers: state.users.allProjectUsers
+        allProjectUsers: state.users.allProjectUsers,
+        userProjects: state.projects.userProjects,
+        currentUser: state.auth.currentUser 
     }
 }
 

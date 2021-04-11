@@ -13,21 +13,22 @@ class AllProjectUsers extends Component {
     
     state = {
         username: '',
-        userId: '',
+        userId: '', 
         project: '',
         projectId: '',
         showModal: false,
         notification: false,
-        warning: false
+        warning: false 
 
     }
     
 
 	componentDidMount = () => {
-		this.props.fetchUsers();
-		this.props.fetchProjects();
-        this.props.fetchTickets();
-        this.props.fetchAllProjectUsers();
+        const { currentUser } = this.props;
+		this.props.fetchUsers(currentUser.companyId);
+		this.props.fetchProjects(currentUser.companyId);
+        this.props.fetchTickets(currentUser.companyId);
+        this.props.fetchAllProjectUsers(currentUser.companyId);
 	}
 
     closeModal = () => {
@@ -170,6 +171,7 @@ const mapStateToProps = state => {
         tickets: state.tickets.tickets,
         projects: state.projects.projects,
         allProjectUsers: state.users.allProjectUsers,
+        currentUser: state.auth.currentUser
 		// projectId: state.projects.projectId,
         // totalProjectUsers: state.pagination.totalProjectUsers,
         

@@ -18,50 +18,42 @@ class ProjectAssign extends Component {
         projectId: '',
         showModal: false,
         notification: false,
-        warning: false
+        warning: false,
+        unauthorized: false
 
-    }
+    };
 
     componentDidMount = () => {
-        this.props.fetchUsers();
-    }
+        this.props.fetchUsers(this.props.currentUser.companyId);
+    };
 
     closeModal = () => {
         this.setState({showModal: false});
-    }
+    };
 
     closeNotification = () => {
         this.setState({notification: false});
-    }
+    };
 
     saveUsernameToLocalState = (id) => {
         let { users } = this.props;
-        let selectedUser;
+
         for(let i=0; i < users.length; i++) {
             if (users[i].id === id) {
-                // selectedUser = { 
-                //     username: users[i].username,
-                //     role: users[i].role
-                // }
-                // this.setState({
-                //     username: selectedUser.username, 
-                //     role: selectedUser.role 
-                // })
                 this.setState({
                     username: users[i].username, 
                     role: users[i].role 
                 })
-                console.log(this.state)
             }
         }
-    }
+    };
 
     setUsernameAndId = (event) => {
         this.saveUsernameToLocalState(parseInt(event.target.value))
         this.setState({ 
             userId: parseInt(event.target.value)
         })
-    }
+    };
 
     renderUsers = () => {
         return this.props.users.map(user => {
@@ -75,14 +67,14 @@ class ProjectAssign extends Component {
                 </option>
             )
         })
-    }
+    };
 
     renderProjects = () => {
         return this.props.projects.map(project => {
             return <option key={project.id}>{project.title}</option>
             
         })
-    }
+    };
 
     saveProjectIdToLocalState = (name) => {
         const { projects } = this.props;
@@ -93,14 +85,14 @@ class ProjectAssign extends Component {
             }
             this.setState({ projectId: id })
         }
-    }
+    };
 
     onProjectSelection = (event) => {
         this.saveProjectIdToLocalState(event.target.value);
         this.setState({ 
             project: event.target.value
         })
-    }
+    };
 
     onSubmit = () => {
         const { username, project, projectId } = this.state;
@@ -111,11 +103,11 @@ class ProjectAssign extends Component {
             this.setState({showModal: true});
             this.props.fetchProjectUsers(projectId); 
         }
-    }
+    };
 
     onConfirmProjectAssignment = () => {
-        const { username, userId, role, project, projectId, currentUser } = this.state;
-        const { projectUsers } = this.props;
+        const { username, userId, role, project, projectId } = this.state;
+        const { projectUsers, currentUser } = this.props;
 
         const checkSelection = projectUsers.filter(entry => entry.projectID === projectId && entry.userID === userId);
 
@@ -123,6 +115,12 @@ class ProjectAssign extends Component {
             this.setState ({
                 notification: true, 
                 warning: true,
+                showModal: false
+            })
+        } else if (currentUser.role !== 'Admin' || 'Project Manager'){
+            this.setState ({
+                notification: true, 
+                unauthorized: true,
                 showModal: false
             })
         } else {
@@ -139,7 +137,7 @@ class ProjectAssign extends Component {
             this.resetState();
             document.location.reload();
         }
-    }
+    };
 
     resetState = () => {
         this.setState({
@@ -149,10 +147,10 @@ class ProjectAssign extends Component {
             showModal: false,
             notification: false
         })
-    }
+    };
 
     render() {
-        const { username, project, notification, showModal, warning } = this.state;
+        const { username, project, notification, showModal, warning, unauthorized } = this.state;
         
         const showHideModal = showModal ? "display-block" : "display-none";
         const showHideNotification = notification ? "display-block" : "display-none";
@@ -163,13 +161,16 @@ class ProjectAssign extends Component {
                 <Modal visibility={showHideNotification} type="modal-container notification slide-bottom">
                     {
                         warning ?
-                        <p>{username} is already assigned to {project}</p>
+                        <p>{username} is already assigned to this Project</p>
                         :
-                        <p>You need to select a Project and a User</p> 
+                        unauthorized?
+                        <p>Only an Admin or Project Manager can assign a user to a Project</p>
+                        : 
+                        <p>You need to select a Project and a User</p>
                     }
                     <div className="modal-btns">
                         <button className="btn2-main modal-btn btn-confirm" onClick={this.closeNotification}>
-                            Ok
+                        Ok
                         </button>
                     </div>
                 </Modal>
@@ -203,7 +204,6 @@ class ProjectAssign extends Component {
                         <div className="roles-column">
                             <label className="selection user-selection">
                                 <p className="selection-title">Select a User</p>
-                                {/* <select multiple name="username" onChange={this.onChange}> */}
                                 <select multiple onChange={this.setUsernameAndId}>
                                     {this.renderUsers()}
                                 </select>
@@ -224,7 +224,6 @@ class ProjectAssign extends Component {
                         </div>
     
                         <div className="list-column"> 
-                            {/* <ProjectsList2 /> */}
                             <AllProjectUsers />
                         </div>
                     </div>
@@ -232,7 +231,7 @@ class ProjectAssign extends Component {
             </div>
         )
     }
-}
+};
 
 const mapStateToProps = state => {
     return { 
@@ -241,8 +240,8 @@ const mapStateToProps = state => {
         projectUsers: state.users.projectUsers,
         currentUser: state.auth.currentUser 
     }
-}
+};
 
-const mapDispatchToProps = { fetchUsers, fetchProjectUsers, assignProject }
+const mapDispatchToProps = { fetchUsers, fetchProjectUsers, assignProject };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectAssign);

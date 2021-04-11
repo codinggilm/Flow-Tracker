@@ -10,7 +10,7 @@ import '../../scss/containers/Projects.scss';
 class Projects extends Component {
 
     componentDidMount = () => {
-        this.props.fetchUsers()
+        this.props.fetchUsers(this.props.currentUser.companyId);
     }
  
     render() {
@@ -30,6 +30,12 @@ class Projects extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        currentUser: state.auth.currentUser
+    }
+}
+
 const mapDispatchToProps = { fetchUsers }
 
-export default connect(null, mapDispatchToProps)(Projects);
+export default connect(mapStateToProps, mapDispatchToProps)(Projects);

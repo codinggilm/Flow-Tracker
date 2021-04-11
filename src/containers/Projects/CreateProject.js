@@ -44,6 +44,7 @@ class CreateProject extends Component {
         if (username && username !== '--Select User--') {
             let user = this.props.users.filter(user => user.username === username);
             let { id, role } = user[0];
+            
             this.setState({ 
                 userAdded: username,
                 userId: id,

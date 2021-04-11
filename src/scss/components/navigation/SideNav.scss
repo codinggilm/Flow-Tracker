@@ -5,6 +5,7 @@
     a {
         color: $main-font-color;
     }
+
     background:#fff;
     border: 1px solid #ccc;    
     padding: 1rem;
@@ -19,6 +20,10 @@
         align-items: center;
         height: 120px;
         border-bottom: 1px solid #ccc;
+
+        p {
+            font-size: 1.2rem;
+        }
     }
 
     .side-nav-menu {

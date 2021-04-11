@@ -12,15 +12,25 @@ class Register extends Component {
         company: '',
         username: '',
         email: '',
-        password: ''
+        password: '',
+        incomplete: false
     }
 
     onChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value })
+        this.setState({ 
+            [event.target.name]: event.target.value,
+            incomplete: false
+        })
     }
 
     onRequestRegister = () => {
-        this.props.createUser(this.state);
+        const { company, username, email, password } = this.state;
+
+        if (!company || !username || !email || !password) {
+            this.setState({ incomplete: true });
+        } else {
+            this.props.createUser(this.state);
+        }
     }
     
     render() {
@@ -67,23 +77,27 @@ class Register extends Component {
                         <div className="login-details">
                             <div className="input company-input" onChange={this.onChange}>
                                 <i className="fas fa-building"></i>
-                                <input type="text" name="company" placeholder="your company name.."/>
+                                <input type="text" name="company" placeholder="your company name"/>
                             </div>
                             <div className="input username-input" onChange={this.onChange}>
                                 <i className="fas fa-street-view"></i>
-                                <input type="text" name="username" placeholder="type username.."/>
+                                <input type="text" name="username" placeholder="type your username"/>
                             </div>
                             <div className="input email-input" onChange={this.onChange}>
                                 <i className="far fa-envelope"></i>
-                                <input type="email" name="email" placeholder="type email.."/>
+                                <input type="email" name="email" placeholder="your email"/>
                                 {
                                     existingEmail? <p className="email-warning">Email already in use. Please use another address.</p> : null
                                 }
                             </div>
                             <div className=" input password-input" onChange={this.onChange}>
                                 <i className="fas fa-key"></i>
-                                <input type="password" name="password" placeholder="pick a password.."/>
-                            </div> 
+                                <input type="password" name="password" placeholder="type your password"/>
+                            </div>
+                            {
+                                this.state.incomplete ? 
+                                <p className="incomplete">Please fill all fiels before proceeding.</p> : null
+                            }
                         </div>        
                         <button onClick={this.onRequestRegister}>REGISTER ME</button>
                         <div className="login-links">

@@ -11,7 +11,7 @@ class SideNav extends Component {
 			<div>
 				<div className="container-side-nav">
 					<div className="welcome-user">
-						<p>WELCOME, {currentUser.username}</p>
+						<p>Welcome, {currentUser.username}</p>
 					</div>
 					<div className="side-nav-menu">
 						<Link to="/">	

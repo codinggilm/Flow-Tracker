@@ -2,7 +2,7 @@
     background: rgb(32, 29, 22);
     height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     justify-content: center;
     align-items: center;
 
@@ -40,6 +40,12 @@
 
             .password-input {
                 border-top: none;
+            }
+
+            .wrong-credentials {
+                text-align: center;
+                margin-top: 0.2rem;
+                color: rgb(221, 55, 55);
             }
         }
 

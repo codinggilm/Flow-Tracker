@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { requestLogin } from '../../redux/actions';
+import { requestLogin, demoLogin } from '../../redux/actions';
 import Register from './Register';
 import '../../scss/containers/Auth.scss';
  
@@ -11,25 +11,29 @@ class Auth extends Component {
         isRegistered: true,
         // email: '',
         username: '',
-        password: ''
-    }
+        password: '',
+        demoAccount: false
+    };
 
     onChange = (event) => {
         this.setState({ [event.target.name]: event.target.value })
-    }
+    };
 
     registerUser = () => {
         this.setState({ isRegistered: false })
-    }
+    };
     
     hasAccount = () => {
         this.setState({ isRegistered: true })
-    }
+    };
 
-    
     onRequestLogin = () => {
         this.props.requestLogin(this.state);
-    }
+    };
+
+    onDemoLogin = () => {
+        this.props.demoLogin();
+    };
     
     render() {
         return (
@@ -55,14 +59,16 @@ class Auth extends Component {
                                 <i className="fas fa-lock"></i>
                                 <input type="password" name="password" onChange={this.onChange}/>
                             </div> 
-                        </div>        
-                        {/* <button onClick={this.onSubmitSignIn}>SIGN IN</button> */}
+                            {
+                                this.props.wrongCredentials ? 
+                                <p className="wrong-credentials">Wrong username or password.</p> : null
+                            }        
+                        </div>
                         <button onClick={this.onRequestLogin}>SIGN IN</button>
-                        {/* <a href="/"><button>SIGN IN</button></a> */}
                         <div className="login-links">
                             <p>Forgot your <a href="/">Password?</a></p>
-                            <p>Create an account? <Link to="" onClick={this.registerUser}>Sign Up</Link></p>
-                            <p>Sign in as a <a href="/">Demo User</a></p>
+                            <p>Create an account? <Link to="#" onClick={this.registerUser}>Sign Up</Link></p>
+                            <p>Sign in as a <a href="#" onClick={this.onDemoLogin}>Demo User</a></p>
                         </div>
                     </div>
                 </main>
@@ -70,9 +76,14 @@ class Auth extends Component {
             </div>
         )
     } 
-}
+};
 
+const mapStateToProps = state => {
+	return { 
+		wrongCredentials: state.auth.wrongCredentials
+	}
+};
 
-const mapDispatchToProps = { requestLogin }
+const mapDispatchToProps = { requestLogin, demoLogin };
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

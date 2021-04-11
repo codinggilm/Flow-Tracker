@@ -14,8 +14,8 @@ class CreateTicket extends Component {
         title: '',
         description: '',
         comment: '',
-        project: this.props.projects[0].title,
-        projectId: this.props.projects[0].id,
+        project: '',
+        projectId: '',
         developer: '',
         priority: 'None',
         type: 'Bugs/Errors',
@@ -24,17 +24,26 @@ class CreateTicket extends Component {
         showModal: false,
         notification: false,
         warning: false,
-        noDeveloper: false
+        noDeveloper: false,
+        noProject: false
     }   
 
     componentDidMount() {
-        // this.props.fetchAllProjectUsers();
-        // const { users, developers, projects } = this.props;
-        let firstProject = this.props.projects[0];
-        let developers = this.props.allProjectUsers.filter(user => user.role === 'Developer' && user.projectID === firstProject.id)
-        // console.log(developers)
-        // let developers = this.props.users.filter(user => user.role === 'Developer');
-        // this.setState({developer: developers[0].username})
+        if (this.props.projects.length !== 0) {
+            let firstProject = this.props.projects[0];
+            // let developers = this.props.allProjectUsers.filter(user => user.role === 'Developer' && user.projectID === firstProject.id);
+            
+            this.setState({
+                project: this.props.projects[0].title,
+                projectId: this.props.projects[0].id,
+            })
+
+        } else {
+            this.setState({ 
+                notification: true,
+                noProject: true 
+            })
+        }
     };
 
     closeModal = () => {
@@ -42,7 +51,11 @@ class CreateTicket extends Component {
     };
 
     closeNotification = () => {
-        this.setState({notification: false, warning: false})
+        this.setState({
+            notification: false, 
+            warning: false,
+            noProject: false
+        })
     };
 
     onChange = (event) => {
@@ -108,24 +121,29 @@ class CreateTicket extends Component {
     };
 
     onSubmitTicket = () => {
-        const { title, description, noDeveloper } = this.state;
+        const { title, description, noDeveloper, noProject, project } = this.state;
         const { tickets } = this.props;
         const sameTitle = tickets.filter(ticket => ticket.title === title);
 
         if (!title || !description) {
             this.setState({ notification: true })
 
+        } else if (!project) {
+            this.setState({
+                notification: true,
+                noProject: true 
+            })
+
         } else if (sameTitle.length !== 0) {
             this.setState({
                 notification: true, 
                 warning: true
             })
+
         } else if (noDeveloper) {
             this.setState({notification: true})
-        }
-        
-        
-        else {
+
+        } else {
             this.setState({ showModal: true })
         }
     };
@@ -156,7 +174,7 @@ class CreateTicket extends Component {
 
     render() {
         const { 
-            showModal, notification, warning, noDeveloper, title, 
+            showModal, notification, warning, noDeveloper, noProject, title, 
             description, project, comment, developer, priority, type 
         } = this.state;
         const showHideModal = showModal ? "display-block" : "display-none";
@@ -172,10 +190,13 @@ class CreateTicket extends Component {
                     :
                     noDeveloper?
                     <div>
-                        <p>No developer has been assigned to this project.</p>
+                        <p>No developer is working on this project.</p>
                         <br/>
-                        <p>Please contact an Admin or the Project Manager.</p>
+                        <p>Please ask an Admin or the Project Manager to assign a Developer to this project.</p>
                     </div>
+                    :
+                    noProject ?
+                    <p>There is no existing Project this Ticket can be raised on.</p>
                     :
                     <p>Your ticket needs a Title and a Description</p>
                     

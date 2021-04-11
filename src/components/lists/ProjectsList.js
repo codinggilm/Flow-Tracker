@@ -9,14 +9,14 @@ class ProjectsList extends Component {
 	componentDidMount() {
 		const { currentUser } = this.props;
 		
-		this.props.fetchProjects(this.props.currentUser.companyId);
+		this.props.fetchProjects(currentUser.companyId);
 		if (currentUser.role !== 'Admin') {
 			this.props.fetchUserProjects(currentUser.id)
 		} 
 		// else {
-		// 	this.props.fetchProjects(this.props.currentUser.companyId);
+		// 	this.props.fetchProjects(currentUser.companyId);
 		// }
-		// this.props.fetchProjects(this.props.currentUser.companyId);
+		// this.props.fetchProjects(currentUser.companyId);
 	}
 
 

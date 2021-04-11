@@ -9,7 +9,7 @@ import '../../../scss/components/navigation/TopNav.scss';
  
 class TopNav extends Component {
 	
-	render() {
+	render() { 
 		const { currentUser } = this.props;
 		return (
 			<div>

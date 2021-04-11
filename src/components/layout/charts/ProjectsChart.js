@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux';
-import { fetchTickets, fetchProjects } from '../../../redux/actions';
+import { fetchTickets, fetchProjects, fetchUserProjects } from '../../../redux/actions';
 import { Pie } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact"; 
 import '../../../scss/components/layouts/BarChart.scss';
@@ -9,24 +9,50 @@ import '../../../scss/_config.scss';
 class ProjectsChart extends React.Component {
 
 	componentDidMount () {
-		this.props.fetchTickets();
-		this.props.fetchProjects(this.props.currentUser.companyId);
+		const { currentUser } = this.props;
+
+		if (currentUser.role !== 'Admin') {
+			this.props.fetchUserProjects(currentUser.id)
+		} 
+
+		this.props.fetchTickets(currentUser.companyId);
+		this.props.fetchProjects(currentUser.companyId);
 	}
 
 
 	calculateChartData = () => {
-		const { tickets, projects } = this.props;
+		const { tickets, projects, userProjects, currentUser } = this.props;
 		let projectIdOfTickets = [];
 		let numberOfTickets = [];
 		let projectTitles = [];
+		let userTickets = [];
+
+		if (currentUser.role === 'Admin') {
+            userTickets = tickets;
+        }
+
+        if (currentUser.role === 'Project Manager') {
+            for (let i=0;  i < tickets.length; i++) {
+                for (let v=0; v < userProjects.length; v++) {
+                    if (tickets[i].projectId === userProjects[v].projectID) {
+                        userTickets.push(tickets[i]);
+                    }
+                }
+            };
+        }
+
+        if (currentUser.role === 'Developer') {
+            for (let i=0;  i < tickets.length; i++) {
+                if (tickets[i].developerId === currentUser.id) {
+                    userTickets.push(tickets[i]);
+                }
+            };
+        }
 
 
-		// Loop trough all tickets and create array with the project Id of each ticket
-		for (let i=0; i<tickets.length; i++) {
-			// if (tickets[i].status !== "Closed") {
-			// 	projectIdOfTickets.push(tickets[i].projectId)
-			// }
-			projectIdOfTickets.push(tickets[i].projectId)
+		// Loop trough all the user's tickets and create array with the project Id of each ticket
+		for (let i=0; i<userTickets.length; i++) {
+			projectIdOfTickets.push(userTickets[i].projectId)
 		}
 		
 		// Save each ticket's project id and the amount of times it appears
@@ -62,14 +88,21 @@ class ProjectsChart extends React.Component {
 
 		const ticketData = countDuplicates(projectIdOfTickets);
 
-		// const finalTicketData = [];
+		// Loop trough all of the user's projects and extract the titles of projects which have tickets on them
+		
+		// If user is an Admin, use all the company's 
+		let allProjects;
+		if(currentUser.role === 'Admin') {
+			allProjects = projects
+		} else {
+			allProjects = userProjects
+		}
 
-		// Loop trough all projects and extract the titles of projects which have tickets on them
-		for (let i=0; i<projects.length; i++) {
+		for (let i=0; i<allProjects.length; i++) {
 			for (let n=0; n<ticketData.length; n++) {
-				if (projects[i].id === ticketData[n].projectId) {
+				if (allProjects[i].projectID === ticketData[n].projectId || allProjects[i].id === ticketData[n].projectId) {
 
-					projectTitles.push(projects[i].title);
+					projectTitles.push(allProjects[i].project || allProjects[i].title);
 					numberOfTickets.push(ticketData[n].amount);
 					// finalTicketData.push({
 					// 	project: projects[i].title,
@@ -78,10 +111,6 @@ class ProjectsChart extends React.Component {
 				}
 			}
 		}
-
-		// console.log(projectTitles)
-		// console.log(numberOfTickets)
-		// console.log(finalTicketData)
 
 
 		let data = {
@@ -157,10 +186,11 @@ const mapStateToProps = state => {
 	return {
 		tickets: state.tickets.tickets,
 		projects: state.projects.projects,
-		currentUser: state.auth.currentUser
+		userProjects: state.projects.userProjects,
+		currentUser: state.auth.currentUser,
 	}
 }
 
-const mapDispatchToProps = { fetchTickets, fetchProjects }
+const mapDispatchToProps = { fetchTickets, fetchProjects, fetchUserProjects }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectsChart); 

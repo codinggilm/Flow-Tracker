@@ -2,14 +2,10 @@ import React from "react";
 import { Bar } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
 import { connect } from 'react-redux';
-import { fetchTickets } from '../../../redux/actions';
+import { fetchTickets, fetchUserProjects } from '../../../redux/actions';
 import '../../../scss/components/layouts/BarChart.scss';
 
 class StatusChart extends React.Component {
-
-    componentDidMount = () => {
-        this.props.fetchTickets(this.props.currentUser.companyId);
-    }
     
     state = {
 	    barChartOptions: {
@@ -40,22 +36,51 @@ class StatusChart extends React.Component {
 	    }
     }
 
-    componentDidMount () {
-        this.props.fetchTickets();
+    componentDidMount = () => {
+        const { currentUser } = this.props;
+
+		if (currentUser.role !== 'Admin') {
+			this.props.fetchUserProjects(currentUser.id)
+		} 
+
+		this.props.fetchTickets(currentUser.companyId);
     }
 
     calculateChartData = () => {
-		const { tickets } = this.props;
+		const { tickets, currentUser, userProjects } = this.props;
+        let userTickets = [];
 
-		let open = tickets.filter(ticket => ticket.status === 'Open');
-		let inProgress = tickets.filter(ticket => ticket.status === 'In Progress');
-		let closed = tickets.filter(ticket => ticket.status === 'Closed');
-		// let high = tickets.filter(ticket => ticket.priority === 'High');
+        if (currentUser.role === 'Admin') {
+            userTickets = tickets;
+        }
 
-		const result = [open.length, inProgress.length, closed.length];
+        if (currentUser.role === 'Project Manager') {
+            for (let i=0;  i < tickets.length; i++) {
+                for (let v=0; v < userProjects.length; v++) {
+                    if (tickets[i].projectId === userProjects[v].projectID) {
+                        userTickets.push(tickets[i]);
+                    }
+                }
+            };
+        }
+
+        if (currentUser.role === 'Developer') {
+            for (let i=0;  i < tickets.length; i++) {
+                if (tickets[i].developerId === currentUser.id) {
+                    userTickets.push(tickets[i]);
+                }
+            };
+        }
+
+		let open = userTickets.filter(ticket => ticket.status === 'Open');
+		let inProgress = userTickets.filter(ticket => ticket.status === 'In Progress');
+		let resolved = userTickets.filter(ticket => ticket.status === 'Resolved');
+		let moreInfo = userTickets.filter(ticket => ticket.status === 'Needs more info');
+
+		const result = [open.length, inProgress.length, resolved.length, moreInfo.length];
 
 		let data = {
-			labels: ["Open", "In Progress", "Closed"],
+			labels: ["Open", "In Progress", "Resolved", "Needs more info"],
             datasets: [
                 {
                     label: "number of tickets",
@@ -65,7 +90,7 @@ class StatusChart extends React.Component {
                         "rgba(98,  182, 239,0.4)", // blue
                         "rgba(113, 205, 205,0.4)", // green
                         "rgba(255, 218, 128,0.4)", // yellow
-                        "rgba(170, 128, 252,0.4)",  // pruple
+                        "rgba(170, 128, 252,0.4)",  // purple
                     ],
                     borderWidth: 2,
                     borderColor: [
@@ -73,7 +98,7 @@ class StatusChart extends React.Component {
                         "rgba(98,  182, 239, 1)", // blue
                         "rgba(113, 205, 205, 1)", // green
                         "rgba(255, 218, 128, 1)", // yellow
-                        "rgba(170, 128, 252, 1)",   // pruple
+                        "rgba(170, 128, 252, 1)",   // purple
                     ]
                 }
             ]
@@ -96,10 +121,11 @@ class StatusChart extends React.Component {
 const mapStateToProps = state => {
     return {
         tickets: state.tickets.tickets,
-        currentUser: state.auth.currentUser  
+        currentUser: state.auth.currentUser,
+        userProjects: state.projects.userProjects    
     }
 }
 
-const mapDispatchToProps = { fetchTickets }
+const mapDispatchToProps = { fetchTickets, fetchUserProjects }
 
 export default connect(mapStateToProps, mapDispatchToProps)(StatusChart); 

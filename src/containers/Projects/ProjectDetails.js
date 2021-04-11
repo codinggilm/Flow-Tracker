@@ -10,8 +10,7 @@ import '../../scss/containers/ProjectDetails.scss';
 class ProjectDetails extends Component {
 
     componentDidMount = () => {
-        this.props.fetchUsers();
-        // this.props.fetchProject();
+        this.props.fetchUsers(this.props.currentUser.companyId);
     }
 
     render() {
@@ -38,7 +37,8 @@ class ProjectDetails extends Component {
 
 const mapStateToProps = state => {
     return {
-        project: state.projects.project[0]
+        project: state.projects.project[0],
+        currentUser: state.auth.currentUser
     }
 }
 

@@ -2,15 +2,10 @@ import React from "react";
 import { Bar } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
 import { connect } from 'react-redux';
-import { fetchTickets } from '../../../redux/actions';
+import { fetchTickets, fetchUserProjects } from '../../../redux/actions';
 import '../../../scss/components/layouts/BarChart.scss';
 
 class PriorityChart extends React.Component {
-	
-	componentDidMount = () => {
-        this.props.fetchTickets(this.props.currentUser.companyId);
-    }
-
 
   	state = {
 		barChartOptions: {
@@ -41,17 +36,48 @@ class PriorityChart extends React.Component {
 		}
   	}
 
-  	componentDidMount () {
-		this.props.fetchTickets();
-	}
+
+	componentDidMount = () => {
+		const { currentUser } = this.props;
+
+		if (currentUser.role !== 'Admin') {
+			this.props.fetchUserProjects(currentUser.id)
+		} 
+
+		this.props.fetchTickets(currentUser.companyId);
+    }
 
 	calculateChartData = () => {
-		const { tickets } = this.props;
+		const { tickets, currentUser, userProjects } = this.props;
+		
+		let userTickets = [];
 
-		let none = tickets.filter(ticket => ticket.priority === 'None');
-		let low = tickets.filter(ticket => ticket.priority === 'Low');
-		let medium = tickets.filter(ticket => ticket.priority === 'Medium');
-		let high = tickets.filter(ticket => ticket.priority === 'High');
+        if (currentUser.role === 'Admin') {
+            userTickets = tickets;
+        }
+
+        if (currentUser.role === 'Project Manager') {
+            for (let i=0;  i < tickets.length; i++) {
+                for (let v=0; v < userProjects.length; v++) {
+                    if (tickets[i].projectId === userProjects[v].projectID) {
+                        userTickets.push(tickets[i]);
+                    }
+                }
+            };
+        }
+
+        if (currentUser.role === 'Developer') {
+            for (let i=0;  i < tickets.length; i++) {
+                if (tickets[i].developerId === currentUser.id) {
+                    userTickets.push(tickets[i]);
+                }
+            };
+        }
+
+		let none = userTickets.filter(ticket => ticket.priority === 'None');
+		let low = userTickets.filter(ticket => ticket.priority === 'Low');
+		let medium = userTickets.filter(ticket => ticket.priority === 'Medium');
+		let high = userTickets.filter(ticket => ticket.priority === 'High');
 
 		const result = [none.length, low.length, medium.length, high.length];
 
@@ -86,10 +112,7 @@ class PriorityChart extends React.Component {
 
 		return (
 		<MDBContainer className="chart-container">
-			
-				{/* <Bar data={this.state.myData} options={this.state.barChartOptions} /> */}
-				<Bar data={this.calculateChartData()} options={this.state.barChartOptions} />
-			
+			<Bar data={this.calculateChartData()} options={this.state.barChartOptions} />
 		</MDBContainer>
 		);
   	} 
@@ -98,10 +121,11 @@ class PriorityChart extends React.Component {
 const mapStateToProps = state => {
   	return {
 	  	tickets: state.tickets.tickets,
-		currentUser: state.auth.currentUser  
+		currentUser: state.auth.currentUser,
+		userProjects: state.projects.userProjects  
   	}
 }
 
-const mapDispatchToProps = { fetchTickets }
+const mapDispatchToProps = { fetchTickets, fetchUserProjects }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PriorityChart); 

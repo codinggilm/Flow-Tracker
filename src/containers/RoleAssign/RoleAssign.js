@@ -17,12 +17,14 @@ class RoleAssign extends Component {
         showModal: false,
         notification: false,
         warning: false,
-        sameRole: false
+        sameRole: false,
+        unauthorized: false
     };
 
     componentDidMount = () => {
-		this.props.fetchUsers();
-        this.props.fetchTickets();
+        const { currentUser } = this.props;
+		this.props.fetchUsers(currentUser.companyId);
+        this.props.fetchTickets(currentUser.companyId);
 	};
  
     onChange = (event) => {
@@ -49,7 +51,7 @@ class RoleAssign extends Component {
 
     onConfirmRole = () => {
         const { username, role } = this.state;
-        const { users, tickets } = this.props;
+        const { users, tickets, currentUser } = this.props;
         const selectedUser = users.filter(user => user.username === username);
         const unavailable = tickets.filter(ticket => ticket.status === 'Open' && ticket.developer === selectedUser[0].username)
 
@@ -63,6 +65,12 @@ class RoleAssign extends Component {
             this.setState ({
                 notification: true, 
                 sameRole: true,
+                showModal: false,
+            })
+        } else if (currentUser.role !== 'Admin') {
+            this.setState ({
+                notification: true, 
+                unauthorized: true,
                 showModal: false,
             })
         } else {
@@ -120,7 +128,7 @@ class RoleAssign extends Component {
 
     render() {
         const { users } = this.props;
-        const { username, role, notification, showModal, warning, sameRole } = this.state;
+        const { username, role, notification, showModal, warning, unauthorized, sameRole } = this.state;
 
         const showHideModal = showModal ? "display-block" : "display-none";
         const showHideNotification = notification ? "display-block" : "display-none";
@@ -136,14 +144,13 @@ class RoleAssign extends Component {
                             <br/>
                             <p>Please assign a new developer to {username}'s open Ticket(s) before proceeding.</p>
                         </div>
-
                         :
-
                         sameRole ? 
                         <p>{username} is already a {role}.</p>
-
                         :
-
+                        unauthorized ? 
+                        <p>Only Admins can assign a Role</p> 
+                        :
                         <p>You need to select a User and a Role</p> 
 
                     }
@@ -230,7 +237,8 @@ class RoleAssign extends Component {
 const mapStateToProps = state => {
     return { 
         users: state.users.users,
-        tickets: state.tickets.tickets
+        tickets: state.tickets.tickets,
+        currentUser: state.auth.currentUser
     }
 }
 

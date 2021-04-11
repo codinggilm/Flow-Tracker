@@ -10,7 +10,7 @@ class ProjectUsersList extends Component {
     
 
 	componentDidMount = () => {
-		this.props.fetchUsers();
+		this.props.fetchUsers(this.props.currentUser.companyId);
 		this.props.fetchProjectUsers(this.props.projectId);
 	}
 
@@ -85,10 +85,7 @@ const mapStateToProps = state => {
         projectUsers: state.users.projectUsers,
 		projectId: state.projects.projectId,
         totalProjectUsers: state.pagination.totalProjectUsers,
-        // entriesStart: state.pagination.receivedProps.entriesStart,
-        // maxPerPage: state.pagination.receivedProps.maxPerPage,
-        // searchfield: state.pagination.receivedProps.searchfield
-        
+		currentUser: state.auth.currentUser   
     }
 }
 

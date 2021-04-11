@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import List from '../layout/display/List';
 import '../../scss/components/lists/ProjectTicketsList.scss';
-
+ 
  
 class ProjectTicketsList extends Component {
 
 	componentDidMount() {
-		this.props.fetchTickets();
+        const { currentUser } = this.props;
+		this.props.fetchTickets(currentUser.companyId);
 		// console.log(this.props.tickets)
 		// console.log(this.props.projectId)
 	}
@@ -81,7 +82,8 @@ const mapStateToProps = state => {
     return {
         projectId: state.projects.projectId,
 		tickets: state.tickets.tickets,
-        totalProjectTickets: state.pagination.totalProjectTickets
+        totalProjectTickets: state.pagination.totalProjectTickets,
+        currentUser: state.auth.currentUser
     }
 }
 

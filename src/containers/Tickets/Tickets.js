@@ -14,9 +14,9 @@ class Tickets extends Component {
     componentDidMount = () => {
         const { currentUser } = this.props;
 
-        this.props.fetchTickets(this.props.currentUser.companyId);
-        this.props.fetchUsers();
-        this.props.fetchAllProjectUsers();
+        this.props.fetchTickets(currentUser.companyId);
+        this.props.fetchUsers(currentUser.companyId);
+        this.props.fetchAllProjectUsers(currentUser.companyId);
 
         if (currentUser.role !== 'Admin') {
 			this.props.fetchUserProjects(currentUser.id)

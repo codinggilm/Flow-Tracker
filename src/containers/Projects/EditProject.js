@@ -50,7 +50,6 @@ class EditProject extends Component {
     };
 
     renderAssignedUsers = () => {
-        // const users = this.props.users.filter(user => user.projectId === this.props.projectId);
         const users = this.props.projectUsers;
         return users.map(user => {
             return <option value={user.userID} key={user.userID}>{user.username}</option>
@@ -112,7 +111,7 @@ class EditProject extends Component {
     };
     
     onConfirmEditProject = () => {
-        const { title, description, userToRemove, userID } = this.state
+        const { title, description, userToRemove, userID, deleteProject } = this.state
         const { project, projectId } = this.props;
 
         if (title === project.title && description === project.description && userToRemove !== null) {

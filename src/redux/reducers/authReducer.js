@@ -1,5 +1,6 @@
 const initialState = {
     isAuthenticated: false,
+    wrongCredentials: false,
     existingEmail: false,
     existingCompany: false,
     showModal: false,
@@ -12,12 +13,14 @@ const authReducer = (state=initialState, action) => {
         case 'LOGIN_SUCCESS':
             return {...state,
                 isAuthenticated: true,
+                wrongCredentials: false,
                 currentUser: action.payload
             };
 
         case 'LOGIN_FAILURE':
             return {...state,
-                isAuthenticated: false
+                isAuthenticated: false,
+                wrongCredentials: true
             };
 
         case 'LOGOUT_SUCCESS': 
