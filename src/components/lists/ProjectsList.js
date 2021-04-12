@@ -25,7 +25,7 @@ class ProjectsList extends Component {
 		let entriesEnd = entriesStart + maxPerPage;
 		let filter = searchfield;
 		let currentUserProjects = [];
-		let filteredList;
+		let filteredList; 
 
 		for (let i=0;  i < projects.length; i++) {
 			for (let v=0; v < userProjects.length; v++) {
@@ -68,16 +68,23 @@ class ProjectsList extends Component {
 
 
 	render() {
-		let { projects, userProjects } = this.props;
+		let { projects, userProjects, currentUser } = this.props;
+		let currentUserProjects;
 		
+		if (currentUser.role !== 'Admin') {
+			currentUserProjects = userProjects;
+		} else {
+			currentUserProjects = projects;
+		}
+	
 		return (
 			<div>
 				<List 
 					listTitle="Your Projects"
 					listDescription="All the projects you have in the database"
 					titleGrid="tableList-titles projects"
-					stateObject={userProjects}
-					allEntries={userProjects.length} 
+					stateObject={currentUserProjects}
+					allEntries={currentUserProjects.length} 
 					renderItems={(entriesStart, maxPerPage, searchfield) => 
 						this.renderProjects(entriesStart, maxPerPage, searchfield)
 					} 

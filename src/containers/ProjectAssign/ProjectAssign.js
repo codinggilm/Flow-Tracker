@@ -89,19 +89,30 @@ class ProjectAssign extends Component {
 
     onProjectSelection = (event) => {
         this.saveProjectIdToLocalState(event.target.value);
+        const { projects } = this.props;
+        let id;
+        for (let i=0; i < projects.length; i++) {
+            if (projects[i].title === event.target.value) {
+                id = projects[i].id;
+            }
+            this.setState({ projectId: id })
+        }
+
         this.setState({ 
-            project: event.target.value
+            project: event.target.value,
+            // projectId: id
         })
     };
 
     onSubmit = () => {
         const { username, project, projectId } = this.state;
+        console.log(projectId)
 
         if (!username || !project) {
             this.setState({ notification: true });
         } else {
-            this.setState({showModal: true});
             this.props.fetchProjectUsers(projectId); 
+            this.setState({showModal: true});
         }
     };
 
@@ -111,16 +122,18 @@ class ProjectAssign extends Component {
 
         const checkSelection = projectUsers.filter(entry => entry.projectID === projectId && entry.userID === userId);
 
-        if (checkSelection.length !== 0) {
-            this.setState ({
-                notification: true, 
-                warning: true,
-                showModal: false
-            })
-        } else if (currentUser.role !== 'Admin' || 'Project Manager'){
+        // console.log(this.state.projectId)
+        
+        if (currentUser.role !== 'Admin' && currentUser.role !== 'Project Manager') {
             this.setState ({
                 notification: true, 
                 unauthorized: true,
+                showModal: false
+            })
+        } else if (checkSelection.length !== 0) {
+            this.setState ({
+                notification: true, 
+                warning: true,
                 showModal: false
             })
         } else {

@@ -22,6 +22,7 @@ class EditProject extends Component {
         removeUserRequest: false,
         cannotRemoveUser: false,
         noChanges: false,
+        noneSelected: false,
         deleteProject: false,
         
     }
@@ -45,7 +46,8 @@ class EditProject extends Component {
             removeUserRequest: false,
             sameTitle: false,
             cannotRemoveUser: false,
-            noChanges: false
+            noChanges: false,
+            noneSelected: false
         })
     };
 
@@ -65,24 +67,35 @@ class EditProject extends Component {
     removeUser = () => {
         const { users, tickets, projectId } =  this.props;
         const { userID } = this.state;
-        const selectedUser = users.filter(user => user.id === userID)[0].username;
-        const cannotRemove = tickets.filter(
-            ticket => ticket.status === 'Open' && ticket.developer === selectedUser && 
-            ticket.projectId === projectId
-        )
-
-        if (cannotRemove.length !== 0) {
-            this.setState({ 
+        
+        if (!userID) {
+            this.setState({
                 notification: true,
-                cannotRemoveUser: true  
-            })
-        } else {
-            this.setState({ 
-                notification: true,
-                removeUser: true,
-                userToRemove: selectedUser
+                noneSelected: true
             })
         }
+        
+        if (userID) {
+            const selectedUser = users.filter(user => user.id === userID)[0].username;
+            const cannotRemove = tickets.filter(
+                ticket => ticket.status === 'Open' && ticket.developer === selectedUser && 
+                ticket.projectId === projectId
+            )
+
+            if (cannotRemove.length !== 0) {
+                this.setState({ 
+                    notification: true,
+                    cannotRemoveUser: true  
+                })
+            } else {
+                this.setState({ 
+                    notification: true,
+                    removeUser: true,
+                    userToRemove: selectedUser
+                })
+            }
+        }
+
     };
 
     onSubmitEditProject = () => {
@@ -141,7 +154,7 @@ class EditProject extends Component {
     render() {
         const { 
             title, description, username, userToRemove, showModal, notification, 
-            warning, cannotRemoveUser, sameTitle, noChanges, deleteProject 
+            warning, cannotRemoveUser, noneSelected, sameTitle, noChanges, deleteProject 
         } = this.state;
         const showHideModal = showModal ? "display-block" : "display-none";
         const showHideNotification = notification ? "display-block" : "display-none";
@@ -162,6 +175,9 @@ class EditProject extends Component {
                     :
                     noChanges ? 
                     <p>Nothing has changed</p>
+                    :
+                    noneSelected ? 
+                    <p>You need to select a user first.</p>
                     :
                     <p>{userToRemove} will be removed from the Project once you confirm the update.</p>
                 }
