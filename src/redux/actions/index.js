@@ -194,11 +194,11 @@ export const createUser = (userData) => {
 
         } else if (response.data.message === 'existing company'){
             dispatch({ type: 'REGISTER_USER_EXISTING_COMPANY', payload: response.data.user})
-            console.log(response.message)
+            console.log(response.data.message)
 
         } else if (response.data.message === 'new company'){
             dispatch({ type: 'REGISTER_USER_NEW_COMPANY', payload: response.data.user})
-            console.log(response.message)
+            console.log(response.data.message)
         }
     }
 };

@@ -153,7 +153,7 @@ class CreateTicket extends Component {
             title, description, comment, project, projectId,
             developer, priority, type, status, submitter 
         } = this.state;
-        const { users } = this.props;
+        const { users, currentUser } = this.props;
         const selectedDeveloper = users.filter(user => user.username === developer);
 
         this.props.createTicket({
@@ -167,7 +167,8 @@ class CreateTicket extends Component {
             priority: priority,
             type: type,
             status: status,
-            submitter: submitter
+            submitter: submitter,
+            companyId: currentUser.companyId
         })
     };
 
@@ -342,7 +343,8 @@ const mapStateToProps = state => {
         projects: state.projects.projects,
         allProjectUsers: state.users.allProjectUsers,
         tickets: state.tickets.tickets,
-        users: state.users.users 
+        users: state.users.users,
+        currentUser: state.auth.currentUser 
     }
 }
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { requestLogout } from '../../../redux/actions'
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
@@ -40,16 +41,14 @@ class TopNav extends Component {
 									<Dropdown.Menu className="drop-menu">
 										<Dropdown.Item href="#/action-1">Profile</Dropdown.Item>
 										<Dropdown.Item href="#/action-2">Settings</Dropdown.Item>
-										<Dropdown.Item 
-											// href="#/action-3" 
+										<Link 
+											className="link" to="/" 
 											className="logout"
 											onClick={()=>{
 												window.localStorage.clear();
 												this.props.requestLogout()
 											}}
-										>
-										Log out
-										</Dropdown.Item>
+										>Log out</Link>
 									</Dropdown.Menu>
 								</Dropdown>
 							</div>

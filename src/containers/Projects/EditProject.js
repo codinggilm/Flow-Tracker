@@ -25,7 +25,7 @@ class EditProject extends Component {
         noneSelected: false,
         deleteProject: false,
         
-    }
+    };
 
     componentDidMount = () => {
         this.props.fetchProject(this.props.projectId); 
