@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchUsers, fetchProjectUsers, assignProject } from '../../redux/actions';
+import { fetchUsers, fetchProjectUsers, assignProject, setPageRefreshUserReducer } from '../../redux/actions';
 // import ProjectsList2 from '../../components/lists/ProjectsList2';
 import AllProjectUsers from '../../components/lists/AllProjectUsers'
 import Modal from '../../components/layout/display/Modal';
@@ -25,6 +25,7 @@ class ProjectAssign extends Component {
 
     componentDidMount = () => {
         this.props.fetchUsers(this.props.currentUser.companyId);
+        this.props.setPageRefreshUserReducer()
     };
 
     closeModal = () => {
@@ -121,8 +122,6 @@ class ProjectAssign extends Component {
         const { projectUsers, currentUser } = this.props;
 
         const checkSelection = projectUsers.filter(entry => entry.projectID === projectId && entry.userID === userId);
-
-        // console.log(this.state.projectId)
         
         if (currentUser.role !== 'Admin' && currentUser.role !== 'Project Manager') {
             this.setState ({
@@ -139,7 +138,7 @@ class ProjectAssign extends Component {
         } else {
             this.props.assignProject({
                 username: username,
-                userId: userId,
+                userId: userId, 
                 role: role,
                 project: project,
                 projectId: projectId,
@@ -148,7 +147,7 @@ class ProjectAssign extends Component {
             })
 
             this.resetState();
-            document.location.reload();
+            // document.location.reload();
         }
     };
 
@@ -163,7 +162,8 @@ class ProjectAssign extends Component {
     };
 
     render() {
-        const { username, project, notification, showModal, warning, unauthorized } = this.state;
+        const { username, role, project, notification, showModal, warning, unauthorized } = this.state;
+        const { refreshPage } = this.props;
         
         const showHideModal = showModal ? "display-block" : "display-none";
         const showHideNotification = notification ? "display-block" : "display-none";
@@ -171,76 +171,85 @@ class ProjectAssign extends Component {
 
         return (
             <div>
-                <Modal visibility={showHideNotification} type="modal-container notification slide-bottom">
-                    {
-                        warning ?
-                        <p>{username} is already assigned to this Project</p>
-                        :
-                        unauthorized?
-                        <p>Only an Admin or Project Manager can assign a user to a Project</p>
-                        : 
-                        <p>You need to select a Project and a User</p>
-                    }
-                    <div className="modal-btns">
-                        <button className="btn2-main modal-btn btn-confirm" onClick={this.closeNotification}>
-                        Ok
-                        </button>
-                    </div>
-                </Modal>
+            { 
+                refreshPage ? document.location.reload()
+            
+                :
 
-                <Modal visibility={showHideModal} type="modal-container main scale-up-center">
-                    <h2 className="header">Confirm Project assignment?</h2>
-                    <div className="changes-details">
-                        <h3 className="title">User</h3>
-                        <p className="detail">{username}</p>
-                        <h3 className="title">Project</h3>
-                        <p className="detail">{project}</p>
-                        {/* <h3 className="title">Role</h3>
-                        <p className="detail">{role}</p> */}
-                    </div>
+                <div>
+                    <Modal visibility={showHideNotification} type="modal-container notification slide-bottom">
+                        {
+                            warning ?
+                            <p>{username} is already assigned to this Project</p>
+                            :
+                            unauthorized?
+                            <p>Only an Admin or Project Manager can assign a user to a Project</p>
+                            : 
+                            <p>You need to select a Project and a User</p>
+                        }
                         <div className="modal-btns">
-                            <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
-                                Cancel
+                            <button className="btn2-main modal-btn btn-confirm" onClick={this.closeNotification}>
+                            Ok
                             </button>
-                            <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmProjectAssignment}>
-                                Confirm
-                            </button>
-
                         </div>
-                </Modal>
+                    </Modal>
 
-                <main className="projects-main">
-                    <div className="roles-title">
-                        <p>Manage Project Users</p>
-                    </div> 
-                    <div className="roles-manage-container">
-                        <div className="roles-column">
-                            <label className="selection user-selection">
-                                <p className="selection-title">Select a User</p>
-                                <select multiple onChange={this.setUsernameAndId}>
-                                    {this.renderUsers()}
-                                </select>
-                            </label>
-    
-                            <div className="selection role-selection">
-                                <label>
-                                    <p className="selection-title">Select the Project to assign</p>
-                                    <select name="project" onChange={this.onProjectSelection}>
-                                        <option>--Select Project/None--</option>
-                                        {this.renderProjects()}
+                    <Modal visibility={showHideModal} type="modal-container main scale-up-center">
+                        <h2 className="header">Confirm Project assignment?</h2>
+                        <div className="changes-details">
+                            <h3 className="title">User</h3>
+                            <p className="detail">{username}</p>
+                            <h3 className="title">Project</h3>
+                            <p className="detail">{project}</p>
+                            <h3 className="title">Current Role of {username}</h3>
+                            <p className="detail">{role}</p>
+                        </div>
+                            <div className="modal-btns">
+                                <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
+                                    Cancel
+                                </button>
+                                <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmProjectAssignment}>
+                                    Confirm
+                                </button>
+
+                            </div>
+                    </Modal>
+
+                    <main className="projects-main">
+                        <div className="roles-title">
+                            <p>Manage Project Users</p>
+                        </div> 
+                        <div className="roles-manage-container">
+                            <div className="roles-column">
+                                <label className="selection user-selection">
+                                    <p className="selection-title">Select a User</p>
+                                    <select multiple onChange={this.setUsernameAndId}>
+                                        {this.renderUsers()}
                                     </select>
                                 </label>
-                                <div className="btn-role">
-                                    <Button text="SUBMIT" onClick={this.onSubmit}/>
+        
+                                <div className="selection role-selection">
+                                    <label>
+                                        <p className="selection-title">Select the Project to assign</p>
+                                        <select name="project" onChange={this.onProjectSelection}>
+                                            <option>--Select Project/None--</option>
+                                            {this.renderProjects()}
+                                        </select>
+                                    </label>
+                                    <div className="btn-role">
+                                        <Button text="SUBMIT" onClick={this.onSubmit}/>
+                                    </div>
                                 </div>
                             </div>
+        
+                            <div className="list-column"> 
+                                <AllProjectUsers />
+                            </div>
                         </div>
-    
-                        <div className="list-column"> 
-                            <AllProjectUsers />
-                        </div>
-                    </div>
-                </main>
+                    </main>
+                </div>
+            
+            }
             </div>
         )
     }
@@ -251,10 +260,11 @@ const mapStateToProps = state => {
         users: state.users.users,
         projects: state.projects.projects,
         projectUsers: state.users.projectUsers,
-        currentUser: state.auth.currentUser 
+        currentUser: state.auth.currentUser,
+        refreshPage: state.users.refreshPage 
     }
 };
 
-const mapDispatchToProps = { fetchUsers, fetchProjectUsers, assignProject };
+const mapDispatchToProps = { fetchUsers, fetchProjectUsers, assignProject, setPageRefreshUserReducer };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectAssign);

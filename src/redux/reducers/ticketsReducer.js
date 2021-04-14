@@ -2,7 +2,8 @@ const initialState = {
     tickets: [],
     ticketHistory: [],
     ticket: {},
-    ticketId: '' 
+    ticketId: '',
+    wasSuccessful: false 
 
 };
 
@@ -20,7 +21,13 @@ const ticketsReducer = (state=initialState, action) => {
 
         case 'CREATE_TICKET':
             return {
-                ...state 
+                ...state,
+                wasSuccessful: true  
+            };
+        case 'CLOSE_REDUX_MODAL':
+            return {
+                ...state,
+                wasSuccessful: false  
             };
 
         case 'SAVE_TICKET_ID':

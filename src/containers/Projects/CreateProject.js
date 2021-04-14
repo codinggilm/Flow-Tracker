@@ -88,7 +88,8 @@ class CreateProject extends Component {
             userAdded: userAdded,
             role: role,
             userId: userId
-        })   
+        })
+        .then()   
     };
 
     render() {
@@ -202,7 +203,7 @@ class CreateProject extends Component {
                         </div>
                     </div>
                 </main>
-            </div>
+            </div> 
         )
     }
 }

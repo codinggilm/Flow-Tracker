@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { createTicket, fetchAllProjectUsers } from '../../redux/actions';
+import { createTicket, fetchAllProjectUsers, closeReduxModal } from '../../redux/actions';
 import Modal from '../../components/layout/display/Modal'
-// import { createTicket, fetchProjects } from '../../redux/actions';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/CreateTicket.scss';
 
@@ -31,11 +30,12 @@ class CreateTicket extends Component {
     componentDidMount() {
         if (this.props.projects.length !== 0) {
             let firstProject = this.props.projects[0];
-            // let developers = this.props.allProjectUsers.filter(user => user.role === 'Developer' && user.projectID === firstProject.id);
+            let developer = this.props.allProjectUsers.filter(user => user.role === 'Developer' && user.projectID === firstProject.id);
             
             this.setState({
-                project: this.props.projects[0].title,
-                projectId: this.props.projects[0].id,
+                project: firstProject.title,
+                projectId: firstProject.id,
+                developer: developer[0].username,
             })
 
         } else {
@@ -104,7 +104,6 @@ class CreateTicket extends Component {
     }; 
 
     renderDeveloperSelection = () => {
-        // let developers = this.props.users.filter(user => user.role === 'Developer');
         let noDev = {username: 'No existing developer'}
         let developers = this.props.allProjectUsers.filter(user => user.role === 'Developer' && user.projectID === this.state.projectId)
         if (developers.length === 0) {
@@ -149,7 +148,7 @@ class CreateTicket extends Component {
     };
 
     onCreateTicket = () => {
-        const { 
+        const {  
             title, description, comment, project, projectId,
             developer, priority, type, status, submitter 
         } = this.state;
@@ -170,20 +169,27 @@ class CreateTicket extends Component {
             submitter: submitter,
             companyId: currentUser.companyId
         })
+
+        this.setState({showModal: false})
     };
+
+    ExitCreation = () => {
+        this.props.closeReduxModal()
+    }
 
 
     render() {
+        const { wasSuccessful } = this.props;
         const { 
             showModal, notification, warning, noDeveloper, noProject, title, 
             description, project, comment, developer, priority, type 
         } = this.state;
         const showHideModal = showModal ? "display-block" : "display-none";
         const showHideNotification = notification ? "display-block" : "display-none";
+        const showHideSuccessModal = wasSuccessful ? "display-block" : "display-none";
 
         return (
-            <div> 
-
+            <div>
                 <Modal visibility={showHideNotification} type="modal-container notification slide-bottom">
                 {
                     warning ? 
@@ -244,11 +250,26 @@ class CreateTicket extends Component {
                         <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
                             Cancel
                         </button>
-                        <a href="/tickets">
-                            <button className="btn2-main modal-btn btn-confirm" onClick={this.onCreateTicket}>
-                                Confirm
+                        <button className="btn2-main modal-btn btn-confirm" onClick={this.onCreateTicket}>
+                            Confirm
+                        </button>
+                    </div>
+                </Modal>
+
+                <Modal visibility={showHideSuccessModal} type="modal-container new-ticket scale-up-center">
+                    <div className="changes-details">
+                        <i className="fas fa-check fa-4x create-success"></i>
+                            <h2>Your Ticket has been created sucessfully!</h2>
+                    </div>
+                    <div className="modal-btns">
+                        <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
+                            Cancel
+                        </button>
+                        <Link to="/tickets">
+                            <button className="btn2-main modal-btn btn-confirm" onClick={this.ExitCreation}>
+                                Ok
                             </button>
-                        </a>
+                        </Link>
                     </div>
                 </Modal>
 
@@ -343,11 +364,12 @@ const mapStateToProps = state => {
         projects: state.projects.projects,
         allProjectUsers: state.users.allProjectUsers,
         tickets: state.tickets.tickets,
+        wasSuccessful: state.tickets.wasSuccessful,
         users: state.users.users,
         currentUser: state.auth.currentUser 
     }
 }
 
-const mapDispatchToProps = {  createTicket, fetchAllProjectUsers }
+const mapDispatchToProps = {  createTicket, fetchAllProjectUsers, closeReduxModal }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateTicket); 

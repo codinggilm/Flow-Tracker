@@ -156,6 +156,10 @@ export const editTicket = (id, data) => {
     }
 };
 
+export const closeReduxModal = () => {
+    return ({ type: 'CLOSE_REDUX_MODAL', payload: false});
+};
+
 export const saveTicketHistory = (id, data) => {
     return async dispatch => {
         const response = await flowAPI.post(`/tickets/save-history/${id}`, {
@@ -215,7 +219,7 @@ export const fetchAllProjectUsers = (companyId) => {
         const response = await flowAPI.get(`/users/all/project-users/${companyId}`);
         dispatch({ type: 'FETCH_ALL_PROJECT_USERS', payload: response.data})
     }
-};
+}; 
 
 export const fetchProjectUsers = (id) => {
     return async dispatch => {
@@ -237,6 +241,11 @@ export const assignProject = (data) => {
         const response = await flowAPI.post('/users/assign-project', data);
         dispatch({ type: 'ASSIGN_PROJECT', payload: response.data});
     }
+};
+
+export const setPageRefreshUserReducer = () => {
+    return { type: 'RESET_REFRESH', payload: false}
+    
 };
 
 

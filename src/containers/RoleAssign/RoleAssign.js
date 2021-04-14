@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchUsers, editUserRole, fetchTickets } from '../../redux/actions';
+import { fetchUsers, editUserRole, fetchTickets, setPageRefreshUserReducer } from '../../redux/actions';
 // import UsersList from '../../components/lists/UsersList';
 import List from '../../components/layout/display/List';
 import Button from '../../components/layout/button/Button';
@@ -25,6 +25,7 @@ class RoleAssign extends Component {
         const { currentUser } = this.props;
 		this.props.fetchUsers(currentUser.companyId);
         this.props.fetchTickets(currentUser.companyId);
+        this.props.setPageRefreshUserReducer();
 	};
  
     onChange = (event) => {
@@ -80,8 +81,8 @@ class RoleAssign extends Component {
                 id: selectedUser[0].id
             })
             
-            this.resetState();
-            document.location.reload();
+            // this.resetState();
+            // document.location.reload();
         }
         
     };
@@ -127,7 +128,7 @@ class RoleAssign extends Component {
     };
 
     render() {
-        const { users } = this.props;
+        const { users, refreshPage } = this.props;
         const { username, role, notification, showModal, warning, unauthorized, sameRole } = this.state;
 
         const showHideModal = showModal ? "display-block" : "display-none";
@@ -135,100 +136,111 @@ class RoleAssign extends Component {
 
         return (
             <div>
+            {
+                refreshPage ?  document.location.reload()
 
-                <Modal visibility={showHideNotification} type="modal-container notification slide-bottom">
-                    {
-                        warning ?
-                        <div>
-                            <p>{username} is currently assigned to an open Ticket. You cannot change this user's role right now.</p>
-                            <br/>
-                            <p>Please assign a new developer to {username}'s open Ticket(s) before proceeding.</p>
-                        </div>
-                        :
-                        sameRole ? 
-                        <p>{username} is already a {role}.</p>
-                        :
-                        unauthorized ? 
-                        <p>Only Admins can assign a Role</p> 
-                        :
-                        <p>You need to select a User and a Role</p> 
+                :
+            
+                <div>
+                    <Modal visibility={showHideNotification} type="modal-container notification slide-bottom">
+                        {
+                            warning ?
+                            <div>
+                                <p>{username} is currently assigned to an open Ticket. You cannot change this user's role right now.</p>
+                                <br/>
+                                <p>Please assign a new developer to {username}'s open Ticket(s) before proceeding.</p>
+                            </div>
+                            :
+                            sameRole ? 
+                            <p>{username} is already a {role}.</p>
+                            :
+                            unauthorized ? 
+                            <p>Only Admins can assign a Role</p> 
+                            :
+                            <p>You need to select a User and a Role</p> 
 
-                    }
-                    <div className="modal-btns">
-                        <button className="btn2-main modal-btn btn-confirm" onClick={this.closeNotification}>
-                            Ok
-                        </button>
-                    </div>
-                </Modal>
-
-                <Modal visibility={showHideModal} type="modal-container main scale-up-center">
-                    <h2 className="header">Confirm role assignment?</h2>
-                    <div className="changes-details">
-                        <h3 className="title">User</h3>
-                        <p className="detail">{username}</p>
-                        <h3 className="title">New role</h3>
-                        <p className="detail">{role}</p>
-                    </div>
+                        }
                         <div className="modal-btns">
-                            <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
-                                Cancel
+                            <button className="btn2-main modal-btn btn-confirm" onClick={this.closeNotification}>
+                                Ok
                             </button>
-                            <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmRole}>
-                                Confirm
-                            </button>
-
                         </div>
-                </Modal>
+                    </Modal>
 
-                <main className="roles-main">
-                    <div className="roles-title">
-                        <p>Manage User Roles</p>
-                    </div> 
-                    <div className="roles-manage-container">
-                        <div className="roles-column">
-                            <label className="selection user-selection">
-                                <p className="selection-title">Select 1 or more Users</p>
-                                <select multiple name="username" onChange={this.onChange}>
-                                    {this.renderUsersSelection()}
-                                </select>
-                            </label>
-    
-                            <div className="selection role-selection">
-                                <label>
-                                    <p className="selection-title">Select the Role to assign</p>
-                                    <select name="role" onChange={this.onChange}>
-                                        <option>--Select Role--</option>
-                                        <option>None</option>
-                                        <option>Admin</option>
-                                        <option>Project Manager</option>
-                                        <option>Developer</option>
-                                        <option>Submitter</option>
+                    <Modal visibility={showHideModal} type="modal-container main scale-up-center">
+                        <h2 className="header">Confirm role assignment?</h2>
+                        <div className="changes-details">
+                            <h3 className="title">User</h3>
+                            <p className="detail">{username}</p>
+                            <h3 className="title">New role</h3>
+                            <p className="detail">{role}</p>
+                        </div>
+                            <div className="modal-btns">
+                                <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
+                                    Cancel
+                                </button>
+                                {/* <a href="/role-assign"> */}
+                                    <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmRole}>
+                                        Confirm
+                                    </button>
+                                {/* </a> */}
+
+                            </div>
+                    </Modal>
+
+                    <main className="roles-main">
+                        <div className="roles-title">
+                            <p>Manage User Roles</p>
+                        </div> 
+                        <div className="roles-manage-container">
+                            <div className="roles-column">
+                                <label className="selection user-selection">
+                                    <p className="selection-title">Select 1 or more Users</p>
+                                    <select multiple name="username" onChange={this.onChange}>
+                                        {this.renderUsersSelection()}
                                     </select>
                                 </label>
-                                <div className="btn-role">
-                                    <Button text="SUBMIT" onClick={this.onSubmit}/>
+        
+                                <div className="selection role-selection">
+                                    <label>
+                                        <p className="selection-title">Select the Role to assign</p>
+                                        <select name="role" onChange={this.onChange}>
+                                            <option>--Select Role--</option>
+                                            <option>None</option>
+                                            <option>Admin</option>
+                                            <option>Project Manager</option>
+                                            <option>Developer</option>
+                                            <option>Submitter</option>
+                                        </select>
+                                    </label>
+                                    <div className="btn-role">
+                                        <Button text="SUBMIT" onClick={this.onSubmit}/>
+                                    </div>
                                 </div>
                             </div>
+        
+                            <div className="list-column"> 
+                                <List 
+                                    listTitle="Your Personnel"
+                                    listDescription="All the users in your database"
+                                    titleGrid="tableList-titles users"
+                                    stateObject={users}
+                                    allEntries={users.length} 
+                                    renderItems={(entriesStart, maxPerPage, searchfield) => 
+                                        this.renderUsers(entriesStart, maxPerPage, searchfield)
+                                    }
+                                >
+                                    <p>User Name</p>
+                                    <p>Email</p>
+                                    <p>Role</p>
+                                </List>
+                            </div>
                         </div>
-    
-                        <div className="list-column"> 
-                            <List 
-                                listTitle="Your Personnel"
-                                listDescription="All the users in your database"
-                                titleGrid="tableList-titles users"
-                                stateObject={users}
-                                allEntries={users.length} 
-                                renderItems={(entriesStart, maxPerPage, searchfield) => 
-                                    this.renderUsers(entriesStart, maxPerPage, searchfield)
-                                }
-                            >
-                                <p>User Name</p>
-                                <p>Email</p>
-                                <p>Role</p>
-                            </List>
-                        </div>
-                    </div>
-                </main>
+                    </main>
+                </div>
+            
+            }
+
             </div>
         )
     }
@@ -238,10 +250,11 @@ const mapStateToProps = state => {
     return { 
         users: state.users.users,
         tickets: state.tickets.tickets,
-        currentUser: state.auth.currentUser
+        currentUser: state.auth.currentUser,
+        refreshPage: state.users.refreshPage
     }
 }
 
-const mapDispatchToProps = { fetchUsers, editUserRole, fetchTickets }
+const mapDispatchToProps = { fetchUsers, editUserRole, fetchTickets, setPageRefreshUserReducer }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RoleAssign);
