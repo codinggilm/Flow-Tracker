@@ -104,8 +104,8 @@ class Register extends Component {
                         </div>        
                         <button onClick={this.onRequestRegister}>REGISTER ME</button>
                         <div className="login-links">
-                            <p>Forgot your <a href="/">Password?</a></p>
-                            <p>Sign in as a <a href="">Demo User</a></p>
+                            <p>Forgot your <Link to="/">Password?</Link></p>
+                            <p>Sign in as a <Link to="/">Demo User</Link></p>
                             <p><Link to="" onClick={this.props.onHasAccount}>I already have an account</Link></p>
                         </div>
                     </div>

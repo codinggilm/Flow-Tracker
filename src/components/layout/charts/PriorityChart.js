@@ -11,7 +11,7 @@ class PriorityChart extends React.Component {
 		barChartOptions: {
 			responsive: true,
 			maintainAspectRatio: true,
-			scales: {
+			dataset: {
 				xAxes: [
 					{
 						barPercentage: 1,

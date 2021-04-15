@@ -5,7 +5,7 @@ import React from 'react';
 import PriorityChart from '../../components/layout/charts/PriorityChart';
 import StatusChart from '../../components/layout/charts/StatusChart';
 import TypeChart from '../../components/layout/charts/TypeChart';
-import SubmitterChart from '../../components/layout/charts/SubmitterChart';
+// import SubmitterChart from '../../components/layout/charts/SubmitterChart';
 import ProjectsChart from '../../components/layout/charts/ProjectsChart';
 import '../../scss/containers/Dashboard.scss';
 

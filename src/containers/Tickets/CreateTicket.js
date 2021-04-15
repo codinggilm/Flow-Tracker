@@ -121,7 +121,7 @@ class CreateTicket extends Component {
     };
 
     onSubmitTicket = () => {
-        const { title, description, noDeveloper, noProject, project } = this.state;
+        const { title, description, noDeveloper, project } = this.state;
         const { tickets } = this.props;
         const sameTitle = tickets.filter(ticket => ticket.title === title);
 
@@ -364,8 +364,7 @@ const mapStateToProps = state => {
         tickets: state.tickets.tickets,
         wasSuccessful: state.tickets.wasSuccessful,
         users: state.users.users,
-        currentUser: state.auth.currentUser,
-        tickets: state.tickets.tickets 
+        currentUser: state.auth.currentUser
     }
 }
 

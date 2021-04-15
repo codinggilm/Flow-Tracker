@@ -30,7 +30,7 @@ export const requestLogout = () => {
         const response = await flowAPI.get('/logout');
         // localStorage.clear();
         // dispatch({ type: 'LOGOUT_SUCCESS', payload: response})
-        dispatch({ type: 'RESET_STATE'})
+        dispatch({ type: 'RESET_STATE', payload: response.data})
     }
 };
 

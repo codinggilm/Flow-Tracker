@@ -194,7 +194,7 @@ class EditTicket extends Component {
     };
 
     onSubmitEditTicket = () => {
-        const { title, description, project, projectId, developer, priority, status, type } = this.state;
+        const { title, description, projectId, developer, priority, status, type } = this.state;
         const { tickets, ticket } = this.props;
         const sameTitle = tickets.filter(ticket => ticket.title === title);
 

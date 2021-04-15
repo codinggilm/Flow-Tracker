@@ -42,8 +42,7 @@ class TopNav extends Component {
 										<Dropdown.Item href="#/action-1">Profile</Dropdown.Item>
 										<Dropdown.Item href="#/action-2">Settings</Dropdown.Item>
 										<Link 
-											className="link" to="/" 
-											className="logout"
+											className="logout link" to="/" 
 											onClick={()=>{
 												window.localStorage.clear();
 												this.props.requestLogout()

@@ -76,7 +76,7 @@ class CreateProject extends Component {
 
     onCreateProject = () => {
         const { title, description, userAdded, userId, role } = this.state;
-        const { users, currentUser } = this.props;
+        const { currentUser } = this.props;
         // const userRole = users.filter(user => user.id === userId)[0].role;
 
         this.props.createProject({

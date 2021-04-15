@@ -160,7 +160,7 @@ class EditProject extends Component {
 
     render() {
         const { 
-            title, description, username, userToRemove, showModal, notification, 
+            title, description, userToRemove, showModal, notification, 
             warning, cannotRemoveUser, noneSelected, sameTitle, noChanges, deleteProject 
         } = this.state;
         const { wasSuccessful } = this.props;

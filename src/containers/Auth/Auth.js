@@ -66,9 +66,9 @@ class Auth extends Component {
                         </div>
                         <button onClick={this.onRequestLogin}>SIGN IN</button>
                         <div className="login-links">
-                            <p>Forgot your <a href="/">Password?</a></p>
-                            <p>Create an account? <Link to="#" onClick={this.registerUser}>Sign Up</Link></p>
-                            <p>Sign in as a <a href="#" onClick={this.onDemoLogin}>Demo User</a></p>
+                            <p>Forgot your <Link to="/">Password?</Link></p>
+                            <p>Create an account? <Link to="/" onClick={this.registerUser}>Sign Up</Link></p>
+                            <p>Sign in as a <Link to="/" onClick={this.onDemoLogin}>Demo User</Link></p>
                         </div>
                     </div>
                 </main>

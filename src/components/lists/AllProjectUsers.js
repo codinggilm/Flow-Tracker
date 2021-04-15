@@ -6,7 +6,6 @@ import {
 } from '../../redux/actions';
 import List from '../layout/display/List';
 import Modal from '../layout/display/Modal';
-// import '../../scss/components/lists/ProjectUsersList2.scss';
 
 
 class AllProjectUsers extends Component {
@@ -39,7 +38,6 @@ class AllProjectUsers extends Component {
         this.setState({notification: false});
     }
 
-    // removeUser = (userID, username, role, project, projectID) => {
     onRemoveUserRequest = (userID, username, project, projectID) => {
         const { tickets } =  this.props;        
         const cannotRemove = tickets.filter(
@@ -102,7 +100,7 @@ class AllProjectUsers extends Component {
 	
 	render() {
         let { allProjectUsers } = this.props;
-        const { username, project, role, notification, showModal, warning } = this.state;
+        const { username, project, notification, showModal } = this.state;
         const showHideModal = showModal ? "display-block" : "display-none";
         const showHideNotification = notification ? "display-block" : "display-none";
 
