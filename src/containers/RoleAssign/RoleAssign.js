@@ -127,6 +127,10 @@ class RoleAssign extends Component {
         })
     };
 
+    refreshPage = () => {
+        document.location.reload()
+    }
+
     render() {
         const { users, refreshPage } = this.props;
         const { username, role, notification, showModal, warning, unauthorized, sameRole } = this.state;
@@ -136,11 +140,9 @@ class RoleAssign extends Component {
 
         return (
             <div>
-            {
-                refreshPage ?  document.location.reload()
 
-                :
-            
+                { refreshPage ? this.refreshPage() : null }
+    
                 <div>
                     <Modal visibility={showHideNotification} type="modal-container notification slide-bottom">
                         {
@@ -179,11 +181,9 @@ class RoleAssign extends Component {
                                 <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
                                     Cancel
                                 </button>
-                                {/* <a href="/role-assign"> */}
-                                    <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmRole}>
-                                        Confirm
-                                    </button>
-                                {/* </a> */}
+                                <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmRole}>
+                                    Confirm
+                                </button>
 
                             </div>
                     </Modal>
@@ -239,7 +239,6 @@ class RoleAssign extends Component {
                     </main>
                 </div>
             
-            }
 
             </div>
         )

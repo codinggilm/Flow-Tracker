@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchProjects, fetchProject, fetchTicket, 
+import { fetchProjects, fetchProject, fetchTicket, closeReduxModal, 
     editTicket, fetchAllProjectUsers, saveTicketHistory, deleteTicket 
 } from '../../redux/actions';
 import Modal from '../../components/layout/display/Modal';
@@ -227,7 +227,8 @@ class EditTicket extends Component {
         const selectedDeveloper = users.filter(user => user.username === developer)[0];
         
         if (deleteTicket) {
-            this.props.deleteTicket(this.props.ticketId)
+            this.setState({showModal: false})
+            this.props.deleteTicket(this.props.ticketId);
         } else {
             this.saveHistory(ticket, this.state);
     
@@ -245,22 +246,28 @@ class EditTicket extends Component {
                     submitter: submitter
                 }
             )
+
+            this.setState({showModal: false})
         }
     };
 
     onSubmitDeleteTicket = () => {
         this.setState({ showModal: true, deleteTicket: true })
     };
+
+    ExitUpdateTicket = () => {
+        this.props.closeReduxModal()
+    }
     
     render() {
         const {  
             showModal, notification, warning, noChange, deleteTicket, sameTitle, newProject, title, 
             description, project, developer, priority, status, type 
         } = this.state;
-
-        const { ticket } = this.props;
+        const { ticket, wasSuccessful } = this.props;
         const showHideModal = showModal ? "display-block" : "display-none";
         const showHideNotification = notification ? "display-block" : "display-none";
+        const showHideSuccessModal = wasSuccessful ? "display-block" : "display-none";
         
         return (
             <div>
@@ -305,7 +312,7 @@ class EditTicket extends Component {
                                 <h2 className="header warning-header">Are you sure you want to delete this ticket?</h2>
                                 <div className="warning-text">
                                     <h3>The following will be permanently deleted:</h3>
-                                    <p>- All the history, comments and attachments of this tickets</p>
+                                    <p>All the history, comments and attachments of this tickets</p>
                                     <p className="final-warning">
                                         <strong>There is no going back, are you sure you wish to proceed?</strong>
                                     </p>
@@ -343,11 +350,28 @@ class EditTicket extends Component {
                             <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
                                 Cancel
                             </button>
-                            <a href="/tickets">
-                                <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmEditTicket}>
-                                    Confirm
+                            <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmEditTicket}>
+                                Confirm
+                            </button>
+                        </div>
+                    </Modal>
+
+                    <Modal visibility={showHideSuccessModal} type="modal-container new-ticket scale-up-center">
+                        <div className="changes-details">
+                            <i className="fas fa-check fa-4x create-success"></i>
+                            {
+                                deleteTicket ? 
+                                <h3>Your Ticket has been deleted sucessfully!</h3>
+                                :
+                                <h3>Your Ticket has been updated sucessfully!</h3>
+                            }
+                        </div>
+                        <div className="modal-btns">
+                            <Link to="/tickets">
+                                <button className="btn2-main modal-btn btn-confirm" onClick={this.ExitUpdateTicket}>
+                                    Ok
                                 </button>
-                            </a>
+                            </Link>
                         </div>
                     </Modal>
 
@@ -480,13 +504,14 @@ const mapStateToProps = state => {
         users: state.users.users,
         allProjectUsers: state.users.allProjectUsers,
         userProjects: state.projects.userProjects,
-        currentUser: state.auth.currentUser 
+        currentUser: state.auth.currentUser,
+        wasSuccessful: state.tickets.wasSuccessful 
     }
 }
 
 const mapDispatchToProps = { 
     fetchProjects, fetchProject, fetchTicket, fetchAllProjectUsers,
-    editTicket, saveTicketHistory, deleteTicket 
+    editTicket, saveTicketHistory, deleteTicket, closeReduxModal 
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditTicket); 

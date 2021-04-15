@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'; 
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchProject, editProject, deleteProject, removeUserFromProject } from '../../redux/actions';
+import { fetchProject, editProject, deleteProject, removeUserFromProject, closeReduxModal } from '../../redux/actions';
 import Modal from '../../components/layout/display/Modal';
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/EditProject.scss';
@@ -36,7 +36,7 @@ class EditProject extends Component {
     };
 
     closeModal = () => {
-        this.setState({ showModal: false, deleteProject: false })
+        this.setState({ showModal: false })
     };
 
     closeNotification = () => {
@@ -142,6 +142,8 @@ class EditProject extends Component {
             )
         }
 
+        this.closeModal();
+
     }
 
     onSubmitDeleteProject = () => {
@@ -151,13 +153,20 @@ class EditProject extends Component {
         })
     };
 
+    ExitUpdate = () => {
+        this.props.closeReduxModal();
+
+    }
+
     render() {
         const { 
             title, description, username, userToRemove, showModal, notification, 
             warning, cannotRemoveUser, noneSelected, sameTitle, noChanges, deleteProject 
         } = this.state;
+        const { wasSuccessful } = this.props;
         const showHideModal = showModal ? "display-block" : "display-none";
         const showHideNotification = notification ? "display-block" : "display-none";
+        const showHideSuccessModal = wasSuccessful ? "display-block" : "display-none";
 
         return (
             <div>
@@ -229,12 +238,29 @@ class EditProject extends Component {
                             <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
                                 Cancel
                             </button>
-                            <a href="/projects">
-                                <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmEditProject}>
-                                    Confirm
-                                </button>
-                            </a>
+                            <button className="btn2-main modal-btn btn-confirm" onClick={this.onConfirmEditProject}>
+                                Confirm
+                            </button>
                         </div>
+                </Modal>
+
+                <Modal visibility={showHideSuccessModal} type="modal-container new-ticket scale-up-center">
+                    <div className="changes-details">
+                        <i className="fas fa-check fa-4x create-success"></i>
+                        {
+                            deleteProject ? 
+                            <h3>Your Project has been deleted sucessfully</h3>
+                            :
+                            <h3>Your Project has been updated sucessfully</h3>
+                        }
+                    </div>
+                    <div className="modal-btns">
+                        <Link to="/projects">
+                            <button className="btn2-main modal-btn btn-confirm" onClick={this.ExitUpdate}>
+                                Ok
+                            </button>
+                        </Link>
+                    </div>
                 </Modal> 
 
                 <main className="edit-project-container">
@@ -340,10 +366,11 @@ const mapStateToProps = state => {
         projectId: state.projects.projectId,
         users: state.users.users,
         projectUsers: state.users.projectUsers,
-        tickets: state.tickets.tickets
+        tickets: state.tickets.tickets,
+        wasSuccessful: state.projects.wasSuccessful 
     }
 }
 
-const mapDispatchToProps = { fetchProject, editProject, deleteProject, removeUserFromProject }
+const mapDispatchToProps = { fetchProject, editProject, deleteProject, removeUserFromProject, closeReduxModal }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditProject); 

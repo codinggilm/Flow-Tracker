@@ -28,23 +28,17 @@ const usersReducer = (state=initialState, action) => {
             return {...state,
                 allProjectUsers: action.payload
             };
+            
         case 'FETCH_PROJECT_USERS':
             return {...state,
                 projectUsers: action.payload
             };
+
         case 'ASSIGN_PROJECT':
-            return {...state,
-                    refreshPage: true
-                // user: action.payload
+            return {
+                ...state,
+                refreshPage: true
             };
-
-        // case 'CREATE_USER':
-        //     return action.payload;
-
-        // case 'SAVE_USER_ID':
-        //     return {...state, 
-        //         projectId: action.payload
-        //     };
 
         case 'EDIT_USER_ROLE': 
             return {
@@ -57,11 +51,7 @@ const usersReducer = (state=initialState, action) => {
                 ...state,
                 refreshPage: false
             };
-            
-        // case 'DELETE_USER':
-        //     return {
-        //         ...state
-        //     };
+
         default:
             return state;
 

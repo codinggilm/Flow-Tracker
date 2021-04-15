@@ -40,22 +40,25 @@ class Register extends Component {
         return (
             <div>
 
-                <Modal visibility={showHideModal} type="modal-container main scale-up-center">
+                <Modal visibility={showHideModal} type="modal-container new-user scale-up-center">
                     <h2 className="header">Welcome to Flow Tracker!</h2>
                     <div className="changes-details">
                         {
                             existingCompany ? 
 
                             <div>
-                                <p>You are joining an existing company's account, so you will not have a default Role.</p>
+                                <p>You are joining an existing company's account, so you will not get a default Role rigth away.</p>
                                 <br/>
-                                <p>Please contact your Admin to have a Role assigned to you and get started.</p>
+                                <p>Please ask your Admin to get a Role assigned to your profile and get started.</p>
                             </div>
                             :
                             <div>
-                                <p>Thank you for registering. As this is a new company, your Role will be set to Admin by default.</p>
+                                <p>Thank you for registering. Your account is under a new company, so your Role will be set to Admin by default.</p>
                                 <br/>
                                 <p>You can now start creating Projects, Tickets, and you can assign Roles to future Users who register under your company.</p>
+                                <br/>
+                                <p>You are the first User so there won't be any data to display yet, or users to assign to Projects and Tickets. Feel free to create more Users and play around with Flow Tracker!</p>
+                                <br/>
                             </div>
                         }
 

@@ -156,9 +156,7 @@ export const editTicket = (id, data) => {
     }
 };
 
-export const closeReduxModal = () => {
-    return ({ type: 'CLOSE_REDUX_MODAL', payload: false});
-};
+
 
 export const saveTicketHistory = (id, data) => {
     return async dispatch => {
@@ -185,6 +183,10 @@ export const deleteTicket = (id) => {
     }
 };
 
+
+export const closeReduxModal = () => {
+    return ({ type: 'CLOSE_REDUX_MODAL', payload: false});
+};
 
 //  ***************************** USERS ACTIONS ****************************  //
 

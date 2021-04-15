@@ -28,9 +28,10 @@ class CreateTicket extends Component {
     }   
 
     componentDidMount() {
-        if (this.props.projects.length !== 0) {
-            let firstProject = this.props.projects[0];
-            let developer = this.props.allProjectUsers.filter(user => user.role === 'Developer' && user.projectID === firstProject.id);
+        const { projects, tickets, allProjectUsers } = this.props;
+        if (projects.length !== 0 && allProjectUsers.length !== 0 && tickets.length !== 0) {
+            let firstProject = projects[0];
+            let developer = allProjectUsers.filter(user => user.role === 'Developer' && user.projectID === firstProject.id);
             
             this.setState({
                 project: firstProject.title,
@@ -203,9 +204,9 @@ class CreateTicket extends Component {
                     </div>
                     :
                     noProject ?
-                    <p>There is no existing Project this Ticket can be raised on.</p>
+                    <p>You cannot create a Ticket if there is no existing Project or Developer available.</p>
                     :
-                    <p>Your ticket needs a Title and a Description</p>
+                    <p>Your ticket needs a title and a description</p>
                     
                 }
                     <div className="modal-btns">
@@ -259,12 +260,9 @@ class CreateTicket extends Component {
                 <Modal visibility={showHideSuccessModal} type="modal-container new-ticket scale-up-center">
                     <div className="changes-details">
                         <i className="fas fa-check fa-4x create-success"></i>
-                            <h2>Your Ticket has been created sucessfully!</h2>
+                            <h3>Your Ticket has been created sucessfully</h3>
                     </div>
                     <div className="modal-btns">
-                        <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
-                            Cancel
-                        </button>
                         <Link to="/tickets">
                             <button className="btn2-main modal-btn btn-confirm" onClick={this.ExitCreation}>
                                 Ok
@@ -366,7 +364,8 @@ const mapStateToProps = state => {
         tickets: state.tickets.tickets,
         wasSuccessful: state.tickets.wasSuccessful,
         users: state.users.users,
-        currentUser: state.auth.currentUser 
+        currentUser: state.auth.currentUser,
+        tickets: state.tickets.tickets 
     }
 }
 

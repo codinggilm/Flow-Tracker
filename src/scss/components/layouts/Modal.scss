@@ -54,7 +54,21 @@
         padding: 1.5rem;
     }
 
+    .new-user {
+        position: fixed;
+        top: 20%;
+        left: 15%;
+        min-height: 250px;
+        min-width: 350px;
+        background: #fff;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem;
+    }
+
     .modal-container {
+
         
         .warning {
             text-align: center;
@@ -105,6 +119,7 @@
 
             .create-success {
                 color: green;
+                margin-bottom: 1rem;
             }
 
         }

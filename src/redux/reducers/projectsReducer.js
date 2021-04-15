@@ -2,7 +2,8 @@ const initialState = {
     projects: [],
     userProjects: [],
     project: {},
-    projectId: ''
+    projectId: '',
+    wasSuccessful: false
 };
 
 const projectsReducer = (state=initialState, action) => {
@@ -24,7 +25,8 @@ const projectsReducer = (state=initialState, action) => {
 
         case 'CREATE_PROJECT':
             return {
-                ...state
+                ...state,
+                wasSuccessful: true
             };
 
         case 'SAVE_PROJECT_ID':
@@ -34,17 +36,26 @@ const projectsReducer = (state=initialState, action) => {
 
         case 'EDIT_PROJECT':
             return {
-                ...state
+                ...state,
+                wasSuccessful: true
             };
 
         case 'REMOVE_USER_FROM_PROJECT':
             return {
-                ...state
+                ...state,
+                wasSuccessful: true
             };
             
         case 'DELETE_PROJECT':
             return {
-                ...state
+                ...state,
+                wasSuccessful: true
+            };
+
+        case 'CLOSE_REDUX_MODAL':
+            return {
+                ...state,
+                wasSuccessful: false
             };
         default:
             return state;

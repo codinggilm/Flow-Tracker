@@ -25,7 +25,7 @@ class ProjectAssign extends Component {
 
     componentDidMount = () => {
         this.props.fetchUsers(this.props.currentUser.companyId);
-        this.props.setPageRefreshUserReducer()
+        this.props.setPageRefreshUserReducer();
     };
 
     closeModal = () => {
@@ -107,7 +107,6 @@ class ProjectAssign extends Component {
 
     onSubmit = () => {
         const { username, project, projectId } = this.state;
-        console.log(projectId)
 
         if (!username || !project) {
             this.setState({ notification: true });
@@ -147,7 +146,6 @@ class ProjectAssign extends Component {
             })
 
             this.resetState();
-            // document.location.reload();
         }
     };
 
@@ -161,6 +159,10 @@ class ProjectAssign extends Component {
         })
     };
 
+    refreshPage = () => {
+        document.location.reload()
+    }
+
     render() {
         const { username, role, project, notification, showModal, warning, unauthorized } = this.state;
         const { refreshPage } = this.props;
@@ -171,10 +173,8 @@ class ProjectAssign extends Component {
 
         return (
             <div>
-            { 
-                refreshPage ? document.location.reload()
-            
-                :
+
+                { refreshPage ? this.refreshPage() : null }
 
                 <div>
                     <Modal visibility={showHideNotification} type="modal-container notification slide-bottom">
@@ -248,8 +248,6 @@ class ProjectAssign extends Component {
                         </div>
                     </main>
                 </div>
-            
-            }
             </div>
         )
     }

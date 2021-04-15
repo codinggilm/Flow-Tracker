@@ -12,13 +12,13 @@ class Projects extends Component {
     componentDidMount = () => {
         this.props.fetchUsers(this.props.currentUser.companyId);
     }
- 
+
     render() {
         return (
-            <div>  
+            <div>
                 <main className="projects-container">
                     <header className="project-create">
-                        <Link to="/createproject"><Button text="CREATE NEW PROJECT"/></Link>
+                        <Link to='/createproject'><Button text="CREATE NEW PROJECT"/></Link>
                     </header>
                     
                     <div className="projects-list-container">

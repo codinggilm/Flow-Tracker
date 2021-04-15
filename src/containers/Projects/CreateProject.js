@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { createProject, fetchUsers } from '../../redux/actions';
+import { createProject, fetchUsers, closeReduxModal } from '../../redux/actions';
 import Modal from '../../components/layout/display/Modal'
 import Button from '../../components/layout/button/Button';
 import '../../scss/containers/CreateProject.scss';
@@ -79,7 +79,6 @@ class CreateProject extends Component {
         const { users, currentUser } = this.props;
         // const userRole = users.filter(user => user.id === userId)[0].role;
 
-        console.log(this.state)
         this.props.createProject({
             title: title,
             description: description,
@@ -89,13 +88,20 @@ class CreateProject extends Component {
             role: role,
             userId: userId
         })
-        .then()   
+
+        this.closeModal()
     };
+
+    ExitCreation = () => {
+        this.props.closeReduxModal()
+    }
 
     render() {
         const { title, description, username, warning, showModal, notification, sameTitle } = this.state;
+        const { wasSuccessful } = this.props;
         const showHideModal = showModal ? "display-block" : "display-none";
         const showHideNotification = notification ? "display-block" : "display-none";
+        const showHideSuccessModal = wasSuccessful ? "display-block" : "display-none";
         
         return (
             <div> 
@@ -131,12 +137,24 @@ class CreateProject extends Component {
                             <button className="btn2-main modal-btn btn-cancel" onClick={this.closeModal}>
                                 Cancel
                             </button>
-                            <a href="/projects">
-                                <button className="btn2-main modal-btn btn-confirm" onClick={this.onCreateProject}>
-                                    Confirm
-                                </button>
-                            </a>
+                            <button className="btn2-main modal-btn btn-confirm" onClick={this.onCreateProject}>
+                                Confirm
+                            </button>
                         </div>
+                </Modal>
+
+                <Modal visibility={showHideSuccessModal} type="modal-container new-ticket scale-up-center">
+                    <div className="changes-details">
+                        <i className="fas fa-check fa-4x create-success"></i>
+                        <h3>Your Project has been created sucessfully</h3>
+                    </div>
+                    <div className="modal-btns">
+                        <Link to="/projects">
+                            <button className="btn2-main modal-btn btn-confirm" onClick={this.ExitCreation}>
+                                Ok
+                            </button>
+                        </Link>
+                    </div>
                 </Modal>
  
             
@@ -212,10 +230,11 @@ const mapStateToProps = (state) => {
 	return { 
         projects: state.projects.projects,
         users: state.users.users,
-        currentUser: state.auth.currentUser 
+        currentUser: state.auth.currentUser,
+        wasSuccessful: state.projects.wasSuccessful 
     }
 }
 
-const mapDispatchToProps = { createProject, fetchUsers }
+const mapDispatchToProps = { createProject, fetchUsers, closeReduxModal }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateProject);

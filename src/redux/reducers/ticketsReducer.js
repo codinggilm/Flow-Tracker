@@ -37,7 +37,8 @@ const ticketsReducer = (state=initialState, action) => {
 
         case 'EDIT_TICKET':
             return  {
-                ...state 
+                ...state,
+                wasSuccessful: true  
             };
 
         case 'FETCH_TICKET_HISTORY':
@@ -52,8 +53,10 @@ const ticketsReducer = (state=initialState, action) => {
             };
             
         case 'DELETE_TICKET':
+            console.log('received')
             return  {
-                ...state 
+                ...state,
+                wasSuccessful: true 
             };
 
         default: return state;
