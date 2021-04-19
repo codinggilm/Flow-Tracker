@@ -25,7 +25,9 @@ class ProjectsList extends Component {
 		let entriesEnd = entriesStart + maxPerPage;
 		let filter = searchfield;
 		let currentUserProjects = [];
-		let filteredList; 
+		let filteredList;
+		let lastRow; 
+
 
 		for (let i=0;  i < projects.length; i++) {
 			for (let v=0; v < userProjects.length; v++) {
@@ -45,15 +47,31 @@ class ProjectsList extends Component {
 			})
 		}
 
+		// const checkLastRow = () => {
+		// 	for (let i=0; i < filteredList.length; i++) {
+		// 		if (i === (maxPerPage - 1) || i === filteredList.length) {
+		// 			return lastRow = true;
+		// 		}
+		// 		console.log(i, maxPerPage)
+		// 	}
+
+		// } 
+		
+		// checkLastRow();
+		
+		// const rowStyle = lastRow ? 'tableList-row projects last-row ' : 'tableList-row projects'
+
 
 		return filteredList.slice(entriesStart, entriesEnd).map(project => {
+
 			return (
-				<div className="tableList-row projects" key={project.id}>
+				// <div className={rowStyle} key={project.id}>
+				<div className='tableList-row projects' key={project.id}>
 					<p>{project.title}</p>
 					<p>{project.description}</p>
 					<div className="project-action-buttons">
-						<Link to="/projectassign">Manage Users</Link>
-						<Link to="/projectdetails" onClick={ ()=>{
+						<Link to="/projectassign" className="main-links">Manage Users</Link>
+						<Link to="/projectdetails" className="main-links" onClick={ ()=>{
 							this.props.fetchProjectUsers(project.id);
 							this.props.saveProjectId(project.id);
 						}}>

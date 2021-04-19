@@ -80,13 +80,15 @@ class Tickets extends Component {
                     <div className="ticket-action-buttons">
                         <Link 
                             to="/editticket"
+                            className="main-links"
                             onClick={ () => { 
                                 this.saveTicketDetails(ticket.id, ticket.projectId);
                                 this.props.fetchTicket(ticket.id);
                             }}
                         >Edit/Assign</Link>
                         <Link 
-                            to="/ticketdetails" 
+                            to="/ticketdetails"
+                            className="main-links" 
                             onClick={ () => {
                                 this.saveTicketDetails(ticket.id, ticket.projectId);
                                 this.props.fetchComments(ticket.id);

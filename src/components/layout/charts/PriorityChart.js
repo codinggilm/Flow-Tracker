@@ -11,28 +11,28 @@ class PriorityChart extends React.Component {
 		barChartOptions: {
 			responsive: true,
 			maintainAspectRatio: true,
-			dataset: {
-				xAxes: [
-					{
-						barPercentage: 1,
-						gridLines: {
-						display: true,
-						color: "rgba(0, 0, 0, 0.1)"
-						}
-					}
-					],
-					yAxes: [
-					{
-						gridLines: {
-						display: true,
-						color: "rgba(0, 0, 0, 0.1)"
-						},
-						ticks: {
-						beginAtZero: true
-						}
-					}
-				]
-			}
+			scales: {
+                xAxes: [
+                    {
+                        barPercentage: 1,
+                        gridLines: {
+                        display: true,
+                        color: "rgba(0, 0, 0, 0.1)"
+                        }
+                    }
+                ],
+                yAxes: [
+                    {
+                        gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                        },
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }
+                ]
+	        }
 		}
   	}
 

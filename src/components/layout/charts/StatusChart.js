@@ -61,7 +61,7 @@ class StatusChart extends React.Component {
                         userTickets.push(tickets[i]);
                     }
                 }
-            };
+            }; 
         }
 
         if (currentUser.role === 'Developer') {

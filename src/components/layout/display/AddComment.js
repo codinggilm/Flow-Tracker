@@ -8,8 +8,6 @@ import '../../../scss/components/layouts/AddComment.scss';
 class AddComment extends Component {
 
     state = {
-        user:'Jon Smith',
-        role: 'Developer',
         content: ''
     }
 
@@ -18,15 +16,16 @@ class AddComment extends Component {
     }
 
     onSubmittingComment = () => {
+        const { currentUser, ticketId, projectId, project } = this.props;
+
         this.props.createComment({ 
-            user: this.state.user,
-            userId: 2,
-            role: this.state.role,
+            user: currentUser.username,
+            userId: currentUser.id,
+            role: currentUser.role,
             content: this.state.content,
-            ticketId: this.props.ticketId,
-            projectId: this.props.projectId,
-            project: this.props.project.title
-            // created: new Date().toString
+            ticketId: ticketId,
+            projectId: projectId,
+            project: project.title
         })
     }
 
@@ -51,7 +50,8 @@ const mapStateToProps = state => {
     return {
         ticketId: state.tickets.ticketId,
         project: state.projects.project[0],
-        projectId: state.projects.projectId
+        projectId: state.projects.projectId,
+        currentUser: state.auth.currentUser
     }
 }
 

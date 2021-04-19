@@ -19,7 +19,7 @@ class CreateTicket extends Component {
         priority: 'None',
         type: 'Bugs/Errors',
         status: 'Open',
-        submitter: 'admin',
+        submitter: '',
         showModal: false,
         notification: false,
         warning: false,
@@ -151,7 +151,7 @@ class CreateTicket extends Component {
     onCreateTicket = () => {
         const {  
             title, description, comment, project, projectId,
-            developer, priority, type, status, submitter 
+            developer, priority, type, status 
         } = this.state;
         const { users, currentUser } = this.props;
         const selectedDeveloper = users.filter(user => user.username === developer);
@@ -167,7 +167,7 @@ class CreateTicket extends Component {
             priority: priority,
             type: type,
             status: status,
-            submitter: submitter,
+            submitter: currentUser.username,
             companyId: currentUser.companyId
         })
 

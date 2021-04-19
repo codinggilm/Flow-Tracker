@@ -41,7 +41,7 @@ class ProjectTicketsList extends Component {
                     <p>{ticket.developer}</p>
                     <p>{ticket.status}</p>
                     <p>{ticket.createdAt}</p>
-                    <p><Link to="/ticketdetails" onClick={() => this.props.saveTicketId(ticket.id)}>
+                    <p><Link to="/ticketdetails" className="main-links"  onClick={() => this.props.saveTicketId(ticket.id)}>
                         More Details
                         </Link>
                     </p>

@@ -17,7 +17,7 @@ class TopNav extends Component {
 				<div className="container-top-nav">
 					<div className="top-nav-main">
 						<div className="user-details">
-							<p>Logged in as: {currentUser.role}</p>
+							<p>Your current role: {currentUser.role}</p>
 						</div>
 						<div className="top-nav-content">
 							<Form inline>

@@ -28,12 +28,12 @@ class TicketComments extends Component {
 					<p>{comment.user}</p>
 					<p>{comment.content}</p>
 					<p>{comment.createdAt}</p>
-					<button 
+					{/* <button 
 						className="small-del-btn"
 						onClick={()=>this.onDeleteComment(comment.id)}
 					>
                     DEL
-                    </button>
+                    </button> */}
 				</div>
 			)
 		})
@@ -63,10 +63,10 @@ class TicketComments extends Component {
                                     this.renderComments(entriesStart, maxPerPage, searchfield)
                                 } 
                             >
-                                <p>Commenter</p>
+                                <p>User</p>
                                 <p>Message</p>
                                 <p>Created</p>
-                                <p>Delete</p>
+                                {/* <p>Delete</p> */}
                             </List>
                         </div>
                     </div>

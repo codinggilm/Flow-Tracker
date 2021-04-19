@@ -20,7 +20,6 @@ class EditTicket extends Component {
         priority: '',
         type: '',
         status: '',
-        submitter: 'Admin',
         showModal: false,
         notification: false,
         warning: false,
@@ -51,7 +50,9 @@ class EditTicket extends Component {
             developer: ticket.developer,
             priority: ticket.priority,
             type: ticket.type,
-            status: ticket.status
+            status: ticket.status,
+            submitter: ticket.submitter,
+            companyId: ticket.companyId
         })
     };
 
@@ -223,7 +224,7 @@ class EditTicket extends Component {
 
     onConfirmEditTicket = () => {
         const { title, description, project, projectId, developer, priority, type, status, submitter, deleteTicket } = this.state;
-        const { users, ticket, ticketId } = this.props;
+        const { users, currentUser, ticket, ticketId } = this.props;
         const selectedDeveloper = users.filter(user => user.username === developer)[0];
         
         if (deleteTicket) {
@@ -242,8 +243,7 @@ class EditTicket extends Component {
                     developerId: selectedDeveloper.id,
                     priority: priority,
                     type: type,
-                    status: status,
-                    submitter: submitter
+                    status: status
                 }
             )
 

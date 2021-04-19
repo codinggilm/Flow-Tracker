@@ -16,46 +16,27 @@ class List extends Component {
             currentEnd: '',
             searchfield: ''
         }
-    }
+    };
 
 	componentDidMount() {
         // this.saveTotalPages()
 		// this.setState({currentEnd: this.props.stateObject})
 		
-	}
+	};
 
 	setEntries = (event) => {
         let { currentPage, totalPages} = this.state;
-		// if (event.target.value > 0 && (!this.state.lastPage)) {
 		if (event.target.value > 0 && (currentPage !== totalPages)) {
-		// if (event.target.value > 0) {
 			this.setState({ maxPerPage: parseInt(event.target.value) })
 		}
-	}
+	};
 
 	setFilter = (event) => {
 		this.setState({ searchfield: event.target.value })
-	}
-
-    setLastPage = () => {
-        // this.setState({lastPage: true})
-    }
-
-    // saveTotalPages = () => {
-    //     let { maxPerPage, currentPage } = this.state;
-	// 	let pages = this.props.allEntries / maxPerPage;
-	// 	let pagesArray = [];
-
-    //     for (let i=0; i < pages; i++) {
-    //         pagesArray.push(i)
-	// 	}
-
-    //     this.setState({totalPages: pagesArray.length})
-    // }
+	};
 
 	renderPagination = () => {
 		let { maxPerPage, currentPage } = this.state;
-		// let pages = this.props.stateObject.length / maxPerPage;
 		let pages = this.props.allEntries / maxPerPage;
 		let pagesArray = [];
         
@@ -75,10 +56,8 @@ class List extends Component {
 			return <p className={style} key={el} onClick={() => this.changePage(el)}>{el + 1}</p>
 		})
 
-        // if (currentPage === totalPages)
-
 		return pageButtons;
-	}
+	};
 
 	changePage = (el) => {
 		let { maxPerPage } = this.state;
@@ -86,13 +65,12 @@ class List extends Component {
 			entriesStart: el * maxPerPage,
 			currentPage: el + 1 
 		})
-	}
+	};
 
 	nextPage = () => {
 		let currentStart = this.state.entriesStart;
 		let { maxPerPage } = this.state;
 
-		// if (currentStart + maxPerPage <= this.props.stateObject.length - 1) {
 		if (currentStart + maxPerPage <= this.props.allEntries - 1) {
 			this.setState({ 
 				entriesStart: currentStart + maxPerPage,
@@ -101,7 +79,7 @@ class List extends Component {
 		} else {
 			alert('no more entries')
 		}
-	}
+	};
 
 	previousPage = () => {
 		let currentStart = this.state.entriesStart;
@@ -119,7 +97,7 @@ class List extends Component {
 			})
 		} 
 
-	}
+	};
 
 	calcCurrentEnd = () => {
 		let { stateObject, allEntries } = this.props;
@@ -135,11 +113,10 @@ class List extends Component {
         }
         return currEnd;
 
-	}
+	};
 
 
 	render() {
-		// let { stateObject } = this.props;
 		let { entriesStart, maxPerPage, searchfield } = this.state;
 
 		return (
@@ -173,21 +150,20 @@ class List extends Component {
 						</div> 
 						<div className="list-details-container">
 						<main className="tableList-container">
-								<header className={this.props.titleGrid}>
-									{this.props.children}
-								</header>
-								<div className="tableList-details-container">
-									{this.props.renderItems(entriesStart, maxPerPage, searchfield)}
+							<header className={this.props.titleGrid}>
+								{this.props.children}
+							</header>
+							<div className="tableList-details-container">
+								{this.props.renderItems(entriesStart, maxPerPage, searchfield)}
+							</div>
+							<div className="tableList-footer">
+								<p>Showing {entriesStart + 1} to {this.calcCurrentEnd()} of {this.props.allEntries} entries</p>
+								<div className="tableList-pagination">
+									<p onClick={this.previousPage}>Previous</p>
+									{this.renderPagination()}
+									<p onClick={this.nextPage}>Next</p>
 								</div>
-								<div className="tableList-footer">
-									<p>Showing {entriesStart + 1} to {this.calcCurrentEnd()} of {this.props.allEntries} entries</p>
-									{/* <p>Showing {entriesStart + 1} to {this.calcCurrentEnd()} of {stateObject.length} entries</p> */}
-									<div className="tableList-pagination">
-										<p onClick={this.previousPage}>Previous</p>
-										{this.renderPagination()}
-										<p onClick={this.nextPage}>Next</p>
-									</div>
-								</div>
+							</div>
 							</main>
 						</div> 
 					</div>
@@ -195,7 +171,7 @@ class List extends Component {
 			</div>
 		)
 	}
-}
+};
 
 
 export default List; 
