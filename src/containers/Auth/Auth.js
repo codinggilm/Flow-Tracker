@@ -53,11 +53,11 @@ class Auth extends Component {
                             </div> */}
                             <div className="input username-input" onChange={this.onChange}>
                                 <i className="fas fa-street-view"></i>
-                                <input type="text" name="username" placeholder="type username.."/>
+                                <input type="text" name="username" placeholder="enter your username"/>
                             </div>
                             <div className=" input password-input">
                                 <i className="fas fa-lock"></i>
-                                <input type="password" name="password" onChange={this.onChange}/>
+                                <input type="password" name="password" placeholder="enter your password" onChange={this.onChange}/>
                             </div> 
                             {
                                 this.props.wrongCredentials ? 
