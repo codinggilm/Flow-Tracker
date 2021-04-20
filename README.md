@@ -19,12 +19,12 @@ The software allows users to be assigned to multiple Projects or Tickets, and ev
 Before starting this project, I have written an SRS (in the /public folder) that includes further details as well as the development Sprints schedule.<br />
 
 ## Architecture and Data Flow
-Flow Tracker is an SPA built following a Flux / Redux architecure, with a backend built using an MVC-like structure and performing CRUD operations.
-<br />
+Flow Tracker is an SPA built following a Flux / Redux architecure, with a backend built using an MVC-like structure and performing CRUD operations.<br />
+
 Node & Express was used to build REST APIs and interacts with the PostgreSQL database using the Sequelize ORM.
 The React client sends HTTP requests and retrieves HTTP responses via Redux using Axios, then provides the data to the components. React Router is used for navigating to various pages.
-The global state of the application and the data flow are managed by Redux; all http requests and global state updates are performed via actions and reducers. I do use local state where data has to come from user inputs (editing, creating etc.).
-<br />
+The global state of the application and the data flow are managed by Redux; all http requests and global state updates are performed via actions and reducers. I do use local state where data has to come from user inputs (editing, creating etc.).<br />
+
 As I am more comfortable on the front end, most of the logic is handled by the client rather than by the backend. Redux gets the data from the database, and numerous methods are used within components to manipulate it as required and render the correct data. This also means a lighter back-end and a faster application. 
 
 ## Improvements 
