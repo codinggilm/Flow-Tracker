@@ -38,7 +38,7 @@ The app and my code are not fully polished yet. Here are some immediate tasks I 
 - Improving the general UI and styling - colors, modals, animations.
 - Making the app responsive on mobile & tablet displays.
 - Performing extensive testing with Jest.
-- General code improvement (DRY, SOLID)
+- General code improvement
 
 ## Features
 
