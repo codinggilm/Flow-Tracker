@@ -31,12 +31,12 @@ class CreateTicket extends Component {
         const { projects, tickets, allProjectUsers } = this.props;
         if (projects.length !== 0 && allProjectUsers.length !== 0 && tickets.length !== 0) {
             let firstProject = projects[0];
-            let developer = allProjectUsers.filter(user => user.role === 'Developer' && user.projectID === firstProject.id);
+            let firstdeveloper = allProjectUsers.filter(user => user.role === 'Developer' && user.projectID === firstProject.id);
             
             this.setState({
                 project: firstProject.title,
                 projectId: firstProject.id,
-                developer: developer[0].username,
+                developer: firstdeveloper.username,
             })
 
         } else {
@@ -76,8 +76,8 @@ class CreateTicket extends Component {
 
     onSelectingProject = (event) => {
         const { allProjectUsers } = this.props;
-        let availableDevs =  allProjectUsers.filter(el => el.project.includes(event.target.value) && el.role.includes('Developer'))
-        
+        let availableDevs =  allProjectUsers.filter(el => el.project === event.target.value && el.role === 'Developer');
+
         if (availableDevs.length === 0) {
             this.saveProjectId(event.target.value);
             this.setState({
@@ -196,7 +196,7 @@ class CreateTicket extends Component {
                     warning ? 
                     <p>A ticket named "{title}" already exists. Please choose a different title.</p>
                     :
-                    noDeveloper?
+                    noDeveloper ?
                     <div>
                         <p>No developer is working on this project.</p>
                         <br/>
